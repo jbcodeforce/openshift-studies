@@ -1,0 +1,18 @@
+site_name: Redhat Openshift studies
+repo_url: https://github.com/jbcodeforce/openshift-studies
+nav:
+  - Introduction: index.md
+  - Minishift environment: minishift.md
+  - oc cheat sheet: oc-cli.md
+  - Openshift FAQ: faq.md
+  - Compendium: compendium.md
+
+theme: 
+  name: material
+extra_css: ["extra.css"]
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
