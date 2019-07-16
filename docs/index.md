@@ -51,3 +51,47 @@ Three main methods to add an app to openshift:
 
 * Build and deploy from source code contained in a Git repository using a Source-to-Image builder.
 * Build and deploy from source code contained in a Git repository from a Dockerfile.
+
+## Collaborate
+
+User can be added to an existing project, via the Vew membership menu on a project. Each user can have different roles. `Edit Role`  can perform most tasks within the project, with the exception of tasks related to administration of the project.
+
+!!! Remark
+    state about the current login session is stored in the home directory of the local user running the `oc` command, so user need to logout and login to the second cluster he wants to access. 
+
+You can get a list of all OpenShift clusters you have ever logged into by running:
+```
+oc config get-clusters
+```
+
+## ODO: Openshift Do
+
+A CLI for developer to abstract kubernetes. `odo` can build and deploy your code to your cluster immediately after you save your changes.
+
+List existing software catalog deployed on a cluster:
+
+```
+odo catalog list components
+```
+
+To create a component (create a config.yml) from a java springboot app, once the jar is built:
+
+```
+odo create java backend --binary target/wildwest-1.0.jar
+```
+
+To see the config:
+```
+odo config view
+```
+Then to deploy it to openshift:
+
+```
+odo push
+```
+
+OpenShift provides mechanisms to publish communication bindings from a program to its clients. This is referred to as linking.
+
+```
+odo link backend --component frontend --port 8080
+```

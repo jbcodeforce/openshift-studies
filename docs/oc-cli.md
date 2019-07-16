@@ -5,7 +5,13 @@ oc is a tool written in Go to interact with an openshifr cluster (one at a time)
 #### Login
 
 ```
-oc login --username collaborator --password collaborator
+oc login --username collaborator --password collaborator 
+```
+
+Log in to your server using a token for an existing session.
+
+```
+oc login --token <token>
 ```
 
 Get the list of projects
@@ -23,10 +29,22 @@ See what the current context:
 oc whoami --show-context
 ```
 
+verify which server you are logged into
+
+```
+oc whoami --show-server
+```
+
+
 See cluster:
 
 ```
 oc config get-clusters
+```
+
+Show a list of contexts for all sessions ever created. For each context listed, this will include details about the project, server and name of user, in that order
+```
+oc config get-contexts
 ```
 
 #### Add access for a user to one of your project
