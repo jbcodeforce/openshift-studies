@@ -122,6 +122,26 @@ List what image stream resources have been created within a project by running t
 oc get imagestream -o name
 ```
 
+When using source to image approach, it is possible to trigger the build via:
+
+```
+oc start-build app-name
+```
+
+You can use oc logs to monitor the log output as the build runs. You can also monitor the progress of any builds in a project by running the command:
+
+```
+oc get builds --watch
+```
+
+To trigger a binary build, without committing to github, you can use the local folder to provide the source code:
+
+```
+oc start-build app-name --from-dir=. --wait
+```
+
+*The --wait option is supplied to indicate that the command should only return when the build has completed.*
+
 Switch back to minishift context:
 
 ```

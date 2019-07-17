@@ -45,11 +45,14 @@ Three main methods to add an app to openshift:
 ![](deploy-image.png)
 
 !!! note
-        There are two options: from an image imported in the openshift cluster, or built from a dockerfile inside the cluster. Or by accessing a remote image repository like `Dockerhub`. The image will be pulled down and stored within the internal OpenShift image registry. The image will then be copied to any node in the OpenShift cluster where an instance of the application is run.
-        Application will, by default, only be visible internally to the OpenShift cluster, and usually only to other applications within the same project. Use `Create route` to make it public. 
+        There are two options: 
+        * from an image imported in the openshift cluster, or built from a dockerfile inside the cluster. 
+        * by accessing a remote image repository like `Dockerhub`. The image will be pulled down and stored within the internal OpenShift image registry. The image will then be copied to any node in the OpenShift cluster where an instance of the application runs.
+        Application will, by default, only be visible internally to the OpenShift cluster, and usually only to other applications within the same project. Use `Create route` to make the app public. 
 
 
-* Build and deploy from source code contained in a Git repository using a Source-to-Image builder.
+* Build and deploy from source code contained in a Git repository using a Source-to-Image builder. 
+
 * Build and deploy from source code contained in a Git repository from a Dockerfile.
 
 ## Collaborate
@@ -66,7 +69,7 @@ oc config get-clusters
 
 ## ODO: Openshift Do
 
-A CLI for developer to abstract kubernetes. `odo` can build and deploy your code to your cluster immediately after you save your changes.
+A CLI for developer to abstract kubernetes. [odo](https://www.katacoda.com/openshift/courses/introduction/developing-with-odo) can build and deploy your code to your cluster immediately after you save your changes.
 
 List existing software catalog deployed on a cluster:
 
@@ -95,3 +98,5 @@ OpenShift provides mechanisms to publish communication bindings from a program t
 ```
 odo link backend --component frontend --port 8080
 ```
+
+See [odo github](https://github.com/openshift/odo)
