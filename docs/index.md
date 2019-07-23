@@ -51,21 +51,46 @@ Three main methods to add an app to openshift:
         Application will, by default, only be visible internally to the OpenShift cluster, and usually only to other applications within the same project. Use `Create route` to make the app public. 
 
 
-* Build and deploy from source code contained in a Git repository using a Source-to-Image builder. 
+* Build and deploy from source code contained in a Git repository using a [Source-to-Image](https://github.com/openshift/source-to-image) toolkit. 
+
+    ![](s2i-workflow.png)
+
+    See [this video to get s2i presentation](https://www.youtube.com/watch?v=flI6zx9wH6M) and [this section](#s2i) goes to a simple Flask app deploy with s2i. 
 
 * Build and deploy from source code contained in a Git repository from a Dockerfile.
 
 ## Collaborate
 
-User can be added to an existing project, via the Vew membership menu on a project. Each user can have different roles. `Edit Role`  can perform most tasks within the project, with the exception of tasks related to administration of the project.
+User can be added to an existing project, via the View membership menu on a project. Each user can have different roles. `Edit Role` can perform most tasks within the project, except tasks related to administration of the project.
 
 !!! Remark
     state about the current login session is stored in the home directory of the local user running the `oc` command, so user need to logout and login to the second cluster he wants to access. 
 
 You can get a list of all OpenShift clusters you have ever logged into by running:
+
 ```
 oc config get-clusters
 ```
+
+## s2i
+
+Source to image toolkit aims to simplify the deployment to openshift. It uses a build image to execute an assemble script that builds code and docker image without Dockerfile.  From an existing repository, `s2i create` add a set of elements to define the workflow into the repo. For example the command below will add Dockerfile and scripts to create a build image named `ibmcase/buildorderproducer` from the local folder where the code is.
+
+```
+s2i create ibmcase/buildorderproducer .
+```
+
+When the assemble script is done, the container is committed to internal repository. The CMD part of the dockerfile execute a run script.
+
+Here is another command to build the output image using existing build image on local code:
+
+```
+s2i build --copy .  centos/python-36-centos7 ibmcase/orderproducer
+```
+
+!!! Note
+    s2i takes the code from git, so to use the local code before commmitting it to github, add the `--copy` argument.
+
 
 ## ODO: Openshift Do
 

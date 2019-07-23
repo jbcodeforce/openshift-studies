@@ -20,6 +20,11 @@ Get the list of projects
 oc get projects
 ```
 
+To create a project, that is mapped to a kubernetes namespace:
+```
+$ oc new-project <project_name> --description="<description>" --display-name="<display_name>"
+```
+
 ```
 oc whoami
 ```
@@ -54,12 +59,17 @@ oc adm policy add-role-to-user view developer -n myproject
 > role "view" added: "developer"
 ```
 
-
 The role could be `edit | view | admin`
 
 #### Project commands
 
-Search an docker image and see if it is valid:
+Select a project once logged to openshift:
+```
+oc project <projectname>
+```
+
+Search a docker image and see if it is valid:
+
 ```
 oc new-app --search openshiftkatacoda/blog-django-py
 ```
@@ -96,7 +106,7 @@ Or by using a label selector:
 oc get all --selector app=blog-django-py -o name
 ```
 
-Get detail of a resouce:
+Get detail of a resource:
 ```
 oc describe route/blog-django-py
 ```
@@ -120,6 +130,25 @@ List what image stream resources have been created within a project by running t
 
 ```
 oc get imagestream -o name
+```
+
+Create an app from the source code, and use source to image build process to deploy the app:
+
+```
+oc new-app python:latest~https://github.com/jbcodeforce/order-producer-python -name appname
+```
+
+Then to track the deployment progress:
+```
+oc logs -f bc/<appname>
+```
+The dependencies are loaded, the build is scheduled and executed, the image is uploaded to the registry, and started. See the workflow in the diagram below.
+
+![](s2i-workflow.png)
+
+The first time the application is deployed, if you want to expose it to internet do:
+```
+oc expose service/<appname>
 ```
 
 When using source to image approach, it is possible to trigger the build via:
