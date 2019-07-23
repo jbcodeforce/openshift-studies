@@ -25,6 +25,7 @@ To create a project, that is mapped to a kubernetes namespace:
 $ oc new-project <project_name> --description="<description>" --display-name="<display_name>"
 ```
 
+To assess who you are and get login userid:
 ```
 oc whoami
 ```
