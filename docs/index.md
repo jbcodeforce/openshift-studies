@@ -46,9 +46,13 @@ Three main methods to add an app to openshift:
 
 !!! note
         There are two options: 
+
         * from an image imported in the openshift cluster, or built from a dockerfile inside the cluster. 
         * by accessing a remote image repository like `Dockerhub`. The image will be pulled down and stored within the internal OpenShift image registry. The image will then be copied to any node in the OpenShift cluster where an instance of the application runs.
+
         Application will, by default, only be visible internally to the OpenShift cluster, and usually only to other applications within the same project. Use `Create route` to make the app public. 
+
+        See some examples [here](deployment-ex.md)
 
 
 * Build and deploy from source code contained in a Git repository using a [Source-to-Image](https://github.com/openshift/source-to-image) toolkit. 

@@ -1,6 +1,6 @@
 # oc cheat sheet 
 
-oc is a tool written in Go to interact with an openshifr cluster (one at a time). State about the current login session is stored in the home directory of the local user running the oc command.
+oc is a tool written in Go to interact with an openshift cluster (one at a time). State about the current login session is stored in the home directory of the local user running the oc command.
 
 #### Login
 
@@ -11,7 +11,7 @@ oc login --username collaborator --password collaborator
 Log in to your server using a token for an existing session.
 
 ```
-oc login --token <token>
+oc login --token <token> --server=https://<>.us-east.containers.cloud.ibm.com:21070
 ```
 
 Get the list of projects
@@ -19,6 +19,8 @@ Get the list of projects
 ```
 oc get projects
 ```
+
+See more on projects [below](#project-commands).
 
 To create a project, that is mapped to a kubernetes namespace:
 ```

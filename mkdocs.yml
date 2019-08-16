@@ -5,6 +5,9 @@ nav:
   - Minishift environment: minishift.md
   - oc cheat sheet: oc-cli.md
   - Openshift FAQ: faq.md
+  - Open Data Hub: opendatahub.md
+  - Ansible: ansible.md
+  - Deployment examples: deployment-ex.md
   - Compendium: compendium.md
 
 theme: 
