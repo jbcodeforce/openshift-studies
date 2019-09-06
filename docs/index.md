@@ -26,7 +26,7 @@ The default OpenShift router (HAProxy) uses the HTTP header of the incoming requ
 
 Routes defines hostname, service name, port number and TLS settings:
 
-![](route.png)
+![](images/route.png)
 
 Routes are used to expose app over HTTP. OpenShift can handle termination for secure HTTP connections, or a secure connection can be tunnelled through direct to the application, with the application handling termination of the secure connection. Non HTTP applications can be exposed via a tunnelled secure connection if the client supports the SNI extension for a secure connection using TLS.
 
@@ -42,7 +42,7 @@ Three main methods to add an app to openshift:
 
 * Deploy an application from an existing Docker-formatted image. (Using `Deploy Image` in the project view.)
 
-![](deploy-image.png)
+![](images/deploy-image.png)
 
 !!! note
         There are two options: 
@@ -57,7 +57,7 @@ Three main methods to add an app to openshift:
 
 * Build and deploy from source code contained in a Git repository using a [Source-to-Image](https://github.com/openshift/source-to-image) toolkit. 
 
-    ![](s2i-workflow.png)
+    ![](images/s2i-workflow.png)
 
     See [this video to get s2i presentation](https://www.youtube.com/watch?v=flI6zx9wH6M) and [this section](#s2i) goes to a simple Flask app deploy with s2i. 
 

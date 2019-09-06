@@ -1,15 +1,21 @@
 # Deployments examples
 
+## Deploy nodejs app using appsody
+
+## Deploy sparks
+
+[Using the operator, see this note](spark-on-os.md)
+
 ## Deploy Jupyter lab
 
 See [this note](https://blog.openshift.com/jupyter-openshift-part-2-using-jupyter-project-images/) to deploy Jupyter lab lastest image to Openshift using the Deploy Image choice. The deployment is done under the project `reefer-shipment-solution`
 
-![](jupyterlab-1.png)
+![](images/jupyterlab-1.png)
 
 
 The environment variable needs to be set to get Jupyter lab. 
 
-![](jupyterlab-2.png)
+![](images/jupyterlab-2.png)
 
 It takes multiple minutes to deploy. For the permission error due to the jovyan user not known, the command was:
 

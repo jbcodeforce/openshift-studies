@@ -14,17 +14,10 @@ Log in to your server using a token for an existing session.
 oc login --token <token> --server=https://<>.us-east.containers.cloud.ibm.com:21070
 ```
 
-Get the list of projects
+Get api version
 
 ```
-oc get projects
-```
-
-See more on projects [below](#project-commands).
-
-To create a project, that is mapped to a kubernetes namespace:
-```
-$ oc new-project <project_name> --description="<description>" --display-name="<display_name>"
+oc api-versions
 ```
 
 To assess who you are and get login userid:
@@ -55,6 +48,14 @@ Show a list of contexts for all sessions ever created. For each context listed, 
 oc config get-contexts
 ```
 
+Proxy the API server
+
+```
+oc proxy --port=8001
+
+curl -X GET http://localhost:8001/api/v1/namespaces/myproject/pods
+```
+
 #### Add access for a user to one of your project
 
 ```
@@ -70,6 +71,54 @@ Select a project once logged to openshift:
 ```
 oc project <projectname>
 ```
+
+Get the list of projects
+
+```
+oc get projects
+```
+
+See more on projects [below](#project-commands).
+
+To create a project, that is mapped to a kubernetes namespace:
+
+```
+$ oc new-project <project_name> --description="<description>" --display-name="<display_name>"
+```
+
+To see a list of all the resources that have been created in the project:
+
+```
+oc get all -o name
+```
+
+Verify the Deployment has been created: `oc get deploy`
+
+Verify the ReplicaSet has been created: `oc get replicaset`
+
+Verify the pods are running: `oc get pods`
+
+#### Custom Resource Definition
+
+See [this training](https://learn.openshift.com/operatorframework/etcd-operator/)
+
+```
+oc get crd
+```
+
+Get service account
+
+```
+oc get sa
+```
+
+```
+oc get roles
+oc get rolebindings
+```
+
+
+#### Work on images
 
 Search a docker image and see if it is valid:
 
@@ -88,6 +137,8 @@ The image will be pulled down and stored within the internal OpenShift image reg
 oc get imagestream -o name
 ``` 
 
+#### Expose app
+
 To expose the application created so it is available outside of the OpenShift cluster, you can run the command:
 ```
 oc expose service/blog-django-py
@@ -99,10 +150,6 @@ To view the hostname assigned to the route created from the command line, you ca
 oc get route/blog-django-py
 ```
 
-To see a list of all the resources that have been created in the project
-```
-oc get all -o name
-```
 
 Or by using a label selector: 
 ```
@@ -135,6 +182,7 @@ List what image stream resources have been created within a project by running t
 oc get imagestream -o name
 ```
 
+
 Create an app from the source code, and use source to image build process to deploy the app:
 
 ```
@@ -147,9 +195,10 @@ oc logs -f bc/<appname>
 ```
 The dependencies are loaded, the build is scheduled and executed, the image is uploaded to the registry, and started. See the workflow in the diagram below.
 
-![](s2i-workflow.png)
+![](images/s2i-workflow.png)
 
 The first time the application is deployed, if you want to expose it to internet do:
+
 ```
 oc expose service/<appname>
 ```

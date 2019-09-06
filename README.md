@@ -25,4 +25,4 @@ The content of this repository is written with markdown files, packaged with [Mk
 	
 	git checkout master
 	```
-3. Run `mkdocs gh-deploy` from the root refarch-kc directory.
+3. Run `mkdocs gh-deploy` from the root openshift-studies directory.

@@ -8,7 +8,7 @@ The goal of Open Data Hub is to provide open source AI tools for running large a
 
 In general, an AI workflow includes most of the steps shown in figure below:
 
-![](odh-figure-1.png)
+![](images/odh-figure-1.png)
 
 For data storage and availability, ODH provides Ceph, with multi protocol support including block, file and S3 object API support, both for persistent storage within the containers and as a scalable object storage data lake that AI applications can store and access data from.
 
