@@ -29,5 +29,51 @@ error: did not detect an --insecure-registry argument on the Docker daemon
 
 Add the `"insecure-registries": ["172.30.0.0/16"],` to the Daemon properties:
 
-##
+## Login and push image to private registry
 
+Openshift manages its own image private registry service. The default name and URL is docker-registry-default.apps.green-with-envy.ocp.csplab.local. Below is the step to push a docker images
+
+* Login to openshift cluster
+
+```
+oc login --username john --password password --server=https://master01.green-with-envy.ocp.csplab.local
+```
+
+* Login to docker registry:
+
+```
+docker login -u john -p $(oc whoami -t) docker-registry-default.apps.green-with-envy.ocp.csplab.local
+```
+
+If you get this message: `Error response from daemon: Get https://docker-registry-default.apps.green-with-envy.ocp.csplab.local/v2/: x509: certificate signed by unknown authority`, add the certificate to the docker client certificates:
+
+        * Get the certificate: `oc extract -n default secrets/registry-certificates --keys=registry.crt`
+        * Put the certificate in `~/.docker/certs.d/docker-registry-default.apps.green-with-envy.ocp.csplab.local` 
+        * Restart docker desktop
+
+* Tag the image with registry name:
+
+```
+docker tag ibmcase/kc-ordercommandms docker-registry-default.apps.green-with-envy.ocp.csplab.local/reefershipmentsolution/kc-ordercommandms
+```
+
+* Push the image
+
+```
+docker push docker-registry-default.apps.green-with-envy.ocp.csplab.local/reefershipmentsolution/kc-ordercommandms
+```
+
+* Accessing the registry console: https://registry-console-default.apps.green-with-envy.ocp.csplab.local/
+
+* Generate deployment.yaml and services.yaml from helm templates:
+
+```
+helm template --set image.repository=docker-registry.default.svc:5000/reefershipmentsolution/kc-ordercommandms --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime  --namespace reefershipmentsolution --output-dir templates chart/ordercommandms
+```
+
+* Refresh an existing pod with the new image
+
+```
+oc delete -f templates/ordercommandms/templates/
+oc apply -f templates/ordercommandms/templates/
+```

@@ -3,8 +3,14 @@ repo_url: https://github.com/jbcodeforce/openshift-studies
 nav:
   - Introduction: index.md
   - Minishift environment: minishift.md
+  - Kubernetes fundamentals:
+    - Introduction: k8s/k8s-0.md
+    - Networking: k8s/k8s-1.md
+    - FAQ: k8s/k8s-faq.md
+    - Compendium: k8s/k8s-comp.md
   - oc cheat sheet: oc-cli.md
   - Openshift FAQ: faq.md
+  - Operators (with Spark): spark-on-os.md
   - Open Data Hub: opendatahub.md
   - Ansible: ansible.md
   - Deployment examples: deployment-ex.md

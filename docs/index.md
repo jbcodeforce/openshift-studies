@@ -76,7 +76,11 @@ You can get a list of all OpenShift clusters you have ever logged into by runnin
 oc config get-clusters
 ```
 
-## s2i
+---
+
+## Build, deploy, run
+
+### source to image (s2i)
 
 Source to image toolkit aims to simplify the deployment to openshift. It uses a build image to execute an assemble script that builds code and docker image without Dockerfile.  From an existing repository, `s2i create` add a set of elements to define the workflow into the repo. For example the command below will add Dockerfile and scripts to create a build image named `ibmcase/buildorderproducer` from the local folder where the code is.
 
@@ -84,7 +88,7 @@ Source to image toolkit aims to simplify the deployment to openshift. It uses a 
 s2i create ibmcase/buildorderproducer .
 ```
 
-When the assemble script is done, the container is committed to internal repository. The CMD part of the dockerfile execute a run script.
+When the assemble script is done, the container image is committed to internal image repository. The CMD part of the dockerfile execute a run script.
 
 Here is another command to build the output image using existing build image on local code:
 
@@ -96,9 +100,9 @@ s2i build --copy .  centos/python-36-centos7 ibmcase/orderproducer
     s2i takes the code from git, so to use the local code before commmitting it to github, add the `--copy` argument.
 
 
-## ODO: Openshift Do
+### ODO: Openshift Do
 
-A CLI for developer to abstract kubernetes. [odo](https://www.katacoda.com/openshift/courses/introduction/developing-with-odo) can build and deploy your code to your cluster immediately after you save your changes.
+ODO is a CLI for developer to abstract kubernetes. [odo](https://www.katacoda.com/openshift/courses/introduction/developing-with-odo) can build and deploy your code to your cluster immediately after you save your changes.
 
 List existing software catalog deployed on a cluster:
 
@@ -129,3 +133,7 @@ odo link backend --component frontend --port 8080
 ```
 
 See [odo github](https://github.com/openshift/odo)
+
+### Helm 
+
+Helm can be used as well. 
