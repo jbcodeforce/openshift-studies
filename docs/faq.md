@@ -29,6 +29,9 @@ error: did not detect an --insecure-registry argument on the Docker daemon
 
 Add the `"insecure-registries": ["172.30.0.0/16"],` to the Daemon properties:
 
+You can try [code-ready]() too which is the last release on how to have a single master and single worker.
+
+
 ## Login and push image to private registry
 
 Openshift manages its own image private registry service. The default name and URL is docker-registry-default.apps.green-with-envy.ocp.csplab.local. Below is the step to push a docker images
@@ -76,4 +79,12 @@ helm template --set image.repository=docker-registry.default.svc:5000/reefership
 ```
 oc delete -f templates/ordercommandms/templates/
 oc apply -f templates/ordercommandms/templates/
+```
+
+## Deployment
+
+### Deploy any docker image
+
+```
+oc new-app busybox
 ```

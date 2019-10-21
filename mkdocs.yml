@@ -12,6 +12,7 @@ nav:
   - Openshift FAQ: faq.md
   - Operators (with Spark): spark-on-os.md
   - Open Data Hub: opendatahub.md
+  - Istio: istio/readme.md
   - Ansible: ansible.md
   - Deployment examples: deployment-ex.md
   - Compendium: compendium.md

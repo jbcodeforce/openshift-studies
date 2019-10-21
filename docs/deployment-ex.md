@@ -2,6 +2,19 @@
 
 ## Deploy nodejs app using appsody
 
+## Deploy zipkin from docker image
+
+Install it, and expose it with a service
+
+```
+oc new-app --docker-image=openzipkin/zipkin
+
+oc expose svc/zipkin
+```
+A new route is created visible with `oc get routes`. Once the hostname is added to a DNS or /etc/hosts. 
+
+See zipkin architecture [article here](https://zipkin.io/pages/architecture.html)
+
 ## Deploy sparks
 
 [Using the operator, see this note](spark-on-os.md)
