@@ -72,7 +72,11 @@ oc expose svc tracing -n istio-system
 ```
 istioctl version
 ```
+Deploy an app and inject Envoy sidecar into the same pod.
 
+```
+oc apply -f <(istioctl kube-inject -f ../../kubernetes/Deployment.yml) -n tutorial
+```
 ### Others
 
 Service Graph displays a high-level overview of how systems are connected, a tool called Weave Scope provides a powerful visualisation and debugging tool for the entire cluster
@@ -94,3 +98,5 @@ kubectl create -f https://cloud.weave.works/launch/k8s/weavescope.yaml
 * [Tutorial on Katacoda](https://www.katacoda.com/courses/istio/deploy-istio-on-kubernetes)
 * [Istio on openshift training](https://learn.openshift.com/servicemesh)
 * [](https://www.redhat.com/en/events/webinar/kubernetes-istio-kafka-and-camel-glue-your-agencys-cloud-native-strategy)
+
+* [A repo for demo](https://github.com/redhat-developer-demos/istio-tutorial/)

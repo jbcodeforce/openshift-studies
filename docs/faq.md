@@ -88,3 +88,11 @@ oc apply -f templates/ordercommandms/templates/
 ```
 oc new-app busybox
 ```
+
+## Copy a file to an existing running container
+
+```
+oc rsync $(pwd) my-connect-connect-54485b7896-k5lsj:/tmp
+oc rsh my-connect-connect-54485b7896-k5lsj 
+ls /tmp
+```
