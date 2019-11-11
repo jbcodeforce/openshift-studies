@@ -2,6 +2,14 @@
 
 ## Access
 
+To get connection details from the config map in the kube-public namespace:
+
+```
+kubectl get cm ibmcloud-cluster-info -n kube-public -o yaml
+```
+
+The cluster_address value for the master address, and the cluster_router_https_port for the port number.
+
 ### How to get a token for login
 
 As soon as a service account is created, two secrets are automatically added to it:
@@ -22,14 +30,21 @@ When deploy on premise be sure to use the k8s master URL.
 
 ### Is it possible to run openshift in docker for development?
 
+Yes and there are two solution: 3.11 and the Code Ready for 4.x.
+
+#### Origin control plane 3.11
+
 Yes using the [oc cluster up](https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md) to download the openshift/origin-control-plane:v3.11 and start it. 
+
 If you get the following error
 > Checking if insecured registry is configured properly in Docker ...
 error: did not detect an --insecure-registry argument on the Docker daemon
 
 Add the `"insecure-registries": ["172.30.0.0/16"],` to the Daemon properties:
 
-You can try [code-ready]() too which is the last release on how to have a single master and single worker.
+#### Code ready for 4.x
+
+You can try [code-ready](crc.md) too which is the last release on how to have a single master and single worker.
 
 
 ## Login and push image to private registry
@@ -40,6 +55,12 @@ Openshift manages its own image private registry service. The default name and U
 
 ```
 oc login --username john --password password --server=https://master01.green-with-envy.ocp.csplab.local
+```
+
+* Look up the internal OpenShift Docker registry address by using the following command:
+
+```
+kubectl get routes docker-registry -n default
 ```
 
 * Login to docker registry:

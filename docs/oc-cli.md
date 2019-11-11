@@ -140,6 +140,7 @@ oc get imagestream -o name
 #### Expose app
 
 To expose the application created so it is available outside of the OpenShift cluster, you can run the command:
+
 ```
 oc expose service/blog-django-py
 ```
@@ -157,11 +158,13 @@ oc get all --selector app=blog-django-py -o name
 ```
 
 Get detail of a resource:
+
 ```
 oc describe route/blog-django-py
 ```
 
 Deleting an application and all its resources, using label:
+
 ```
 oc delete all --selector app=blog-django-py
 ```
@@ -187,6 +190,11 @@ Create an app from the source code, and use source to image build process to dep
 
 ```
 oc new-app python:latest~https://github.com/jbcodeforce/order-producer-python -name appname
+```
+
+other example with context directory:
+```
+oc new-app https://github.com/jbcodeforce/refarch-kc-order-ms --context-dir=order-command-ms/
 ```
 
 Then to track the deployment progress:

@@ -99,6 +99,15 @@ s2i build --copy .  centos/python-36-centos7 ibmcase/orderproducer
 !!! Note
     s2i takes the code from git, so to use the local code before commmitting it to github, add the `--copy` argument.
 
+### oc command
+
+Create an app and build from a specific context directory.
+
+```
+oc new-app https://github.com/jbcodeforce/refarch-kc-order-ms --context-dir=order-command-ms/
+```
+
+
 
 ### ODO: Openshift Do
 
@@ -136,4 +145,52 @@ See [odo github](https://github.com/openshift/odo)
 
 ### Helm 
 
-Helm can be used as well. 
+Helm can be used as well to define the config files and deploy. Here is a new CI/CD example done from scratch based on the [Reefer ML project simulator code](https://ibm-cloud-architecture.github.io/refarch-reefer-ml).
+
+*See [getting started](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/) with helm guide.*
+
+* Create helm chart using the command `helm create`
+
+```
+cd simulator/chart
+helm create kcontainer-reefer-simulator
+```
+
+* Change the values.yaml to reflect environment and app settings. Remove Ingress as we will define Openshift route for the app to be visible.
+
+* In the templates folder modify the deployment.yaml to add env variables section:
+
+```
+env:
+          - name: PORT
+            value: "{{ .Values.service.servicePort }}"
+          - name: APPLICATION_NAME
+            value: "{{ .Release.Name }}"
+          - name: KAFKA_BROKERS
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.kafka.brokersConfigMap }}"
+                key: brokers
+          - name: TELEMETRY_TOPIC
+            value: "{{ .Values.kafka.telemetryTopicName }}"
+          - name: CONTAINER_TOPIC
+            value: "{{ .Values.kafka.containerTopicName }}"
+          {{- if .Values.eventstreams.enabled }}
+          - name: KAFKA_APIKEY
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.eventstreams.apikeyConfigMap }}"
+                key: binding
+          {{- end }}
+```
+
+* Create helm template file for deployment:
+
+```
+helm template --output-dir templates --namespace eda-demo chart/kcontainer-reefer-simulator/
+```
+
+* Push the service.yaml and deployment.yml template to the gitops [repository](https://github.com/ibm-cloud-architecture/refarch-kc-gitops) under the branch `eda-demo/gse-eda-demos.us-east.containers.appdomain.cloud`.
+* In the github repository define secrets environment variables for docker username and password, from your docker hub account.
+* When pushing the repository the gitAction will perform the build.
+
