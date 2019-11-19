@@ -15,6 +15,7 @@ nav:
   - Istio: istio/readme.md
   - Ansible: ansible.md
   - Deployment examples: deployment-ex.md
+  - Appsody stack: appsody.md
   - Compendium: compendium.md
 
 theme: 

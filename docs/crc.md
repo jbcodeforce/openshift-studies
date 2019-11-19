@@ -1,4 +1,4 @@
-# Code Ready container
+# Code Ready Container
 
 Red Hat CodeReady Containers brings a minimal OpenShift 4.0 or newer cluster to your local computer. See getting started [here](https://code-ready.github.io/crc/)
 
