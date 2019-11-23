@@ -4,7 +4,23 @@
 
 To install **appsody** on mac with home brew:   `brew install appsody/appsody/appsody`. To update to new version: `brew upgrade appsody`
 
-## Summary of common commands
+## How it works
+
+Appsody includes a CLI and a daemon to control the life cycle of the application. A developer uses the CLI to create a new application. The application contains a Docker image created from a Appsody stack and injects the template defines in the stack with the application developer’s files into it. The daemon watch change to files and build and deploy continuously.
+Stacks are defined in a repository. Repositories can be referenced from remote sources (e.g., GitHub) or can be stored locally on a filesystem.
+
+Appsody helps developer to do not worry about the details of k8s deployment and build. During a Appsody run, debug or test step, Appsody creates a Docker container based on the parent stack Dockerfile, and combines application code with the source code in the template. 
+
+Stack has one docker file to help building the application and control the build, run and test steps of appsody. It also includes a second Dockerfile in the images/project folder to deockerize the final app. The Docker file is responsible for ensuring the combined dependencies are installed in the final image.
+
+When designing a stack, we need to decide who control the application: a web server in which the developer, user of the stack, is adding new end points, or the developer controlling how the app starts and runs.
+
+
+See details in [this note](https://developer.ibm.com/technologies/containers/tutorials/create-appsody-stack).
+
+To get appsody environment variables description in the [product documentation](https://appsody.dev/docs/stacks/environment-variables)
+
+## Summary of common appsody CLI commands
 
 To get the list of templates available: 
 
@@ -89,4 +105,4 @@ $ appsody init dev.local/gse-eda-java-stack
 
 * Start the application scafold using `appsody run`
 
-* Modify the `Dockerfile-stack` file to include the base image and dependencies
+* Modify the `Dockerfile-stack` file to include the base image and dependencies for the server and other predefined code.
