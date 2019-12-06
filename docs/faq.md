@@ -30,7 +30,7 @@ When deploy on premise be sure to use the k8s master URL.
 
 ### Is it possible to run openshift in docker for development?
 
-Yes and there are two solution: 3.11 and the Code Ready for 4.x.
+Yes and there are two solution: 3.11 and the [Code Ready](crc.md) for 4.x.
 
 #### Origin control plane 3.11
 
@@ -106,6 +106,7 @@ oc apply -f templates/ordercommandms/templates/
 
 ### Deploy any docker image
 
+Just reference the docker image name from the dockerhub public repository
 ```
 oc new-app busybox
 ```
@@ -116,4 +117,59 @@ oc new-app busybox
 oc rsync $(pwd) my-connect-connect-54485b7896-k5lsj:/tmp
 oc rsh my-connect-connect-54485b7896-k5lsj 
 ls /tmp
+```
+
+## How to setup TLS/SSL certificate
+
+The approach is to use secret and mounted volume to inject the SSL certifcate file so the nodejs or python app can use it to connect over TLS.
+
+If you have the key and cert certificates as remoteapptoaccess.key and remoteappaccess.crt, you may need to encode them with base64:
+
+```shell
+$ base64 remoteapptoaccess.keys
+LS0934345DE....
+$ base64 remoteapptoaccess.crt
+SUPERSECRETLONGSTRINGINBASE64FORMAT
+```
+
+So then create a TLS secret descriptor for kubernetes:
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: remoteapp-tls-secret
+type: Opaque
+data:
+  remoteapptoaccess.key: 
+  LS0934345DE...
+  remoteapptoaccess.crt:
+  SUPERSERCRETLONGSTRINGINBASE64FORMAT
+```
+If you only have the crt file, you just define the data for it.
+
+In the client app deployment.yaml set a mount point: (the deployment is not complete, there are missing arguments linked to the app itself)
+
+```
+apiVersion:  apps/v1
+kind: Deployment 
+metadata:
+  labels:
+    app: clientApp
+  name: clientApp
+spec:
+  replicas: 1
+  spec:
+      containers:
+      - image: yournamespace/imagename
+        name: clientapp
+        volumeMounts:
+          - mountPath: "/client/path/inside/container/ssl"
+            name: ssl-path
+            readOnly: true
+        ports:
+        - containerPort: 80
+      volumes:
+        - name: ssl-path
+          secret:
+            secretName: remoteapp-tls-secret
 ```
