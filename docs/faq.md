@@ -173,3 +173,5 @@ spec:
           secret:
             secretName: remoteapp-tls-secret
 ```
+
+This declaration will add two files (remoteapptoaccess.key, remoteapptoaccess.crt) under the `/client/path/inside/container/ssl` folder.
