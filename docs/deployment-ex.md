@@ -19,6 +19,28 @@ See zipkin architecture [article here](https://zipkin.io/pages/architecture.html
 
 [Using the operator, see this note](spark-on-os.md)
 
+## Mongodb
+
+Define an env file with the following variables:
+MONGODB_USER=mongo
+MONGODB_PASSWORD=mongo
+MONGODB_DATABASE=reeferdb
+MONGODB_ADMIN_PASSWORD=password
+
+then run:
+
+```
+oc new-app --env-file=mongo.env --docker-image=openshift/mongodb-24-centos7
+```
+
+See the service:
+
+```
+oc describe svc mongodb-24-centos7
+```
+
+For more detail see [this note](https://docs.openshift.com/enterprise/3.0/using_images/db_images/mongodb.html)
+
 ## Deploy Jupyter lab
 
 See [this note](https://blog.openshift.com/jupyter-openshift-part-2-using-jupyter-project-images/) to deploy Jupyter lab lastest image to Openshift using the Deploy Image choice. The deployment is done under the project `reefer-shipment-solution`

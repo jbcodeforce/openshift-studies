@@ -107,8 +107,14 @@ oc apply -f templates/ordercommandms/templates/
 ### Deploy any docker image
 
 Just reference the docker image name from the dockerhub public repository
+
 ```
 oc new-app busybox
+```
+
+For mongodb for example:
+```
+oc new-app --env-file=mongo.env --docker-image=openshift/mongodb-24-centos7
 ```
 
 ## Copy a file to an existing running container
@@ -133,7 +139,8 @@ SUPERSECRETLONGSTRINGINBASE64FORMAT
 ```
 
 So then create a TLS secret descriptor for kubernetes:
-```
+
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -149,7 +156,7 @@ If you only have the crt file, you just define the data for it.
 
 In the client app deployment.yaml set a mount point: (the deployment is not complete, there are missing arguments linked to the app itself)
 
-```
+```yaml
 apiVersion:  apps/v1
 kind: Deployment 
 metadata:
