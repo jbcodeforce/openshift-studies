@@ -16,9 +16,11 @@ OpenShift Container Platform is about developing, deploying, and running contain
 
 The way that external clients are able to access applications running in OpenShift is through the OpenShift routing layer. The default OpenShift router (HAProxy) uses the HTTP header of the incoming request to determine where to proxy the connection. 
 
+See also [my summary on k8s](k8s-0.md).
+
 ## Concepts
 
-Openshift is based on kubernetes. It adds the concept of project, mapped to a k8s namespace, to govern the application access control, resource quota and life cycle. It is the top-level element for an application.
+Openshift is based on kubernetes. It adds the concept of project, mapped to a k8s namespace, to govern the application access control, resource quota and life cycle. It is the top-level element for one to many applications.
 
 We can deploy any docker image  as soon as they are well built: such as defining the port any service is exposed on, not needing to run specifically as the root user or other dedicated user, and which embeds a default command for running the application.
 
@@ -32,9 +34,11 @@ Routes are used to expose app over HTTP. OpenShift can handle termination for se
 
 ## Getting started
 
-We can use minishift on laptop to play with openshift one node.
+We can use minishift on laptop to play with openshift with a unique node, or use IBM Cloud cluster or use the [online tutorial here (4.2)](https://learn.openshift.com/playgrounds/openshift42/).
 
 We can also use [openshift online](https://docs.openshift.com/online/getting_started/basic_walkthrough.html) 
+
+Here is [summary of OC cli commands](oc-cli.md).
 
 ## Deploying App
 

@@ -2,7 +2,7 @@
 
 oc is a tool written in Go to interact with an openshift cluster (one at a time). State about the current login session is stored in the home directory of the local user running the oc command.
 
-#### Login
+### Login
 
 ```
 oc login --username collaborator --password collaborator 
@@ -36,6 +36,13 @@ verify which server you are logged into
 oc whoami --show-server
 ```
 
+Even if logged as a non admin user, we can still execute some command as admin, if the user is a sudoer:
+
+```
+oc get projects --as system:admin
+```
+
+### Cluster
 
 See cluster:
 
@@ -44,6 +51,7 @@ oc config get-clusters
 ```
 
 Show a list of contexts for all sessions ever created. For each context listed, this will include details about the project, server and name of user, in that order
+
 ```
 oc config get-contexts
 ```
@@ -56,6 +64,16 @@ oc proxy --port=8001
 curl -X GET http://localhost:8001/api/v1/namespaces/myproject/pods
 ```
 
+#### Persistence volume
+
+```
+oc get pv --as system:admin
+```
+
+Add a storage class
+
+
+
 #### Add access for a user to one of your project
 
 ```
@@ -65,7 +83,11 @@ oc adm policy add-role-to-user view developer -n myproject
 
 The role could be `edit | view | admin`
 
-#### Project commands
+#### Add user
+
+
+
+### Project commands
 
 Select a project once logged to openshift:
 ```
@@ -78,7 +100,12 @@ Get the list of projects
 oc get projects
 ```
 
-See more on projects [below](#project-commands).
+Get the list of supported app templates:
+
+```
+oc new-app -L
+```
+
 
 To create a project, that is mapped to a kubernetes namespace:
 
@@ -90,6 +117,12 @@ To see a list of all the resources that have been created in the project:
 
 ```
 oc get all -o name
+```
+
+If you need to run a container from an image that needs to be run as root, then grant additional provilieges to the project:
+
+```
+oc adm policy add-scc-to-user anyuid -z default -n myproject --as system:admin
 ```
 
 Verify the Deployment has been created: `oc get deploy`
