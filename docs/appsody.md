@@ -1,4 +1,4 @@
-# Appsody Stack usage and new one
+# Appsody Summary
 
 [Appsody](https://appsody.dev/) provides pre-configured container images (stacks) and project templates for a growing set of popular open source runtimes and frameworks, providing a foundation on which to build applications for Kubernetes and Knative deployments.
 
@@ -6,65 +6,61 @@ To install **appsody** on mac with home brew:   `brew install appsody/appsody/ap
 
 ## How it works
 
-Appsody includes a CLI and a daemon to control the life cycle of the application. A developer uses the CLI to create a new application. The application contains a Docker image created from a Appsody stack and injects the template defined in the stack with the application developer’s code into it. The daemon watch changes to any files and build and deploy continuously.
+Appsody includes a CLI and a daemon to control the life cycle of the application. Developers use the CLI to create a new application from an existing "stack" (1).
+
+![Appsody components](images/appsody-concept.png)
+
 Stacks are defined in a repository. Repositories can be referenced from remote sources (e.g., GitHub) or can be stored locally on a filesystem.
 
-Appsody helps developer to do not worry about the details of k8s deployment and build. During a Appsody run, debug or test step, Appsody creates a Docker container based on the parent stack Dockerfile, and combines application code with the source code in the template. 
+First we can get the list of templates available via the command:
 
-Stack has one dockerfile to help building the application and control the build, run and test steps of appsody. It also includes a second Dockerfile in the images/project folder to "dockerize" the final app. The Dockerfile is responsible for ensuring the combined dependencies are installed in the final image.
-
-When designing a stack, we need to decide who control the application: a web server in which the developer, user of the stack, is adding new end points, or the developer is controlling how the app starts and runs.
-
-
-See details in [this note](https://developer.ibm.com/technologies/containers/tutorials/create-appsody-stack).
-
-To get appsody environment variables description in the [product documentation](https://appsody.dev/docs/stacks/environment-variables)
-
-## Summary of common appsody CLI commands
-
-Add a repository, for example adding the kabanero repository:
-
-```
-appsody repo add kabanero https://github.com/kabanero-io/collections/releases/download/v0.1.2/kabanero-index.yaml 
-```
-
-To get the list of templates available: 
-
-```
+```shell
 appsody list
 ```
 
-To create a project from one of the template:
+Then create our own application using one of the template like:
 
-```
+```shell
 mkdir projectname
-appsody init <repository-name>/<stack>
-appsody init appsodyhub/java-microprofile
+appsody init java-microprofile
 ```
 
-To initialize Appsody without using a template on the existing project:
+In general the command is `appsody init <repository-name>/<stack>`. It is possible to initialize an existing project using the command: `appsody init <stackname> --no-template`.
 
-```
-appsody init <stack> --no-template 
-```
+Appsody helps developer to do not worry about the details of k8s deployment and build. During a Appsody run, debug or test step (2), Appsody creates a Docker container based on the parent stack Dockerfile, and combines application code with the source code in the template.
 
 When a source code project is initialized with Appsody, you get a local Appsody development container where you can do the following commmands:
 
+```shell
+appsody run
+appsody test
+appsody debug
 ```
-appsody run 
-appsody test 
-appsody debug 
+
+One of the above command creates a daemon which monitors changes to any files and build and start a new docker container continuously.
+
+```shell
+# The daemon
+ps -ef | grep appsody
+501 4156 93070 appsody run
+# the docker container
+501 56789 4156 docker run --rm -p 7777:7777 -p 9080:9080 -p 9443:9443 --name scoring-mp-dev -v /Users/jeromeboyer/.m2/repository:/mvn/repository -v /Users/jeromeboyer/Code/jbcodeforce/myEDA/refarch-reefer-ml/scoring-mp/src:/project/user-app/src -v /Users/jeromeboyer/Code/jbcodeforce/myEDA/refarch-reefer-ml/scoring-mp/pom.xml:/project/user-app/pom.xml -v appsody-controller-0.3.3:/.appsody -t --entrypoint /.appsody/appsody-controller docker.io/appsody/java-microprofile:0.2 --mode=run
 ```
+
+The other basic commands are:
 
 * **Build**: You can use the `appsody build` command to generate a deployment Docker image on your local Docker registry, and then manually deploy that image to your runtime platform of choice.
-* You can use the `appsody deploy` command to deploy the same deployment Docker image directly to a Kubernetes cluster that you are using for testing or staging.
+* You can use the `appsody deploy` command (3) to deploy the same deployment Docker image directly to a Kubernetes cluster that you are using for testing or staging. See next section.
 * You can delegate the build and deployment steps to an external pipeline, such as a Tekton pipeline that consumes the source code of your Appsody project after you push it to a GitHub repository.
+* `appsody stop`
 
-## Create a python flask app
+See [Appsody CLI](https://appsody.dev/docs/using-appsody/cli-commands/) commands.
+
+### Create a python flask app
 
 The stack is not for production and is not fully supported. Here is an example of creating a simple webapp with flask, flask cli and gunicorn
 
-```
+```shell
 # Get the default template from the stack
 appsody init incubator/python-flask
 # build an image with a name = the folder name based on the dockerfile from the stack
@@ -73,22 +69,69 @@ appsody build
 appsody run
 ```
 
-You can add your own dockerfile to extend existing one. With `docker images` you can see waht appsody build created, then you can use this image as source for your own docker image
-```
+You can add your own dockerfile to extend existing one. With `docker images` you can see what `appsody build` created, then you can use this image as source for your own docker image
+
+```dockerfile
 FROM <nameofyourapp>
 ADD stuff
 CMD change the command
 ```
 
-To add your own code 
+To add your own code.
 
-## Create a springboot app
+### Create a springboot app
 
-## Create a microprofile 3.0 app
+```shell
+appsody init java-microprofile
+```
 
-## Create your own stack
+### Create a microprofile 3.0 app
 
-See [the tutorial here](https://developer.ibm.com/tutorials/create-appsody-stack/) for detail.
+```shell
+appsody init java-microprofile
+```
+
+### Deployment
+
+Once logged to a k8s cluster, a `appsody deploy -t dockerhub/imagename --push -n yournamespace` (3) will do the following:
+
+* deploy appsody operator into the given namespace if no operator found
+* call `appsody build` and create a deployment image with the given tag
+* push the image to docker hub or other repository
+* create the `app-deploy.yaml` deployment manifest
+* Apply it with:  `kubectl apply -f app-deploy.yaml`  within the given namespace
+
+Verify the operator is deployed:
+
+```shell
+oc get pods
+NAME                               READY     STATUS             RESTARTS   AGE
+appsody-operator-d8dfb4f5f-4dpwk   1/1       Running            0          4m34s
+```
+
+As part of the deployment manifest a service and a route are created. For example using a microprofile app the following command will verify everthing went well.
+
+```shell
+curl http://scoring-mp-eda-sandbox.apps.green.ocp.csplab.local/health
+```
+
+```shell
+appsody deploy delete -n yournamespace
+```
+
+To ensure that the latest version of your app is pushed to the cluster, use the -t flag to add a unique tag every time you redeploy your app. Kubernetes then detects a change in the deployment manifest, and pushes your app to the cluster again.
+
+## Defining your own stack
+
+Stack has one dockerfile to help building the application and control the build, run and test steps of appsody. It also includes a second Dockerfile in the images/project folder to "dockerize" the final app. The Dockerfile is responsible for ensuring the combined dependencies are installed in the final image.
+
+When designing a stack, we need to decide who control the application: a web server in which the developer, user of the stack, is adding new end points, or the developer is controlling how the app starts and runs.
+
+See details in [this note](https://developer.ibm.com/technologies/containers/tutorials/create-appsody-stack).
+
+To get appsody environment variables description in the [product documentation](https://appsody.dev/docs/stacks/environment-variables)
+
+See [this other tutorial here](https://developer.ibm.com/tutorials/create-appsody-stack/).
 
 Some considerations to address:
 
@@ -133,3 +176,9 @@ $ appsody init dev.local/gse-eda-java-stack
 * Start the application scafold using `appsody run`
 
 * Modify the `Dockerfile-stack` file to include the base image and dependencies for the server and other predefined code.
+
+## Future readings
+
+* [Introduction to Appsody: Developing containerized applications for the cloud just got easier](https://developer.ibm.com/blogs/introduction-to-appsody/)
+* [Video Appsody overview](https://developer.ibm.com/blogs/introduction-to-appsody/)
+* [Kabanero - Appsody - Tekton - Openshift](https://github.ibm.com/steve-arnold/kabanerodemoguide/blob/master/README.md)
