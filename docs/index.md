@@ -8,6 +8,7 @@ OpenShift Container Platform is about developing, deploying, and running contain
 * Built to be multi tenants. You can also grant other users access to any of your projects. 
 * Use the concept of project to allow for controlled accesses and quotas for developers. Projets are mapped to k8s namespaces.
 * [Source-to-image (S2I)](https://docs.openshift.org/latest/creating_images/s2i.html) is a tool for building reproductible Docker images. S2I supports incremental builds which re-use previously downloaded dependencies, and previously built artifacts. OpenShift is S2I-enabled and can use S2I as one of its build mechanisms.
+
 * OpenShift for production comes in several variants:
     * OpenShift Origin: from [http://openshift.org](http://openshift.org)
     * OpenShift Container Platform: integrated with RHEL and supported by RedHat. It allows for building a private or public PaaS cloud 

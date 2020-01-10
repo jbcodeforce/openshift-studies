@@ -9,6 +9,7 @@ nav:
     - FAQ: k8s/k8s-faq.md
     - Compendium: k8s/k8s-comp.md
   - oc cheat sheet: oc-cli.md
+  - Docker tricks: docker.md
   - Openshift FAQ: faq.md
   - Operators (with Spark): spark-on-os.md
   - Open Data Hub: opendatahub.md

@@ -1,4 +1,4 @@
-# Operators
+# Kubernetes Operators
 
 ## Operators
 
@@ -9,13 +9,17 @@ Operator SDK is a framework to expose higher level APIs to write operational log
 Here is a workflow for a new Go-based Operator using the Operator SDK:
 
 * Create a new Operator project using the SDK CLI.
+
     ```
     operator-sdk new podset-operator --type=go --skip-git-init
     ```
+
 * Create a new Custom Resource Definition API Type using the SDK CLI.
+
     ```
     operator-sdk add api --api-version=app.example.com/v1alpha1 --kind=PodSet
     ```
+
 * Add your Custom Resource Definition (CRD) to your live Kubernetes cluster.
 * Define your Custom Resource Spec and Status.
 * Create a new Controller for your Custom Resource Definition API.
@@ -75,7 +79,7 @@ Create a route for the Spark UI:
 * go to the service to get the exposed port for the my-spark-cluster-ui service. 
 * In network> routes add the roule with the following yaml:
 
-```
+```yaml
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
@@ -136,6 +140,6 @@ The output is a folder under the /tmp directory. Inside the cluster executor con
 
 Spark works!.
 
-See [my other repo on spark studies]()
+See [my other repo on spark studies](https://github.com/jbcodeforce/spark-studies)
 
 The most common way to launch spark applications on the cluster is to use the shell command spark-submit. 
