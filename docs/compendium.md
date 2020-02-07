@@ -3,6 +3,7 @@
 * [Getting Started with openshift on learn.openshift.com](https://learn.openshift.com/introduction/getting-started/)
 * [videos for Developers](https://developers.redhat.com)
 * [Red Hat demo system](rhpds.redhat.com)
+* [Openshift 4.2 learning playground](https://learn.openshift.com/playgrounds/openshift42/)
 * [Source-to-image (S2I)](https://docs.openshift.org/latest/creating_images/s2i.html)
 * [oc cluster wrapper](https://github.com/openshift-evangelists/oc-cluster-wrapper)
 * [REST API for openshift](https://docs.openshift.org/latest/rest_api/index.html)
