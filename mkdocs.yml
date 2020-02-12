@@ -2,7 +2,7 @@ site_name: Redhat Openshift studies
 repo_url: https://github.com/jbcodeforce/openshift-studies
 nav:
   - Introduction: index.md
-  - Container Ready environment: crc.md
+  - Code Ready environment: crc.md
   - Kubernetes fundamentals:
     - Introduction: k8s/k8s-0.md
     - Networking: k8s/k8s-1.md
