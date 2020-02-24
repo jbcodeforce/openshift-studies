@@ -139,14 +139,30 @@ See [this training](https://learn.openshift.com/operatorframework/etcd-operator/
 oc get crd
 ```
 
-Get service account
+Get service account: Service accounts provide a flexible way to control API access without sharing a regular user’s credentials. Every service account has an associated user name that can be granted roles. Default, builder, deployer are defined in each project)
 
-```
+```bash
 oc get sa
+> builder
+default
+deployer
+jb-kafka-cluster-entity-operator  
+jb-kafka-cluster-kafka
+jb-kafka-cluster-zookeeper
+strimzi-cluster-operator
+strimzi-topic-operator
 ```
 
+As soon as a service account is created (`oc create sa strimzi-cluster-operator`), two secrets are automatically added to it:
+
+* an API token
+* credentials for the OpenShift Container Registry
+
+Access to the roles defined in a project
 ```
 oc get roles
+> strimzi-topic-operator
+> 
 oc get rolebindings
 ```
 
