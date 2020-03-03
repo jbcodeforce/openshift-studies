@@ -17,6 +17,7 @@ nav:
   - Ansible: ansible.md
   - Deployment examples: deployment-ex.md
   - Appsody Summary: appsody.md
+  - Minishift notes: minishift.md
   - Compendium: compendium.md
 
 theme: 

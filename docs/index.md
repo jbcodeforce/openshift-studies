@@ -17,7 +17,7 @@ OpenShift Container Platform is about developing, deploying, and running contain
 
 The way that external clients are able to access applications running in OpenShift is through the OpenShift routing layer. The default OpenShift router (HAProxy) uses the HTTP header of the incoming request to determine where to proxy the connection. 
 
-See also [my summary on k8s](k8s-0.md).
+See also [my summary on k8s](k8s/k8s-0.md).
 
 ## Concepts
 
@@ -85,7 +85,7 @@ oc config get-clusters
 
 ## Build, deploy, run
 
-### source to image (s2i)
+### Source to image (s2i)
 
 Source to image toolkit aims to simplify the deployment to openshift. It uses a build image to execute an assemble script that builds code and docker image without Dockerfile.  From an existing repository, `s2i create` add a set of elements to define the workflow into the repo. For example the command below will add Dockerfile and scripts to create a build image named `ibmcase/buildorderproducer` from the local folder where the code is.
 
@@ -116,35 +116,76 @@ oc new-app https://github.com/jbcodeforce/refarch-kc-order-ms --context-dir=orde
 
 ### ODO: Openshift Do
 
-ODO is a CLI for developer to abstract kubernetes. [odo](https://www.katacoda.com/openshift/courses/introduction/developing-with-odo) can build and deploy your code to your cluster immediately after you save your changes.
+ODO is a CLI for developer to abstract kubernetes. [odo](https://www.katacoda.com/openshift/courses/introduction/developing-with-odo) can build and deploy your code to your cluster immediately after you save your changes. Odo abstracts away Kubernetes and OpenShift concepts.
 
-List existing software catalog deployed on a cluster:
+`odo` helps manage the components in a grouping to support the application features. A selection of runtimes, frameworks, and other components are available on an OpenShift cluster for building your applications. This list is referred to as the Developer Catalog.
 
+Installing odo:
+
+```shell
+curl -L https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-darwin-amd64 -o /usr/local/bin/odo
+chmod +x /usr/local/bin/odo
 ```
+
+List existing software runtime catalog deployed on a cluster (For example Java and nodejs are supported runtimes):
+
+```shell
 odo catalog list components
 ```
 
-To create a component (create a config.yml) from a java springboot app, once the jar is built:
+To create a component (create a config.yml) from a java springboot app, once the jar is built, the following command defines (a `backend` named component) to run it on top of the java runtime:
 
-```
+```shell
 odo create java backend --binary target/wildwest-1.0.jar
 ```
+The component is not yet deployed on OpenShift. With an odo create command, a configuration file called config.yaml has been created in the local directory. To see the config use:
 
-To see the config:
-```
+```shell
 odo config view
-```
-Then to deploy it to openshift:
 
+COMPONENT SETTINGS
+------------------------------------------------
+PARAMETER         CURRENT_VALUE
+Type              java:8
+Application       app
+Project           myproject
+SourceType        binary
+Ref
+SourceLocation    target/wildwest-1.0.jar
+Ports             8080/TCP,8443/TCP,8778/TCP
+Name              backend
 ```
+
+Then to deploy the binary jar file to Openshift:
+
+```shell
+odo push
+```
+OpenShift has created a container to host the backend component, deployed the container into a pod running on the OpenShift cluster, and started up the backend component.
+You can view the backend component being started up, in the `Developer` perspective, under the `Topology` view. When a dark blue circle appears around the backend component, the pod is ready and the backend component container will start running on it. (A light blue ring means the pod is in a pending state and hasn't started yet)
+
+OpenShift provides mechanisms to publish communication bindings from a program to its clients. This is referred to as linking. To link the current frontend component to the backend: 
+
+```shell
+odo link backend --component frontend --port 8080
+```
+
+This will inject configuration information into the frontend about the backend and then restart the frontend component.
+
+To expose an application to external client, we need to add a URL:
+
+```shell
+odo url create frontend --port 8080
 odo push
 ```
 
-OpenShift provides mechanisms to publish communication bindings from a program to its clients. This is referred to as linking.
+To adapt to the developer changes, we can tell odo to watch for changes on the file system in the background using:
 
 ```
-odo link backend --component frontend --port 8080
+odo watch
 ```
+
+Once the change is recognized, odo will push the changes to the frontend component and print its status to the terminal. 
 
 See [odo github](https://github.com/openshift/odo)
 

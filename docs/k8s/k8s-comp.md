@@ -21,4 +21,7 @@
 * [Explore security in IBM Cloud Private](https://www.ibm.com/cloud/garage/content/course/ibm-cloud-private-security/0) Get familiar with the security capabilities of IBM Cloud™ Private and compare them with the capabilities of other private and public clouds.
 * [Set of demo from IBM Cloud team](https://ibm-cloud.github.io/#!/)
 * [Securing Containers Workload Patterns in IKS ](https://developer.ibm.com/dwblog/2018/securing-containers-iks-kubernetes/) explains how to run containers workload securely in a Kubernetes cluster in IBM Cloud Kubernetes Service (IKS) without using any gateway router or firewall appliance for security aspects.
-*[Update the user name or password for admin in ICP](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.3/user_management/change_admin_passwd.html)
+* [Update the user name or password for admin in ICP](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.3/user_management/change_admin_passwd.html)
+
+* [Deep dive on IKS from Lionel Mace](https://ibm.ent.box.com/v/cloudiksenablement)
+
