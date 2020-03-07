@@ -15,6 +15,9 @@ A new route is created visible with `oc get routes`. Once the hostname is added 
 
 See zipkin architecture [article here](https://zipkin.io/pages/architecture.html)
 
+## Deploy DB2
+
+
 ## Deploy sparks
 
 [Using the operator, see this note](spark-on-os.md)
