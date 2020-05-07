@@ -17,4 +17,10 @@ docker network disconnect bridge 71582654b2f4
 docker network connect docker_default containernameorid
 ```
 
+## Start a docker bypassing entry point or cmd
+
+```shell
+docker run -ti --entrypoint "/bin/bash" imagename
+```
+
 ## Define a docker compose to run python env
