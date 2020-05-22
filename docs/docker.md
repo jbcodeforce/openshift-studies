@@ -1,5 +1,13 @@
 # Some docker and docker compose tricks
 
+## reclaim disk space
+
+```shell
+docker system df
+```
+
+(https://rmoff.net/post/what-to-do-when-docker-runs-out-of-space/)
+
 ## Docker network
 
 ```shell
