@@ -2,22 +2,22 @@ site_name: Redhat Openshift studies
 repo_url: https://github.com/jbcodeforce/openshift-studies
 nav:
   - Introduction: index.md
-  - Code Ready environment: crc.md
   - Kubernetes fundamentals:
     - Introduction: k8s/k8s-0.md
     - Networking: k8s/k8s-1.md
     - FAQ: k8s/k8s-faq.md
     - Compendium: k8s/k8s-comp.md
-  - oc cheat sheet: oc-cli.md
   - Docker tricks: docker.md
-  - Openshift FAQ: faq.md
+  - Openshift: 
+      - cp4i: cp4i.md
+      - FAQ: faq.md
+      - oc CLI: oc-cli.md
   - Operators (with Spark): spark-on-os.md
   - Open Data Hub: opendatahub.md
   - Istio: istio/readme.md
   - Ansible: ansible.md
   - Deployment examples: deployment-ex.md
-  - Appsody Summary: appsody.md
-  - Minishift notes: minishift.md
+  - ODO / Appsody Summary: odo-appsody.md
   - Compendium: compendium.md
 
 theme: 

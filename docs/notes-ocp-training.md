@@ -17,6 +17,7 @@ difference between container applications and traditional deployments
 * a traditionally deployed application must be stopped before updating the associated dependencies
         * complex systems to provide high availability 
 * A container is a set of one or more processes that are isolated from the rest of the system. 
+
         * security, storage, and network isolation
         * isolate dependent libraries and run time resources
         * less resources than VM, start quickly.
@@ -26,6 +27,7 @@ difference between container applications and traditional deployments
 * Container engine: Rocket, Drawbridge, LXC, Docker, and Podman
 
 * Started in 2001 with VServer, then move to isolated process which leverage the linux features:
+
         * **Namespaces**: The kernel can isolate specific system resources, usually visible to all processes, by placing the resources within a namespace. Namespaces can include resources like network interfaces, the process ID list, mount points, IPC resources, and the system's host name information.
         * **cgroups**: Control groups partition sets of processes and their children into groups to manage and limit the resources they consume.
         * **Seccomp** defines a security profile for processes, whitelisting the system calls, parameters and file descriptors they are allowed to use

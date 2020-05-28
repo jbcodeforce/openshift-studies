@@ -112,9 +112,6 @@ Create an app and build from a specific context directory.
 oc new-app https://github.com/jbcodeforce/refarch-kc-order-ms --context-dir=order-command-ms/
 ```
 
-
-
-
 ### Helm 
 
 Helm can be used as well to define the config files and deploy. Here is a new CI/CD example done from scratch based on the [Reefer ML project simulator code](https://ibm-cloud-architecture.github.io/refarch-reefer-ml).

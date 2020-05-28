@@ -1,4 +1,55 @@
-# Appsody Summary
+# ODO and Appsody Summary
+
+## Openshift DO
+
+[ODO CLI creating applications on OpenShift](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_developer_cli/understanding-odo.html).
+
+The main value propositions are:
+
+* Abstracts away complex Kubernetes and OpenShift.
+* Detects changes to local code and deploys it to the cluster automatically, giving instant feedback to validate changes in real time
+* Leverage source 2 images to produce ready-to-run images by building source code without the need of a Dockerfile
+
+The [basic commands](https://docs.openshift.com/container-platform/4.3/cli_reference/openshift_developer_cli/odo-cli-reference.html#basic-odo-cli-commands_odo-cli-reference):
+
+```shell
+# login to a ROKS
+odo  login --token=s....vA c100-e.us-south.containers.cloud.ibm.com:30040
+# Create a new project in OCP
+odo project create jbsandbox
+# change project inside OCP
+odo project set jbsandbox 
+# Create a component (from an existing project for ex)... then following the question
+odo component create
+# list available component
+odo catalog list components
+# push to ocp
+odo push
+# delete an app
+odo app list
+odo app delete myapp
+```
+
+Push a component creates 2 pods: one ...app-deploy and one ...-app
+
+### Important concepts
+
+See details [in odo architecture section](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_developer_cli/odo-architecture.html).
+
+* **Init containers** are specialized containers that run before the application container starts and configure the necessary environment for the application containers to run. Init containers can have files that application images do not have, for example setup scripts
+* **Application** container is the main container inside of which the user-source code executes. It uses two volumes: emptyDir and PersistentVolume. The data on the PersistentVolume persists across Pod restarts.
+* odo creates a **Service** for every application Pod to make it accessible for communication
+* odo push workflow: 
+    * create resources like deployment config, service, secrets, PVC
+    * index source code files 
+    * push code into the application container
+    * execute assemble and restart.
+
+The figure below illustrates those components:
+
+![](docs/odo-elements.png)
+
+## Appsody
 
 [Appsody](https://appsody.dev/) provides pre-configured container images (stacks) and project templates for a growing set of popular open source runtimes and frameworks, providing a foundation on which to build applications for Kubernetes and Knative deployments.
 
