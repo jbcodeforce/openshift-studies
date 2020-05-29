@@ -1,13 +1,13 @@
 # Notes on training
 
-## D0180 
+## DO180 
 
 student, which has the password student, root redhat
 Student workstation: workstation.lab.example.com
 http://rol.redhat.com
 Students also have access to a MySQL and a Nexus server hosted by either the OpenShift cluster or by AWS
 github.com jbcodeforce
-quay.io 
+quay.io jbcodeforce
 
 ## Container technology
 
@@ -38,10 +38,43 @@ difference between container applications and traditional deployments
 RHOCP adds the capabilities to provide a production PaaS platform such as remote management, multitenancy, increased security, monitoring and auditing, application life-cycle management, and self-service interfaces for developers.
 
 Username	RHT_OCP4_DEV_USER	boyerje-us
-Password	RHT_OCP4_DEV_PASSWORD	77e54efd355e48418233
+Password	RHT_OCP4_DEV_PASSWORD	<>
 API Endpoint	RHT_OCP4_MASTER_API	https://api.ocp-na2.prod.nextcle.com:6443
 Console Web Application		https://console-openshift-console.apps.ocp-na2.prod.nextcle.com
-Cluster Id		57c48a8d-c97b-433f-86f2-c6c80c516bed
+Cluster ID ...
+
+Container images are named based on the following syntax: `registry_name/user_name/image_name:tag`
+
+Example of images used:
+
+```shell
+sudo podman run ubi7/ubi:7.7 echo "Hello!"
+# Apache http server
+sudo podman run -d rhscl/httpd-24-rhel7:2.4-36.8
+# Get IP address of a last container started
+podman inspect -l -f "{{.NetworkSettings.IPAddress}}" 
+# mysql
+sudo podman run --name mysql-basic -v /var/local/mysql:/var/lib/mysql/data \
+> -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 \
+> -e MYSQL_DATABASE=items -e MYSQL_ROOT_PASSWORD=r00tpa55 \
+> -d rhscl/mysql-57-rhel7:5.7-3.14
+# Stop and start a container
+sudo podman stop my-httpd-container
+sudo podman restart my-httpd-container
+# Send a SIGKILL
+sudo podman kill my-httpd-container
+```
+
+Quay.io introduces several exciting features, such as server-side image building, fine-grained access controls, and automatic scanning of images for known vulnerabilities.
+
+To configure registries for the podman command, you need to update the `/etc/containers/registries.conf`. The podman search command finds images from all the registries listed in this file.
+
+```
+[registries.search]
+registries = ["registry.access.redhat.com", "quay.io"]
+```
+
+Existing images from the Podman local storage can be saved to a .tar file using the podman save command.
 
 ## Compendium
 

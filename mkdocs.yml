@@ -12,12 +12,13 @@ nav:
       - cp4i: cp4i.md
       - FAQ: faq.md
       - oc CLI: oc-cli.md
+      - Deployment examples: deployment-ex.md
+      - notes certification: notes-ocp-training.md
   - Operators (with Spark): spark-on-os.md
   - Open Data Hub: opendatahub.md
   - Istio: istio/readme.md
   - Ansible: ansible.md
-  - Deployment examples: deployment-ex.md
-  - ODO / Appsody Summary: odo-appsody.md
+  - ODO - Appsody Summary: odo-appsody.md
   - Compendium: compendium.md
 
 theme: 

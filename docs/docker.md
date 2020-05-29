@@ -1,5 +1,13 @@
 # Some docker and docker compose tricks
 
+## Docker volume
+
+For mounting host directory, the host directory needs to be configured with ownership and permissions allowing access to the container.
+
+```shell
+docker run -v /var/dbfiles:/var/lib/mysql rhmap47/mysql
+```
+
 ## reclaim disk space
 
 ```shell
@@ -30,5 +38,12 @@ docker network connect docker_default containernameorid
 ```shell
 docker run -ti --entrypoint "/bin/bash" imagename
 ```
+
+or use the command after the image name:
+
+```shell
+docker run -ti imagename /bin/bash 
+```
+
 
 ## Define a docker compose to run python env

@@ -47,7 +47,7 @@ See details [in odo architecture section](https://docs.openshift.com/container-p
 
 The figure below illustrates those components:
 
-![](docs/odo-elements.png)
+![](./images/odo-elements.png)
 
 ## Appsody
 

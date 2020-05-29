@@ -1,6 +1,98 @@
 # Deployments examples
 
-## Deploy nodejs app using appsody
+Multiple ways to deploy an app to openshift:
+
+1. Deploy an application from an existing Docker image. (Using `Deploy Image` in the project view.)
+
+    ![1](images/deploy-image.png)
+
+    !!! note
+        There are two options: 
+
+        * from an image imported in the openshift cluster, or built from a dockerfile inside the cluster. 
+        * by accessing a remote image repository like `Dockerhub` or [quay.io](https://quay.io). The image will be pulled down and stored within the internal OpenShift image registry. The image will then be copied to any node in the OpenShift cluster where an instance of the application will be scheduled.
+
+        Application will, by default, be visible internally to the OpenShift cluster, and usually only to other applications within the same project. Use `Create route` to make the app public. 
+
+1. Build and deploy from source code contained in a Git repository using a [Source-to-Image](https://github.com/openshift/source-to-image) toolkit.
+
+    ![2](images/s2i-workflow.png)
+
+    See [this video to get s2i presentation](https://www.youtube.com/watch?v=flI6zx9wH6M) and [this section](#s2i) goes to a simple Flask app deployment using s2i. 
+
+1. Build and deploy from source code contained in a Git repository from a Dockerfile.
+
+1. Using Helm charts and helm CLI: Helm can be used as well to define the config files and deploy. Here is a new CI/CD example done from scratch based on the [Reefer ML project simulator code](https://ibm-cloud-architecture.github.io/refarch-reefer-ml).
+
+    *See [getting started](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/) with helm guide.*
+
+    * Create helm chart using the command `helm create`
+
+    ```shell
+    cd simulator/chart
+    helm create kcontainer-reefer-simulator
+    ```
+
+    * Change the values.yaml to reflect environment and app settings. Remove Ingress as we will define Openshift route for the app to be visible.
+
+    * In the templates folder modify the deployment.yaml to add env variables section:
+
+    ```yaml
+    env:
+          - name: PORT
+            value: "{{ .Values.service.servicePort }}"
+          - name: APPLICATION_NAME
+            value: "{{ .Release.Name }}"
+          - name: KAFKA_BROKERS
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.kafka.brokersConfigMap }}"
+                key: brokers
+          - name: TELEMETRY_TOPIC
+            value: "{{ .Values.kafka.telemetryTopicName }}"
+          - name: CONTAINER_TOPIC
+            value: "{{ .Values.kafka.containerTopicName }}"
+          {{- if .Values.eventstreams.enabled }}
+          - name: KAFKA_APIKEY
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Values.eventstreams.apikeyConfigMap }}"
+                key: binding
+          {{- end }}
+    ```
+
+    * Create helm template file for deployment:
+
+    ```shell
+    helm template --output-dir templates --namespace eda-demo chart/kcontainer-reefer-simulator/
+    ```
+
+    * Push the service.yaml and deployment.yml template to the gitops [repository](https://github.com/ibm-cloud-architecture/refarch-kc-gitops) under the branch `eda-demo/gse-eda-demos.us-east.containers.appdomain.cloud`.
+    * In the github repository define secrets environment variables for docker username and password, from your docker hub account.
+    * When pushing the repository the gitAction will perform the build.
+
+
+## Deploy helm / tiller
+
+The goal is to install Tiller server on its own project, and grant it permissions to one or more other projects where Helm Charts will be installed.
+
+See the instructions in [this blog](https://www.openshift.com/blog/getting-started-helm-openshift).
+
+Here is a quick summary of the commands performed
+
+```
+oc new-project tiller
+oc project tiller
+export TILLER_NAMESPACE=tiller
+oc process -f https://github.com/openshift/origin/raw/master/examples/helm/tiller-template.yaml -p TILLER_NAMESPACE="${TILLER_NAMESPACE}" -p HELM_VERSION=v2.16.4 | oc create -f -
+```
+
+Once deployed and Tiller server running, create a new project and grant tiller edit role to access this new project, and then use helm CLI to deploy the app:
+
+```shell
+oc new-project myapp
+oc policy add-role-to-user edit "system:serviceaccount:${TILLER_NAMESPACE}:tiller"
+```
 
 ## Deploy zipkin from docker image
 
@@ -17,6 +109,25 @@ See zipkin architecture [article here](https://zipkin.io/pages/architecture.html
 
 ## Deploy DB2
 
+The Community edition DB2 image on [dockerhub](https://hub.docker.com/r/ibmcom/db2). It includes a predefined DB.
+
+Clone the [DB2 repository](https://github.com/IBM/Db2) to get the helm chart. See [readme](https://github.com/IBM/Db2/tree/develop/deployment) in this repo, for installation using helm but [tiller](#deploy-helm-tiller) needs to be installed before. The repository includes a script: `db2u-install`
+
+Create your own docker image with a shell to create the schema:
+
+```dockerfile
+FROM ibmcom/db2
+
+RUN mkdir /var/custom
+COPY createschema.sh /var/custom
+RUN chmod a+x /var/custom/createschema.sh
+```
+
+Deinstalling configuration
+
+```
+oc delete -n jbsandbox sa/db2u role/db2u-role rolebinding/db2u-rolebinding
+```
 
 ## Deploy sparks
 

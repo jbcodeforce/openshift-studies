@@ -1,7 +1,10 @@
 # Openshift personal notes and studies
 
-Better read in [book format.](https://jbcodeforce.github.io/openshift-studies/).
+Better read in [BOOK format.](https://jbcodeforce.github.io/openshift-studies/).
 
+## TODO
+
+* [ ] finish odo 
 
 ## Building this booklet locally
 
