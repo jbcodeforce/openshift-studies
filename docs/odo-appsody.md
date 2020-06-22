@@ -107,46 +107,11 @@ The other basic commands are:
 
 See [Appsody CLI](https://appsody.dev/docs/using-appsody/cli-commands/) commands.
 
-### Create a python flask app
-
-The stack is not for production and is not fully supported. Here is an example of creating a simple webapp with flask, flask cli and gunicorn
-
-```shell
-# Get the default template from the stack
-appsody init incubator/python-flask
-# build an image with a name = the folder name based on the dockerfile from the stack
-appsody build
-# or run it directly
-appsody run
-```
-
-You can add your own dockerfile to extend existing one. With `docker images` you can see what `appsody build` created, then you can use this image as source for your own docker image
-
-```dockerfile
-FROM <nameofyourapp>
-ADD stuff
-CMD change the command
-```
-
-To add your own code.
-
-### Create a springboot app
-
-```shell
-appsody init java-microprofile
-```
-
-### Create a microprofile 3.0 app
-
-```shell
-appsody init java-microprofile
-```
-
-### Deployment
+## Deployment
 
 Once logged to a k8s cluster, a `appsody deploy -t dockerhub/imagename --push -n yournamespace` (3) will do the following:
 
-* deploy appsody operator into the given namespace if no operator found
+* deploy [Appsody operator](https://github.com/appsody/appsody-operator) into the given namespace if no operator found. (you can install it manually too see one of the instruction [depending of the release](https://github.com/appsody/appsody-operator/tree/master/deploy/releases))
 * call `appsody build` and create a deployment image with the given tag
 * push the image to docker hub or other repository
 * create the `app-deploy.yaml` deployment manifest
@@ -172,9 +137,53 @@ appsody deploy delete -n yournamespace
 
 To ensure that the latest version of your app is pushed to the cluster, use the -t flag to add a unique tag every time you redeploy your app. Kubernetes then detects a change in the deployment manifest, and pushes your app to the cluster again.
 
+### 3 mn Tekton
+
+[]()
+
+* [Appsody tekton example](https://github.com/appsody/tekton-example)
+* [Tekton CLI](https://github.com/tektoncd/cli#useful-commands)
+
+## App creation
+
+### Create a python flask app
+
+The stack is not for production and is not fully supported. Here is an example of creating a simple webapp with flask, flask cli and gunicorn
+
+```shell
+# Get the default template from the stack
+appsody init incubator/python-flask
+# build an image with a name = the folder name based on the dockerfile from the stack
+appsody build
+# or run it directly
+appsody run
+```
+
+You can add your own dockerfile to extend existing one. With `docker images` you can see what `appsody build` created, then you can use this image as source for your own docker image
+
+```dockerfile
+FROM <nameofyourapp>
+ADD stuff
+CMD change the command
+```
+
+To add your own code.
+
+### Create quarkus app
+
+```shell
+appsody init 
+```
+
+### Create a microprofile 3.0 app
+
+```shell
+appsody init java-microprofile
+```
+
 ## Defining your own stack
 
-Stack has one dockerfile to help building the application and control the build, run and test steps of appsody. It also includes a second Dockerfile in the images/project folder to "dockerize" the final app. The Dockerfile is responsible for ensuring the combined dependencies are installed in the final image.
+Stack has one dockerfile to help building the application and control the build, run and test steps of `Appsody`. It also includes a second Dockerfile in the images/project folder to "dockerize" the final app. The Dockerfile is responsible for ensuring the combined dependencies are installed in the final image.
 
 When designing a stack, we need to decide who control the application: a web server in which the developer, user of the stack, is adding new end points, or the developer is controlling how the app starts and runs.
 
@@ -191,7 +200,7 @@ Some considerations to address:
 * what kind of sample starter application
 * How to enable adding new libraries
 * What docker image repository to use, and what credentials
-* Install Custom resource. 
+* Install Custom resource.
 
 Here is a summary of the steps to create a Kafka java stack for consumer and producer:
 
@@ -201,7 +210,7 @@ Here is a summary of the steps to create a Kafka java stack for consumer and pro
 $ export APPSODY_PULL_POLICY=IFNOTPRESENT
 ```
 
-* Create a starter stack, as a scaffold. 
+* Create a starter stack, as a scaffold.
 
 ```shell
 $ appsody stack create gse-eda-java-stack --copy incubator/java-microprofile

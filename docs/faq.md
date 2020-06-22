@@ -30,7 +30,9 @@ When deploy on premise be sure to use the k8s master URL.
 
 ## Login and push image to private registry
 
-Openshift manages its own image private registry service. The default name and URL is docker-registry-default.apps.green-with-envy.ocp.csplab.local. Below is the step to push a docker images
+Openshift could manage its own image private registry service. The default name and URL is docker-registry-default.apps.... See the product [documentation here](https://docs.openshift.com/container-platform/3.9/install_config/registry/deploy_registry_existing_clusters.html#registry-non-production-use) to install it.
+
+ Below is the step to push a docker images
 
 * Login to openshift cluster
 
