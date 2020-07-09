@@ -45,15 +45,12 @@ See details [in odo architecture section](https://docs.openshift.com/container-p
     * push code into the application container
     * execute assemble and restart.
 
-The figure below illustrates those components:
-
-![](./images/odo-elements.png)
-
 ## Appsody
 
 [Appsody](https://appsody.dev/) provides pre-configured container images (stacks) and project templates for a growing set of popular open source runtimes and frameworks, providing a foundation on which to build applications for Kubernetes and Knative deployments.
+On k8s it uses the **[appsody operator](https://appsody.dev/docs/reference/appsody-operator/)** to automate the installation and maintenance of a special type of Custom Resource Definitions (CRDs), called AppsodyApplication.
 
-To install **appsody** on mac with home brew:   `brew install appsody/appsody/appsody`. To update to new version: `brew upgrade appsody`
+On Mac install **appsody** with home brew:   `brew install appsody/appsody/appsody`. To update to new version: `brew upgrade appsody`
 
 ## How it works
 
@@ -63,24 +60,26 @@ Appsody includes a CLI and a daemon to control the life cycle of the application
 
 Stacks are defined in a repository. Repositories can be referenced from remote sources (e.g., GitHub) or can be stored locally on a filesystem.
 
-First we can get the list of templates available via the command:
+First we can get the list of templates available via the command, which list stacks from all known repo:
 
 ```shell
 appsody list
 ```
 
-Then create our own application using one of the template like:
+Then create our own application using one of the template:
 
 ```shell
 mkdir projectname
-appsody init java-microprofile
+appsody init java-openliberty
+# another usefule one
+appsody init quarkus
 ```
 
 In general the command is `appsody init <repository-name>/<stack>`. It is possible to initialize an existing project using the command: `appsody init <stackname> --no-template`.
 
 Appsody helps developer to do not worry about the details of k8s deployment and build. During a Appsody run, debug or test step (2), Appsody creates a Docker container based on the parent stack Dockerfile, and combines application code with the source code in the template.
 
-When a source code project is initialized with Appsody, you get a local Appsody development container where you can do the following commmands:
+When a source code project is initialized with Appsody, you get a local Appsody development container where you can do the following commands:
 
 ```shell
 appsody run
@@ -100,16 +99,46 @@ ps -ef | grep appsody
 
 The other basic commands are:
 
+* **Run**, to run. But you can use docker options like:
+
+```shell
+appsody run --docker-options="--env-file=postgresql.properties"
+# connect to a local docker network
+appsody run --network kafkanet
+```
+
 * **Build**: You can use the `appsody build` command to generate a deployment Docker image on your local Docker registry, and then manually deploy that image to your runtime platform of choice.
-* You can use the `appsody deploy` command (3) to deploy the same deployment Docker image directly to a Kubernetes cluster that you are using for testing or staging. See next section.
+* **Deploy**: You can use the `appsody deploy` command (3) to deploy the same deployment Docker image directly to a Kubernetes cluster that you are using for testing or staging. See next section.
+The full command template is:
+
+```shell
+appsody deploy -t <mynamespace/myrepository[:tag]> --push-url $IMAGE_REGISTRY --push --namespace mynamespace [--knative]
+# example
+appsody deploy -t jbsandbox/eda-coldchain-agent:0.0.1 --push-url $IMAGE_REGISTRY --push --namespace jbsandbox
+
+```
+
+* To undeploy: `appsody deploy delete`
 * You can delegate the build and deployment steps to an external pipeline, such as a Tekton pipeline that consumes the source code of your Appsody project after you push it to a GitHub repository.
 * `appsody stop`
 
 See [Appsody CLI](https://appsody.dev/docs/using-appsody/cli-commands/) commands.
 
+See this tutorial [how to deploy on openshift](https://developer.ibm.com/components/appsody/tutorials/deploy-appsody-applications-to-openshift/)
+
 ## Deployment
 
-Once logged to a k8s cluster, a `appsody deploy -t dockerhub/imagename --push -n yournamespace` (3) will do the following:
+1. Log to the cluster
+1. Get the name of the available registry `oc get route --all-namespaces | grep registry`. Keep it in an env var: `export IMAGE_REGISTRY=default-route-openshift-image-registry.gse-eda-demo-202005-fa9ee67c9ab6a7791435450358e564cc-0000.us-south.containers.appdomain.cloud`
+1. Login to this registry: `docker login -u $(oc whoami) -p $(oc whoami -t) $IMAGE_REGISTRY`
+1. Create config map via yaml decriptor or command for all the dependent env variables, properties,... See [notes in this repo](https://ibm-cloud-architecture.github.io/refarch-kc/infrastructure/required-services/#apache-kafka)
+1. Deploy using a command like:
+
+```
+appsody deploy -t jbsandbox/eda-coldchain-agent:0.0.1 --push-url $IMAGE_REGISTRY --push --namespace jbsandbox
+```
+
+a `appsody deploy -t dockerhub/imagename --push -n yournamespace` (3) will do the following:
 
 * deploy [Appsody operator](https://github.com/appsody/appsody-operator) into the given namespace if no operator found. (you can install it manually too see one of the instruction [depending of the release](https://github.com/appsody/appsody-operator/tree/master/deploy/releases))
 * call `appsody build` and create a deployment image with the given tag
@@ -169,19 +198,50 @@ CMD change the command
 
 To add your own code.
 
-### Create quarkus app
+### Create quarkus knative app
 
 ```shell
-appsody init 
+appsody init quarkus
 ```
+
+!!! Note
+    The container image will not be pushed to a remote container registry, and hence the container image url has to be dev.local, to make Knative deploy it without trying to pull it from external container registry.
+    
+Then do the following steps:
+
+* update the index.html to provide some simple doc of the app
+* add health, and openapi
+
+   ```xml
+      <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-health</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-openapi</artifactId>
+    </dependency>
+    ```
+* If using kafka to support event driven solution add:
+
+   ```xml
+         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+          </dependency>
+   ```
+
 
 ### Create a microprofile 3.0 app
 
 ```shell
-appsody init java-microprofile
+appsody init java-openliberty
 ```
 
 ## Defining your own stack
+
+See code in appsody-stacks/jb-quarkus for example. 
+
 
 Stack has one dockerfile to help building the application and control the build, run and test steps of `Appsody`. It also includes a second Dockerfile in the images/project folder to "dockerize" the final app. The Dockerfile is responsible for ensuring the combined dependencies are installed in the final image.
 
@@ -220,7 +280,6 @@ $ appsody stack create gse-eda-java-stack --copy incubator/java-microprofile
 
 ```shell
 $ appsody stack package
-
 
 Your local stack is available as part of repo dev.local
 ```
