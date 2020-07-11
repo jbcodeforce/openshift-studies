@@ -71,7 +71,7 @@ Then create our own application using one of the template:
 ```shell
 mkdir projectname
 appsody init java-openliberty
-# another usefule one
+# another useful one
 appsody init quarkus
 ```
 
@@ -240,8 +240,7 @@ appsody init java-openliberty
 
 ## Defining your own stack
 
-See code in appsody-stacks/jb-quarkus for example. 
-
+See code in appsody-stacks/experimental/ibm-gse-eda-quarkus for example and [Appsody tutorial](https://appsody.dev/docs/stacks/develop/)
 
 Stack has one dockerfile to help building the application and control the build, run and test steps of `Appsody`. It also includes a second Dockerfile in the images/project folder to "dockerize" the final app. The Dockerfile is responsible for ensuring the combined dependencies are installed in the final image.
 
@@ -249,18 +248,17 @@ When designing a stack, we need to decide who control the application: a web ser
 
 See details in [this note](https://developer.ibm.com/technologies/containers/tutorials/create-appsody-stack).
 
-To get appsody environment variables description in the [product documentation](https://appsody.dev/docs/stacks/environment-variables)
+See [appsody environment variables description in the product documentation](https://appsody.dev/docs/stacks/environment-variables)
 
 See [this other tutorial here](https://developer.ibm.com/tutorials/create-appsody-stack/).
 
 Some considerations to address:
 
 * select the technologies and libraries to use
-* how to verify dependencies
-* what kind of sample starter application
-* How to enable adding new libraries
-* What docker image repository to use, and what credentials
-* Install Custom resource.
+* address how to verify dependencies
+* define what kind of sample starter application
+* address how to enable adding new libraries
+* define what docker image repository to use, and what credentials
 
 Here is a summary of the steps to create a Kafka java stack for consumer and producer:
 
@@ -273,15 +271,15 @@ $ export APPSODY_PULL_POLICY=IFNOTPRESENT
 * Create a starter stack, as a scaffold.
 
 ```shell
-$ appsody stack create gse-eda-java-stack --copy incubator/java-microprofile
+$ appsody stack create gse-eda-java-stack --copy incubator/java-openliberty
 ```
 
 * build the stack using the `Dockerfile-stack` file
 
 ```shell
-$ appsody stack package
+$ appsody stack package --image-namespace ibmcase
 
-Your local stack is available as part of repo dev.local
+Your local stack is available as part of `dev.local` repo.
 ```
 
 * Test your stack scaffold
@@ -292,9 +290,44 @@ $ appsody init dev.local/gse-eda-java-stack
  Successfully initialized Appsody project with the dev.local/gse-eda-java-stack stack and the default template.
 ```
 
-* Start the application scafold using `appsody run`
+* Start the application scaffold using `appsody run`
 
 * Modify the `Dockerfile-stack` file to include the base image and dependencies for the server and other predefined code.
+
+* package your stack to create a docker images that will be pushed to docker hub registry
+
+```shell
+appsody stack package --image-namespace ibmcase --image-registry docker.io
+# this command builds a docke image but also creates files under ~/.appsody/stacks/dev.local
+ibm-gse-eda-quarkus.v0.4.1.source.tar.gz
+ibm-gse-eda-quarkus.v0.4.1.templates.default.tar.gz
+ibm-gse-eda-quarkus.v0.4.1.templates.kafka.tar.gz
+# push the docker image created
+docker push ibmcase/ibm-gse-eda-quarkus 
+```
+
+* If not done [create a release](https://docs.github.com/en/enterprise/2.13/user/articles/creating-releases) in the `appsody-stack` github repository. See the [latest release](https://github.com/ibm-cloud-architecture/appsody-stacks/releases)
+* Redefined the repository index, so from the source of all the stacks do
+
+```shell
+appsody stack add-to-repo ibmcase --release-url https://github.com/ibm-cloud-architecture/appsody-stacks/releases/download/0.4.1
+# this update
+ibmcase-index.json
+ibmcase-index.yaml
+```
+
+* Upload the source code and template archives to the release using drag and drop. The files 
+
+```shell
+ibm-gse-eda-quarkus.v0.4.1.source.tar.gz
+ibm-gse-eda-quarkus.v0.4.1.templates.default.tar.gz
+ibm-gse-eda-quarkus.v0.4.1.templates.kafka.tar.gz
+ibmcase-index.json
+ibmcase-index.yaml
+```
+
+
+`appsody repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/appsody-stacks/master/ibmcase-index.yaml`
 
 ## Future readings
 
