@@ -119,5 +119,5 @@ CodeReady is a web-based IDE running on Openshift and in a web browser, it is ba
 
 It is installed using the OperatorHub Catalog present in the OpenShift web console, [see installation note](https://access.redhat.com/documentation/en-us/red_hat_codeready_workspaces/2.1/html/installation_guide/index)
 
-It uses the concept of devfile to define the development environment as portable and commitable to github.
+It uses the concept of devfile to define the development environment as portable and committable to github.
 

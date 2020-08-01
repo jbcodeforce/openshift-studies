@@ -1,17 +1,19 @@
 # OpenShift Studies
 
-OpenShift Container Platform is about developing, deploying, and running containerized applications. It is based on docker and kubernetes with added features like:
+OpenShift Container Platform is about developing, deploying, and running containerized applications. It is based on docker and kubernetes and add the following features:
 
 * Routes: represents the way external clients are able to access applications running in OpenShift
-* Deployment config 
+* Deployment config: Represents the set of containers included in a pod, and the deployment strategies to be used.
 * CLI, [REST API](https://docs.openshift.org/latest/rest_api/index.html) for administration or Web Console, and [Eclipse plugin](https://tools.jboss.org/features/openshift.html).
 * Built to be multi tenants. You can also grant other users access to any of your projects. 
-* Use the concept of project to allow for controlled accesses and quotas for developers. Projets are mapped to k8s namespaces.
-* [Source-to-image (S2I)](https://docs.openshift.org/latest/creating_images/s2i.html) is a tool for building reproductible Docker images. S2I supports incremental builds which re-use previously downloaded dependencies, and previously built artifacts. OpenShift is S2I-enabled and can use S2I as one of its build mechanisms.
+* Use the concept of project to allow for controlled accesses and quotas for developers. Projects are mapped to k8s namespaces.
+* [Source-to-image (S2I)](https://docs.openshift.org/latest/creating_images/s2i.html) is a tool for building reproducible Docker images. S2I supports incremental builds which re-use previously downloaded dependencies, and previously built artifacts. OpenShift is S2I-enabled and can use S2I as one of its build mechanisms.
+* Build config: Used by the OpenShift Source-to-Image (S2I) feature to build a container image from application source code stored in a Git repository
 
 * OpenShift for production comes in several variants:
+
     * OpenShift Origin: from [http://openshift.org](http://openshift.org)
-    * OpenShift Container Platform: integrated with RHEL and supported by RedHat. It allows for building a private or public PaaS cloud 
+    * OpenShift Container Platform: integrated with RHEL and supported by RedHat. It allows for building a private or public PaaS cloud.
     * OpenShift Online: multi-tenant public cloud managed by Red Hat
     * OpenShift Dedicated: single-tenant container application platform hosted on Amazon Web Services (AWS) or Google Cloud Platform and managed by Red Hat.
 
@@ -31,11 +33,15 @@ Routes defines hostname, service name, port number and TLS settings:
 
 ![](images/route.png)
 
-Routes are used to expose app over HTTP. OpenShift can handle termination for secure HTTP connections, or a secure connection can be tunnelled through direct to the application, with the application handling termination of the secure connection. Non HTTP applications can be exposed via a tunnelled secure connection if the client supports the SNI extension for a secure connection using TLS.
+Routes are used to expose app over HTTP. OpenShift can handle termination for secure HTTP connections, or a secure connection can be tunneled through direct to the application, with the application handling termination of the secure connection. Non HTTP applications can be exposed via a tunneled secure connection if the client supports the SNI extension for a secure connection using TLS.
+A router (ingress controller) forwards HTTP and TLS requests to the service addresses inside the Kubernetes SDN.
+
+OpenShift routes are implemented by a cluster-wide router service, which runs as a containerized application in the OpenShift cluster. The router service uses HAProxy as the default implementation.
+
 
 ## Getting started
 
-We can use minishift on laptop to play with openshift with a unique node, or use IBM Cloud cluster or use the [online tutorial here (4.2)](https://learn.openshift.com/playgrounds/openshift42/).
+Use IBM Cloud cluster to get an Openshift cluster..
 
 We can also use [openshift online](https://docs.openshift.com/online/getting_started/basic_walkthrough.html) 
 
@@ -56,11 +62,15 @@ oc config get-clusters
 
 ---
 
-## Build, deploy, run
+## Source to image (s2i)
 
-### Source to image (s2i)
+Source to image toolkit aims to simplify the deployment to openshift. It uses a build image to execute an assemble script that builds code and docker image without Dockerfile.  
 
-Source to image toolkit aims to simplify the deployment to openshift. It uses a build image to execute an assemble script that builds code and docker image without Dockerfile.  From an existing repository, `s2i create` add a set of elements to define the workflow into the repo. For example the command below will add Dockerfile and scripts to create a build image named `ibmcase/buildorderproducer` from the local folder where the code is.
+The following figure, shows the resources created by the `oc new-app` command when the argument is an application source code repository.
+
+ ![s2i](https://rol.redhat.com/rol/static/static_file_cache/do180-4.2/openshift-dc-and-bc-3.png)
+
+From an existing repository, `s2i create` add a set of elements to define the workflow into the repo. For example the command below will add Dockerfile and scripts to create a build image named `ibmcase/buildorderproducer` from the local folder where the code is.
 
 ```
 s2i create ibmcase/buildorderproducer .
@@ -75,7 +85,15 @@ s2i build --copy .  centos/python-36-centos7 ibmcase/orderproducer
 ```
 
 !!! Note
-    s2i takes the code from git, so to use the local code before commmitting it to github, add the `--copy` argument.
+    s2i takes the code from git, so to use the local code before committing it to github, add the `--copy` argument.
+
+* OpenShift builds applications against an image stream. The OpenShift installer populates several image streams by default during installation.  
+
+```shell
+ oc get is -n openshift
+```
+
+If only a source repository is specified, oc new-app tries to identify the correct image stream to use for building the application
 
 ### oc command
 

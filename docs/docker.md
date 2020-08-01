@@ -1,5 +1,44 @@
 # Some docker and docker compose tricks
 
+## Dockerfile
+
+ENTRYPOINT specifies the default command to execute when the image runs in a container
+CMD provides the default arguments for the ENTRYPOINT instruction
+
+Example to build a custom Apache Web Server container image.
+
+```dockerfile
+FROM ubi7/ubi:7.7
+ENV PORT 8080
+RUN yum install -y httpd && yum clean all
+RUN sed -ri -e "/^Listen 80/c\Listen ${PORT}" /etc/httpd/conf/httpd.conf && \
+    chown -R apache:apache /etc/httpd/logs/ && \
+    chown -R apache:apache /run/httpd/
+USER apache
+EXPOSE ${PORT}
+COPY ./src/ /var/www/html/
+CMD ["httpd", "-D", "FOREGROUND"]
+```
+
+## Run a ubuntu image
+
+This could be a good approach to demonstrate a linux based.
+
+```shell
+docker run --name my-linux  --detach ubuntu:20.04 tail -f /dev/null
+# connect
+docker exec -ti my-linux bash
+# Update apt inventory and install jdk, maven, git, curl, ... 
+apt update
+apt install -y openjdk-11-jre-headless maven git curl vim
+```
+
+This project includes a Dockerfile-ubuntu to build a local image with the above tools.
+
+```shell
+docker build -t jbcodeforce/myubuntu:20.04 -f Dockerfile-ubuntu .
+```
+
 ## Docker volume
 
 For mounting host directory, the host directory needs to be configured with ownership and permissions allowing access to the container.
@@ -44,6 +83,5 @@ or use the command after the image name:
 ```shell
 docker run -ti imagename /bin/bash 
 ```
-
 
 ## Define a docker compose to run python env

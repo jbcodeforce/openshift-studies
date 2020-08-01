@@ -11,7 +11,7 @@ quay.io jbcodeforce
 
 ## Container technology
 
-difference between container applications and traditional deployments
+Difference between container applications and traditional deployments
 
 * The major drawback to traditionally deployed software application is that the application's dependencies are entangled with the runtime environment
 * a traditionally deployed application must be stopped before updating the associated dependencies
@@ -22,20 +22,20 @@ difference between container applications and traditional deployments
         * isolate dependent libraries and run time resources
         * less resources than VM, start quickly.
         * helps with the efficiency, elasticity, and reusability of the hosted applications, and portability
-        * [Open Container initiave](https://www.opencontainers.org/)
+        * [Open Container initiative](https://www.opencontainers.org/)
 * Container image: bundle of files and metadata
 * Container engine: Rocket, Drawbridge, LXC, Docker, and Podman
 
-* Started in 2001 with VServer, then move to isolated process which leverage the linux features:
+* Started in 2001 with VServer, then move to isolated process which leverages the linux features:
 
         * **Namespaces**: The kernel can isolate specific system resources, usually visible to all processes, by placing the resources within a namespace. Namespaces can include resources like network interfaces, the process ID list, mount points, IPC resources, and the system's host name information.
         * **cgroups**: Control groups partition sets of processes and their children into groups to manage and limit the resources they consume.
         * **Seccomp** defines a security profile for processes, whitelisting the system calls, parameters and file descriptors they are allowed to use
         * SELinux (Security-Enhanced Linux) is a mandatory access control system for processes. Protect processes from each other and to protect the host system from its running processes
 
-## Openshift
+## OpenShift
 
-RHOCP adds the capabilities to provide a production PaaS platform such as remote management, multitenancy, increased security, monitoring and auditing, application life-cycle management, and self-service interfaces for developers.
+RHOCP adds the capabilities to provide a production PaaS platform such as remote management, multi tenancy, increased security, monitoring and auditing, application life-cycle management, and self-service interfaces for developers.
 
 Username	RHT_OCP4_DEV_USER	boyerje-us
 Password	RHT_OCP4_DEV_PASSWORD	<>
@@ -48,6 +48,8 @@ Container images are named based on the following syntax: `registry_name/user_na
 Example of images used:
 
 ```shell
+# login to a registry
+sudo podman login -u username -p password registry.access.redhat.com
 sudo podman run ubi7/ubi:7.7 echo "Hello!"
 # Apache http server
 sudo podman run -d rhscl/httpd-24-rhel7:2.4-36.8
@@ -65,7 +67,7 @@ sudo podman restart my-httpd-container
 sudo podman kill my-httpd-container
 ```
 
-Quay.io introduces several exciting features, such as server-side image building, fine-grained access controls, and automatic scanning of images for known vulnerabilities.
+**Quay.io** introduces several features, such as server-side image building, fine-grained access controls, and automatic scanning of images for known vulnerabilities.
 
 To configure registries for the podman command, you need to update the `/etc/containers/registries.conf`. The podman search command finds images from all the registries listed in this file.
 
@@ -74,7 +76,47 @@ To configure registries for the podman command, you need to update the `/etc/con
 registries = ["registry.access.redhat.com", "quay.io"]
 ```
 
-Existing images from the Podman local storage can be saved to a .tar file using the podman save command.
+Use an FQDN and port number (5000 default) to identify a registry. 
+
+By default, Podman stores container images in the /var/lib/containers/storage/overlay-images directory.
+
+Existing images from the Podman local storage can be saved to a .tar file using the `podman save` command.
+
+```shell
+
+# Retrieve the list of external files and directories that Podman mounts to the running container
+sudo podman inspect -f "{{range .Mounts}}{{println .Destination}}{{end}}" official-httpd
+# list of modified files in the container file system
+sudo podman diff official-httpd
+# Commit the changes to a new container image with a new name
+sudo podman commit -a 'Jerome' official-httpd do180-custom-httpd
+sudo podman save [-o FILE_NAME] IMAGE_NAME[:TAG]
+sudo podman tag quay.io/jbcodeforce/do180-custom-httpd:v1.0
+sudo podman push quay.io/jbcodeforce/do180-custom-httpd:v1.0
+
+sudo podman build -t NAME:TAG DIR
+```
+
+Red Hat Software Collections Library  is the source of most container images
+
+### Deploying Containerized Applications on OpenShift
+
+```shell
+# login to cluster 
+oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+# Create a new project named "youruser-ocp"
+oc new-project ${RHT_OCP4_DEV_USER}-ocp
+# Create a temperature converter application written in PHP using the php:7.1 image stream tag. The source code is in the Git repository at https://github.com/RedHatTraining/DO180-apps/
+c new-app php:7.1~https://github.com/RedHatTraining/DO180-apps --context-dir temps --name temps
+# Monitor progress of the build
+oc logs -f bc/temps
+# Verify that the application is deployed.
+oc get pods -w
+# Expose the temps service to create an external route for the application.
+oc expose  svc/temps
+# Determine route URL
+ oc get route/temps
+```
 
 ## Compendium
 

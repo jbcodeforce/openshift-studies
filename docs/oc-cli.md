@@ -106,7 +106,6 @@ Get the list of supported app templates:
 oc new-app -L
 ```
 
-
 To create a project, that is mapped to a kubernetes namespace:
 
 ```
@@ -166,8 +165,7 @@ oc get roles
 oc get rolebindings
 ```
 
-
-#### Work on images
+#### Work with images
 
 Search a docker image and see if it is valid:
 
@@ -177,7 +175,7 @@ oc new-app --search openshiftkatacoda/blog-django-py
 
 Deploy an image to a project and link it to github:
 ```
-oc new-app --docker-image=<docker-image> [--code=<source>]
+oc new-app --docker-image=<docker-image> [--code=<source>] --name myapp
 ```
 
 The image will be pulled down and stored within the internal OpenShift image registry. You can list what image stream resources have been created within a project by running the command:

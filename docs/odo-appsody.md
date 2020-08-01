@@ -52,7 +52,7 @@ On k8s it uses the **[appsody operator](https://appsody.dev/docs/reference/appso
 
 On Mac install **appsody** with home brew:   `brew install appsody/appsody/appsody`. To update to new version: `brew upgrade appsody`
 
-## How it works
+### How it works
 
 Appsody includes a CLI and a daemon to control the life cycle of the application. Developers use the CLI to create a new application from an existing "stack" (1).
 
@@ -73,6 +73,8 @@ mkdir projectname
 appsody init java-openliberty
 # another useful one
 appsody init quarkus
+# or ours
+appsody init ibmcase/ibm-gse-eda-quarkus
 ```
 
 In general the command is `appsody init <repository-name>/<stack>`. It is possible to initialize an existing project using the command: `appsody init <stackname> --no-template`.
@@ -126,7 +128,7 @@ See [Appsody CLI](https://appsody.dev/docs/using-appsody/cli-commands/) commands
 
 See this tutorial [how to deploy on openshift](https://developer.ibm.com/components/appsody/tutorials/deploy-appsody-applications-to-openshift/)
 
-## Deployment
+### App Deployment
 
 1. Log to the cluster
 1. Get the name of the available registry `oc get route --all-namespaces | grep registry`. Keep it in an env var: `export IMAGE_REGISTRY=default-route-openshift-image-registry.gse-eda-demo-202005-fa9ee67c9ab6a7791435450358e564cc-0000.us-south.containers.appdomain.cloud`
@@ -173,9 +175,9 @@ To ensure that the latest version of your app is pushed to the cluster, use the 
 * [Appsody tekton example](https://github.com/appsody/tekton-example)
 * [Tekton CLI](https://github.com/tektoncd/cli#useful-commands)
 
-## App creation
+## Appsody app creation examples
 
-### Create a python flask app
+#### Create a python flask app
 
 The stack is not for production and is not fully supported. Here is an example of creating a simple webapp with flask, flask cli and gunicorn
 
@@ -198,7 +200,7 @@ CMD change the command
 
 To add your own code.
 
-### Create quarkus knative app
+#### Create quarkus knative app
 
 ```shell
 appsody init quarkus
@@ -232,17 +234,17 @@ Then do the following steps:
    ```
 
 
-### Create a microprofile 3.0 app
+#### Create a microprofile 3.0 app
 
 ```shell
 appsody init java-openliberty
 ```
 
-## Defining your own stack
+### Defining your own stack
 
-See code in appsody-stacks/experimental/ibm-gse-eda-quarkus for example and [Appsody tutorial](https://appsody.dev/docs/stacks/develop/)
+See code in appsody-stacks/experimental/ibm-gse-eda-quarkus for example and [Appsody tutorial](https://appsody.dev/docs/stacks/develop/) for how tos.
 
-Stack has one dockerfile to help building the application and control the build, run and test steps of `Appsody`. It also includes a second Dockerfile in the images/project folder to "dockerize" the final app. The Dockerfile is responsible for ensuring the combined dependencies are installed in the final image.
+Stack has one dockerfile to help building the application and control the build, run and test steps of `Appsody`. It also includes a second Dockerfile in the images/project folder to "dockerize" the final app. This Dockerfile is responsible for ensuring the combined dependencies are installed in the final image.
 
 When designing a stack, we need to decide who control the application: a web server in which the developer, user of the stack, is adding new end points, or the developer is controlling how the app starts and runs.
 
@@ -250,7 +252,7 @@ See details in [this note](https://developer.ibm.com/technologies/containers/tut
 
 See [appsody environment variables description in the product documentation](https://appsody.dev/docs/stacks/environment-variables)
 
-See [this other tutorial here](https://developer.ibm.com/tutorials/create-appsody-stack/).
+See [this other create appsody tutorial here](https://developer.ibm.com/tutorials/create-appsody-stack/).
 
 Some considerations to address:
 
@@ -294,11 +296,11 @@ $ appsody init dev.local/gse-eda-java-stack
 
 * Modify the `Dockerfile-stack` file to include the base image and dependencies for the server and other predefined code.
 
-* package your stack to create a docker images that will be pushed to docker hub registry
+* package your stack to create a docker images that will be pushed to dockerhub registry
 
 ```shell
 appsody stack package --image-namespace ibmcase --image-registry docker.io
-# this command builds a docke image but also creates files under ~/.appsody/stacks/dev.local
+# this command builds a docker image but also creates files under ~/.appsody/stacks/dev.local
 ibm-gse-eda-quarkus.v0.4.1.source.tar.gz
 ibm-gse-eda-quarkus.v0.4.1.templates.default.tar.gz
 ibm-gse-eda-quarkus.v0.4.1.templates.kafka.tar.gz
@@ -306,7 +308,7 @@ ibm-gse-eda-quarkus.v0.4.1.templates.kafka.tar.gz
 docker push ibmcase/ibm-gse-eda-quarkus 
 ```
 
-* If not done [create a release](https://docs.github.com/en/enterprise/2.13/user/articles/creating-releases) in the `appsody-stack` github repository. See the [latest release](https://github.com/ibm-cloud-architecture/appsody-stacks/releases)
+* If not done [create a git release](https://docs.github.com/en/enterprise/2.13/user/articles/creating-releases) in the `appsody-stack` github repository. See the [latest release](https://github.com/ibm-cloud-architecture/appsody-stacks/releases)
 * Redefined the repository index, so from the source of all the stacks do
 
 ```shell
@@ -316,7 +318,7 @@ ibmcase-index.json
 ibmcase-index.yaml
 ```
 
-* Upload the source code and template archives to the release using drag and drop. The files 
+* Upload the source code and template archives to the release using drag and drop. The files are
 
 ```shell
 ibm-gse-eda-quarkus.v0.4.1.source.tar.gz
