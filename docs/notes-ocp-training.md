@@ -95,11 +95,16 @@ sudo podman tag quay.io/jbcodeforce/do180-custom-httpd:v1.0
 sudo podman push quay.io/jbcodeforce/do180-custom-httpd:v1.0
 
 sudo podman build -t NAME:TAG DIR
+
+# examine the content of the environment variable of a container
+sudo podman exec todoapi env
 ```
 
 Red Hat Software Collections Library  is the source of most container images
 
 ### Deploying Containerized Applications on OpenShift
+
+Lab:
 
 ```shell
 # login to cluster 
@@ -118,6 +123,47 @@ oc expose  svc/temps
  oc get route/temps
 ```
 
+### Deploy multi-container app
+
+Podman uses Container Network Interface (CNI) to create a software-defined network (SDN) between all containers in the host. Unless stated otherwise, CNI assigns a new IP address to a container when it starts.
+
+Each container exposes all ports to other containers in the same SDN. As such, services are readily accessible within the same network. The containers expose ports to external networks only by explicit configuration.
+
+Using environment variables allows you to share information between containers with Podman. However, there are still some limitations and some manual work involved in ensuring that all environment variables stay in sync, especially when working with many containers
+
+Any service defined on Kubernetes generates environment variables for the IP address and port number where the service is available. Kubernetes automatically injects these environment variables into the containers from pods in the same namespace
+
+Get the list of templates from where to create k8s resources like Secret, a Service, a PersistentVolumeClaim, and a DeploymentConfig: ` oc get template -n openshift` and then from one of the template: `oc get template mysql-persistent -n openshift -o yaml`.
+
+With template, you can publish a new template to the OpenShift cluster so that other developers can build an application from the template.
+
+Get the parameters of a template: ` process --parameters mysql-persistent -n openshift`.
+
+From the template create the app resources file and then deploy the app:
+
+```shell
+# first export the template
+oc get template mysql-persistent -o yaml -n openshift > mysql-persistent-template.yaml
+# identify appropriate values for the template parameters and process the template
+oc process -f mysql-persistent-template.yaml -p MYSQL_USER=dev -p MYSQL_PASSWORD=$P4SSD -p MYSQL_DATABASE=bank -p VOLUME_CAPACITY=10Gi | oc create -f -
+# or using new-app
+oc new-app --template=mysql-persistent -p MYSQL_USER=dev -p MYSQL_PASSWORD=$P4SSD -p MYSQL_DATABASE=bank -p VOLUME_CAPACITY=10Gi
+```
+
+Lab:
+
+```shell
+# login to cluster 
+oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+# Create a new project named "youruser-"
+oc new-project ${RHT_OCP4_DEV_USER}-deploy
+# Build the MySQL Database image
+sudo podman build -t do180-mysql-57-rhel7 .
+# Push the MySQL image to the your Quay.io repository.
+sudo podman login quay.io -u ${RHT_OCP4_QUAY_USER}
+sudo podman tag do180-mysql-57-rhel7 quay.io/${RHT_OCP4_QUAY_USER}/do180-mysql-57-rhel7
+sudo podman push quay.io/${RHT_OCP4_QUAY_USER}/do180-mysql-57-rhel7
+```
 ## Compendium
 
 * [Open Container initiave](https://www.opencontainers.org/)

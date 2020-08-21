@@ -22,6 +22,24 @@ Multiple ways to deploy an app to openshift:
 
 1. Build and deploy from source code contained in a Git repository from a Dockerfile.
 
+Build the first time
+
+```shell
+oc new-build --binary --name=vertx-greeting-application -l app=vertx-greeting-application
+mvn dependency:copy-dependencies compile
+oc start-build vertx-greeting-application --from-dir=. --follow
+oc new-app vertx-greeting-application -l app=vertx-greeting-application
+oc expose service vertx-greeting-application
+
+```
+
+To update the application, just update the code and run:
+
+```shell
+mvn dependency:copy-dependencies compile
+oc start-build vertx-greeting-application --from-dir=. --follow
+```
+
 1. Using Helm charts and helm CLI: Helm can be used as well to define the config files and deploy. Here is a new CI/CD example done from scratch based on the [Reefer ML project simulator code](https://ibm-cloud-architecture.github.io/refarch-reefer-ml).
 
     *See [getting started](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/) with helm guide.*
@@ -125,7 +143,7 @@ RUN chmod a+x /var/custom/createschema.sh
 
 Deinstalling configuration
 
-```
+```shell
 oc delete -n jbsandbox sa/db2u role/db2u-role rolebinding/db2u-rolebinding
 ```
 

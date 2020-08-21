@@ -47,7 +47,7 @@ For mounting host directory, the host directory needs to be configured with owne
 docker run -v /var/dbfiles:/var/lib/mysql rhmap47/mysql
 ```
 
-## reclaim disk space
+## Reclaim disk space
 
 ```shell
 docker system df
@@ -82,6 +82,23 @@ or use the command after the image name:
 
 ```shell
 docker run -ti imagename /bin/bash 
+```
+
+## Docker build image with tests and env variables
+
+Inject the environment variables with --build-arg
+
+```shell
+docker build --network host \
+            --build-arg KAFKA_BROKERS=${KAFKA_BROKERS} \
+            --build-arg KAFKA_APIKEY=${KAFKA_APIKEY} \
+            --build-arg POSTGRESQL_URL=${POSTGRESQL_URL}  \
+            --build-arg POSTGRESQL_USER=${POSTGRESQL_USER} \
+            --build-arg POSTGRESQL_PWD=${POSTGRESQL_PWD} \
+            --build-arg JKS_LOCATION=${JKS_LOCATION} \
+            --build-arg TRUSTSTORE_PWD=${TRUSTSTORE_PWD} \
+            --build-arg POSTGRESQL_CA_PEM="${POSTGRESQL_CA_PEM}"  -t ibmcase/$kname .
+
 ```
 
 ## Define a docker compose to run python env
