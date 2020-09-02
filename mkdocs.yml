@@ -5,6 +5,7 @@ nav:
   - Kubernetes fundamentals:
     - Introduction: k8s/k8s-0.md
     - Networking: k8s/k8s-1.md
+    - Security: k8s/k8s-2.md
     - FAQ: k8s/k8s-faq.md
     - Compendium: k8s/k8s-comp.md
   - Docker tricks: docker.md

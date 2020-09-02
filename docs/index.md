@@ -60,8 +60,6 @@ You can get a list of all OpenShift clusters you have ever logged into by runnin
 oc config get-clusters
 ```
 
----
-
 ## Source to image (s2i)
 
 Source to image toolkit aims to simplify the deployment to openshift. It uses a build image to execute an assemble script that builds code and docker image without Dockerfile.  

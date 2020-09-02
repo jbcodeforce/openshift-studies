@@ -133,14 +133,14 @@ See this tutorial [how to deploy on openshift](https://developer.ibm.com/compone
 1. Log to the cluster
 1. Get the name of the available registry `oc get route --all-namespaces | grep registry`. Keep it in an env var: `export IMAGE_REGISTRY=default-route-openshift-image-registry.gse-eda-demo-202005-fa9ee67c9ab6a7791435450358e564cc-0000.us-south.containers.appdomain.cloud`
 1. Login to this registry: `docker login -u $(oc whoami) -p $(oc whoami -t) $IMAGE_REGISTRY`
-1. Create config map via yaml decriptor or command for all the dependent env variables, properties,... See [notes in this repo](https://ibm-cloud-architecture.github.io/refarch-kc/infrastructure/required-services/#apache-kafka)
+1. Create config map via yaml descriptor or command for all the dependent env variables, properties,... See [notes in this repo](https://ibm-cloud-architecture.github.io/refarch-kc/infrastructure/required-services/#apache-kafka)
 1. Deploy using a command like:
 
 ```
 appsody deploy -t jbsandbox/eda-coldchain-agent:0.0.1 --push-url $IMAGE_REGISTRY --push --namespace jbsandbox
 ```
 
-a `appsody deploy -t dockerhub/imagename --push -n yournamespace` (3) will do the following:
+ `appsody deploy -t dockerhub/imagename --push -n yournamespace` (3) will do the following:
 
 * deploy [Appsody operator](https://github.com/appsody/appsody-operator) into the given namespace if no operator found. (you can install it manually too see one of the instruction [depending of the release](https://github.com/appsody/appsody-operator/tree/master/deploy/releases))
 * call `appsody build` and create a deployment image with the given tag
@@ -156,7 +156,7 @@ NAME                               READY     STATUS             RESTARTS   AGE
 appsody-operator-d8dfb4f5f-4dpwk   1/1       Running            0          4m34s
 ```
 
-As part of the deployment manifest a service and a route are created. For example using a microprofile app the following command will verify everthing went well.
+As part of the deployment manifest a service and a route are created. For example using a microprofile app the following command will verify everything went well.
 
 ```shell
 curl http://scoring-mp-eda-sandbox.apps.green.ocp.csplab.local/health
@@ -242,11 +242,11 @@ appsody init java-openliberty
 
 ### Defining your own stack
 
-See code in appsody-stacks/experimental/ibm-gse-eda-quarkus for example and [Appsody tutorial](https://appsody.dev/docs/stacks/develop/) for how tos.
+See code in appsody-stacks/experimental/ibm-gse-eda-quarkus for one example of a kafka quarkus stack and [Appsody tutorial](https://appsody.dev/docs/stacks/develop/) to get detail instructions.
 
-Stack has one dockerfile to help building the application and control the build, run and test steps of `Appsody`. It also includes a second Dockerfile in the images/project folder to "dockerize" the final app. This Dockerfile is responsible for ensuring the combined dependencies are installed in the final image.
+Stack has one dockerfile to help building the application and control the build, run and test steps of `Appsody`. And a second Dockerfile in the `image/project` folder to "dockerize" the final app. This Dockerfile is responsible for ensuring the combined dependencies are installed in the final image. It hosts the target `app-deploy.yaml` file used for kubernetes deployment.
 
-When designing a stack, we need to decide who control the application: a web server in which the developer, user of the stack, is adding new end points, or the developer is controlling how the app starts and runs.
+When designing a stack, we need to decide who controls the application: a web server in which the developer, user of the stack, is adding new end points, or the developer is controlling how the app starts and runs.
 
 See details in [this note](https://developer.ibm.com/technologies/containers/tutorials/create-appsody-stack).
 
@@ -273,30 +273,32 @@ $ export APPSODY_PULL_POLICY=IFNOTPRESENT
 * Create a starter stack, as a scaffold.
 
 ```shell
-$ appsody stack create gse-eda-java-stack --copy incubator/java-openliberty
+$ appsody stack create ibm-gse-eda-quarkus --copy incubator/java-openliberty
 ```
-
-* build the stack using the `Dockerfile-stack` file
+* Update the template folder, and then the stack.yml to define version number (e.g. 1.7.1), name, ...
+* Update the pom.xml under `image` folder.
+* Under the experimental folder build the stack using the `Dockerfile-stack` file with the following command
 
 ```shell
 $ appsody stack package --image-namespace ibmcase
 
 Your local stack is available as part of `dev.local` repo.
 ```
+*This mean a file `ibm-gse-eda-quarkus.v1.7.1.templates.kafka.tar.gz` is created in `.appsody/stacks/dev.local/`*
 
 * Test your stack scaffold
 
 ```shell
-$ appsody init dev.local/gse-eda-java-stack
+$ appsody init dev.local/ibm-gse-eda-quarkus kafka
 
- Successfully initialized Appsody project with the dev.local/gse-eda-java-stack stack and the default template.
+ Successfully initialized Appsody project with the dev.local/gse-eda-java-stack stack and the kafka template.
 ```
 
-* Start the application scaffold using `appsody run`
+* Start the application scaffold using `appsody run`. If you are running with a remote kafka broker set the `scripts/appsody.env` variables accordingly.
 
 * Modify the `Dockerfile-stack` file to include the base image and dependencies for the server and other predefined code.
 
-* package your stack to create a docker images that will be pushed to dockerhub registry
+* Package your stack to create a docker images that will be pushed to dockerhub registry
 
 ```shell
 appsody stack package --image-namespace ibmcase --image-registry docker.io
@@ -308,15 +310,16 @@ ibm-gse-eda-quarkus.v0.4.1.templates.kafka.tar.gz
 docker push ibmcase/ibm-gse-eda-quarkus 
 ```
 
-* If not done [create a git release](https://docs.github.com/en/enterprise/2.13/user/articles/creating-releases) in the `appsody-stack` github repository. See the [latest release](https://github.com/ibm-cloud-architecture/appsody-stacks/releases)
+* If not done [create a git release](https://docs.github.com/en/enterprise/2.13/user/articles/creating-releases) in the [appsody-stack](https://github.com/ibm-cloud-architecture/appsody-stacks/) github repository. See the [latest release](https://github.com/ibm-cloud-architecture/appsody-stacks/releases)
 * Redefined the repository index, so from the source of all the stacks do
 
 ```shell
-appsody stack add-to-repo ibmcase --release-url https://github.com/ibm-cloud-architecture/appsody-stacks/releases/download/0.4.1
-# this update
+appsody stack add-to-repo ibmcase --release-url https://github.com/ibm-cloud-architecture/appsody-stacks/releases/download/0.4.1/
+# this command updates the following files
 ibmcase-index.json
 ibmcase-index.yaml
 ```
+* copy those file into root folder of the stack project
 
 * Upload the source code and template archives to the release using drag and drop. The files are
 
@@ -328,6 +331,7 @@ ibmcase-index.json
 ibmcase-index.yaml
 ```
 
+then publish the release. Which can be see at the URL: [https://github.com/ibm-cloud-architecture/appsody-stacks/releases](https://github.com/ibm-cloud-architecture/appsody-stacks/releases).
 
 `appsody repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/appsody-stacks/master/ibmcase-index.yaml`
 

@@ -90,28 +90,6 @@ oc start-build vertx-greeting-application --from-dir=. --follow
     * When pushing the repository the gitAction will perform the build.
 
 
-## Deploy helm / tiller
-
-The goal is to install Tiller server on its own project, and grant it permissions to one or more other projects where Helm Charts will be installed.
-
-See the instructions in [this blog](https://www.openshift.com/blog/getting-started-helm-openshift).
-
-Here is a quick summary of the commands performed
-
-```
-oc new-project tiller
-oc project tiller
-export TILLER_NAMESPACE=tiller
-oc process -f https://github.com/openshift/origin/raw/master/examples/helm/tiller-template.yaml -p TILLER_NAMESPACE="${TILLER_NAMESPACE}" -p HELM_VERSION=v2.16.4 | oc create -f -
-```
-
-Once deployed and Tiller server running, create a new project and grant tiller edit role to access this new project, and then use helm CLI to deploy the app:
-
-```shell
-oc new-project myapp
-oc policy add-role-to-user edit "system:serviceaccount:${TILLER_NAMESPACE}:tiller"
-```
-
 ## Deploy zipkin from docker image
 
 Install it, and expose it with a service
@@ -145,6 +123,57 @@ Deinstalling configuration
 
 ```shell
 oc delete -n jbsandbox sa/db2u role/db2u-role rolebinding/db2u-rolebinding
+```
+
+## Deploy RabbitMQ
+
+### First install operator
+
+To create a RabbitMQ instance, a RabbitmqCluster resource definition must be created and applied. RabbitMQ Cluster Kubernetes Operator creates the necessary resources, such as Services and StatefulSet, in the same namespace in which the `RabbitmqCluster` CRD was defined.
+
+See [some instructions here](https://www.rabbitmq.com/kubernetes/operator/install-operator.html). Be sure to have kubectl >= 1.14
+
+```shell 
+git clone http://github.com/rabbitmq/cluster-operator.git
+cd cluster-operator
+kubectl create -f config/namespace/base/namespace.yaml
+kubectl create -f config/crd/bases/rabbitmq.com_rabbitmqclusters.yaml
+# Add cluster roles and roles: rabbitmq-cluster-operator-role and rabbitmq-cluster-leader-election-role
+kubectl -n rabbitmq-system create --kustomize config/rbac/
+kubectl -n rabbitmq-system create --kustomize config/manager/
+# Verify CRD installed
+kubectl get customresourcedefinitions.apiextensions.k8s.io | grep rabbit
+# Verify the service account
+oc get sa rabbitmq-cluster-operator
+# link the service account to security policy
+oc adm policy add-scc-to-user privileged rabbitmq-cluster-operator
+```
+
+If there is an error about user 1000 not in range, change the deployment yaml file for the value `securityContext.runAsUser: 1000570000` to a value in range and remove the other runAsGroup and fsGroup.
+
+### Create a cluster
+
+when the operator pod runs, create one instance create a yaml file:
+
+```shell
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: eda-rabbitmq
+spec:
+    replicas: 1
+```
+
+Then do
+
+```
+oc apply -f rabbit-cluster.yaml 
+oc get rabbitmqclusters
+```
+
+If an error like: "services \"eda-rabbitmq-rabbitmq-headless\" is forbidden: cannot set blockOwnerDeletion if an ownerReference refers to a resource you can't set finalizers on" happens, do the following: 
+
+```
 ```
 
 ## Deploy sparks
@@ -214,4 +243,28 @@ To avoid loosing the work on the notebook, we need to add PVC to `/home/jovyan/w
 oc get dc
 
 oc set volume dc/all-spark-notebook  --add --mount-path /home/jovyan/work --claim-size=1G
+```
+
+
+
+## Deploy helm / tiller (DEPRECATED)
+
+The goal is to install Tiller server on its own project, and grant it permissions to one or more other projects where Helm Charts will be installed.
+
+See the instructions in [this blog](https://www.openshift.com/blog/getting-started-helm-openshift).
+
+Here is a quick summary of the commands performed
+
+```
+oc new-project tiller
+oc project tiller
+export TILLER_NAMESPACE=tiller
+oc process -f https://github.com/openshift/origin/raw/master/examples/helm/tiller-template.yaml -p TILLER_NAMESPACE="${TILLER_NAMESPACE}" -p HELM_VERSION=v2.16.4 | oc create -f -
+```
+
+Once deployed and Tiller server running, create a new project and grant tiller edit role to access this new project, and then use helm CLI to deploy the app:
+
+```shell
+oc new-project myapp
+oc policy add-role-to-user edit "system:serviceaccount:${TILLER_NAMESPACE}:tiller"
 ```

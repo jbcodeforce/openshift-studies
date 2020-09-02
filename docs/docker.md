@@ -20,6 +20,8 @@ COPY ./src/ /var/www/html/
 CMD ["httpd", "-D", "FOREGROUND"]
 ```
 
+[Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
+
 ## Run a ubuntu image
 
 This could be a good approach to demonstrate a linux based.
