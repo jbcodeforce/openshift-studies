@@ -15,6 +15,7 @@ nav:
       - oc CLI: oc-cli.md
       - Deployment examples: deployment-ex.md
       - notes certification: notes-ocp-training.md
+  - Knative: knative.md
   - Operators (with Spark): spark-on-os.md
   - Open Data Hub: opendatahub.md
   - Istio: istio/readme.md
