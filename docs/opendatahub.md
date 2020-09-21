@@ -29,5 +29,3 @@ To validate pods
 oc get pods -n rook-ceph-system
 oc get pods -n rook-ceph
 ```
-
-Some errors:

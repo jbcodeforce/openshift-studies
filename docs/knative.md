@@ -13,12 +13,35 @@ Knative consists of the following components:
 
 [Redhat knative cookbook](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial/index.html).
 
+## Value prop
+
+Like any serverless (AWS lambda, openwhisk..) the benefits are:
+
+* instantly spin up enough server resources to handle tens of thousands of incoming requests
+* more expensive on compute time, but cost zero after
+* spin up a completely separate version of the site to do some prototyping, no need to worry about forgetting a test running forever
+*  No Kubernetes configurations, no load balancers, no auto scaling rules
+
+### Challenges
+
+* web socker support, SMTP session
+* With AWS no control of the OS, so difficult to bring your libraries. Knative as container fixes this.
+* AWS: functions with less TAM have slower CPU speed. This can swing a lot between 5ms to 500ms response time. Charged by 100ms increment
+* Using SPA app like React or Angular, the page will be downloaded from a Content CDN server, which leads to have a delay between this web server and the function. If you want <50ms response times, then hosting your backend behind API Gateway is not for function.
+* Need non serverless services like VPC, NAT gateways to access other service like storage. 
+* to get a granular record of what Lambdas are running, how many times and for how long, measurement and Logging products are not serverless, so cost a lot. Specially as you may not control the information sent to the logger (Cloudwatch).
+* Idempotence: AWS Lambda, can execute the same requests more than once. Which will generate multiple records written into the DB. This is due to retries on errors, and event source set at least once delivery.
+Use request identifiers to implement idempotent Lambda functions that do not break if a function invocation needs to be retried. Make sure to pass the original request id to all subsequent calls. The original request id is generated as early as possible in the chain. If possible on the client side. Avoid generating your own ids.
+* Time limit on execution to prevent deadlocked function. Difficult to see those functions as they disappear.
+* COLD start: if your function hasn’t been run in a while, a pending request needs to wait for it to be initialized before it can be served: 3 to 5 seconds. nothing the end-user touches could be hosted on Lambda after all
+* view Lambda mainly in terms of what it can do as a high-end parallel architecture 
+
 ## Getting started
 
-* Install knative CLI with [brew](https://github.com/knative/homebrew-client).
-* Knative CLI run in docker, [see doc here](https://knative.dev/docs/install/install-kn/#kn-container-images)
+* Install knative CLI with [brew](https://github.com/knative/homebrew-client). It will be accessible via `kn`
+* Or use Knative CLI running in docker, [see doc here](https://knative.dev/docs/install/install-kn/#kn-container-images)
 * To prepare OpenShift [see these instructions](https://docs.openshift.com/container-platform/4.3/serverless/installing_serverless/installing-openshift-serverless.html). 
-    * The minimum requirement to use OpenShift Serverless is a cluster with 10 CPUs and 40GB memory. Use operator hub to install Knative serving and eventing. 
+    * The minimum requirement to use OpenShift Serverless is a cluster with 10 CPUs and 40GB memory. Use operator hub to install Knative serving and eventing servers and brokers. 
     * OpenShift Serverless Operator eventually shows up and its Status ultimately resolves to InstallSucceeded in the openshift-operators namespace.
     * Creating the knative-serving namespace: `oc create namespace knative-serving`, and then within the project create an instance. 
     * Verify the conditions: `oc get knativeserving.operator.knative.dev/knative-serving -n knative-serving --template='{{range .status.conditions}}{{printf "%s=%s\n" .type .status}}{{end}}'`
@@ -27,7 +50,7 @@ Knative consists of the following components:
 
 ### Define a service for a given image
 
-oc apply on the following definition:
+oc apply the following definition:
 
 ```yaml
 apiVersion: serving.knative.dev/v1
@@ -120,7 +143,7 @@ There are three primary usage patterns with Knative Eventing:
 
   ![2](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial-eventing/_images/brokers-triggers.png)
 
-To make a project using knative eventing label the namespace with: `kubectl label namespace jbsandbox knative-eventing-injection=enabled`. This will start the filter and ingress pods. 
+To make a project using knative eventing label the namespace with: `kubectl label namespace jbsandbox knative-eventing-injection=enabled`. This will start the filter and ingress pods.
 
 ### Broker and Trigger
 
