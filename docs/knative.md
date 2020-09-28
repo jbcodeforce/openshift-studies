@@ -13,7 +13,7 @@ Knative consists of the following components:
 
 [Redhat knative cookbook](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial/index.html).
 
-## Value prop
+## Value propositions
 
 Like any serverless (AWS lambda, openwhisk..) the benefits are:
 
@@ -22,9 +22,9 @@ Like any serverless (AWS lambda, openwhisk..) the benefits are:
 * spin up a completely separate version of the site to do some prototyping, no need to worry about forgetting a test running forever
 *  No Kubernetes configurations, no load balancers, no auto scaling rules
 
-### Challenges
+### Challenges (aws lambda that may apply to knative)
 
-* web socker support, SMTP session
+* web socket support, SMTP session
 * With AWS no control of the OS, so difficult to bring your libraries. Knative as container fixes this.
 * AWS: functions with less TAM have slower CPU speed. This can swing a lot between 5ms to 500ms response time. Charged by 100ms increment
 * Using SPA app like React or Angular, the page will be downloaded from a Content CDN server, which leads to have a delay between this web server and the function. If you want <50ms response times, then hosting your backend behind API Gateway is not for function.
@@ -38,9 +38,10 @@ Use request identifiers to implement idempotent Lambda functions that do not bre
 
 ## Getting started
 
-* Install knative CLI with [brew](https://github.com/knative/homebrew-client). It will be accessible via `kn`
+* Install Knative CLI with [brew](https://github.com/knative/homebrew-client). It will be accessible via `kn`
 * Or use Knative CLI running in docker, [see doc here](https://knative.dev/docs/install/install-kn/#kn-container-images)
 * To prepare OpenShift [see these instructions](https://docs.openshift.com/container-platform/4.3/serverless/installing_serverless/installing-openshift-serverless.html). 
+
     * The minimum requirement to use OpenShift Serverless is a cluster with 10 CPUs and 40GB memory. Use operator hub to install Knative serving and eventing servers and brokers. 
     * OpenShift Serverless Operator eventually shows up and its Status ultimately resolves to InstallSucceeded in the openshift-operators namespace.
     * Creating the knative-serving namespace: `oc create namespace knative-serving`, and then within the project create an instance. 
@@ -136,7 +137,7 @@ Knative allows you to split the traffic between revisions
 
 There are three primary usage patterns with Knative Eventing:
 
-1. **Source to Sink**: It provides single Sink — that is, event receiving service --, with no queuing, backpressure, and filtering. The Source to Service does not support replies, which means the response from the Sink service is ignored
+1. **Source to Sink**: It provides single Sink — that is, event receiving service --, with no queuing, back-pressure, and filtering. The Source to Service does not support replies, which means the response from the Sink service is ignored
 1. **Channel and subscription**: the Knative Eventing system defines a Channel, which can connect to various backends such as In-Memory, Kafka and GCP PubSub for sourcing the events. Each Channel can have one or more subscribers in the form of Sink services  
   ![1](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial-eventing/_images/channels-subs.png)
 1. **Broker and Trigger**:  supports filtering of events so subscribers specify interest on certain set of messages that flows into the Broker. For each Broker, Knative Eventing will implicitly create a Knative Eventing Channel. The Trigger gets itself subscribed to the Broker and applies the filter on the messages on its subscribed broker. The filters are applied on the on the Cloud Event attributes of the messages, before delivering it to the interested Sink Services(subscribers).
@@ -152,3 +153,15 @@ See [this tutorial](https://redhat-developer-demos.github.io/knative-tutorial/kn
 When eventing is set the filter and ingress pods are started. To get the address of the broker url: `oc get broker default -o jsonpath='{.status.address.url}'`
 
 Then the approach is to create different sinks, define triggers for each sink on what kind of event attribute to subscribe too, so filtering can occur. The sink will respond depending of the cloud event 'type' attribute for example.
+
+## Troubleshooting
+
+Source of knowledge [Debugging issues with your application](https://knative.dev/docs/serving/debugging-application-issues/).
+
+* Revision failed
+
+```
+oc get configurations.serving.knative.dev item-kafka-producer
+NAME                  LATESTCREATED               LATESTREADY   READY     REASON
+item-kafka-producer   item-kafka-producer-65kbv                 False     RevisionFailed
+```
