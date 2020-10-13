@@ -33,6 +33,12 @@ Difference between container applications and traditional deployments
         * **Seccomp** defines a security profile for processes, whitelisting the system calls, parameters and file descriptors they are allowed to use
         * SELinux (Security-Enhanced Linux) is a mandatory access control system for processes. Protect processes from each other and to protect the host system from its running processes
 
+Example of Dockerfile
+
+```
+
+```
+
 ## OpenShift
 
 RHOCP adds the capabilities to provide a production PaaS platform such as remote management, multi tenancy, increased security, monitoring and auditing, application life-cycle management, and self-service interfaces for developers.
@@ -164,6 +170,43 @@ sudo podman login quay.io -u ${RHT_OCP4_QUAY_USER}
 sudo podman tag do180-mysql-57-rhel7 quay.io/${RHT_OCP4_QUAY_USER}/do180-mysql-57-rhel7
 sudo podman push quay.io/${RHT_OCP4_QUAY_USER}/do180-mysql-57-rhel7
 ```
+
+## Troubleshooting
+
+### S2I
+
+The S2I image creation process is composed of the build (The BuildConfig (BC) OpenShift resources drive it) and deploy (  The DeploymentConfig (OpenShift resources) steps.
+
+* retrieve the logs from a build configuration: `oc logs bc/<application-name>`
+* request a new build `oc start-build <application-name>`
+* Deployment logs: `oc logs dc/<appname>`
+
+If a container could not access a file system, it may come to the container running under a specific user so we need to authorize by : `oc adm policy add-scc-to-user anyuid -z default`.
+
+* Make sure the ownership and permissions of the directory are set according to the USER directive in the Dockerfile that was used to build the container being deployed
+
+To avoid file system permission issues, local folders used for container volume mounts must satisfy the following:
+* The user executing the container processes must be the owner of the folder
+* The local folder must satisfy the SELinux requirements to be used as a container volume. Assign the container_file_t group to the folder by using the semanage fcontext -a -t container_file_t <folder> command, then refresh the permissions with the restorecon -R <folder> command.
+* Run the `oc adm prune` command for an automated way to remove obsolete images and other resources.
+
+## Containerized applications
+
+To connect to a admin console of a pod, we can use: `oc port-forward` for forwarding a local port to a pod port. If the image enable remote debugging by exposing a port number, then port-forwarding, will let the IDE access the JVM to debug step by step via the Java Debug Wire Protocol (JDWP).
+
+Use openshift events to see the problem at a higher level: `oc get events`.
+
+To add tools like ping, telnet, iputils, dig ... into a pod, just mount local file to volume and directory like /bin, /sbin, /lib...
+
+To copy file to or from a container, `podman cp` is useful, or use exec: 
+
+```shell
+sudo podman exec -i <container> mysql -uroot -proot < /path/on/host/db.sql < db.sql
+# or
+sudo podman exec -it <containerName> sh -c 'exec mysqldump -h"$MYSQL_PORT_3306_TCP_ADDR" \
+ -P"$MYSQL_PORT_3306_TCP_PORT"  -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD" items'  > db_dump.sql
+```
+
 ## Compendium
 
 * [Open Container initiave](https://www.opencontainers.org/)

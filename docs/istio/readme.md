@@ -6,7 +6,7 @@ Some [Istio](https://istio.io/) quick summary, and notes from personal study. La
 
 The main concepts are presented in the istio [main page](https://istio.io/docs/concepts/what-is-istio/).
 
-Istio helps operators to connect, secure, control and observe services and microservices. It helps managing the service mesh (network of microservices constituing applications).
+Istio helps operators to connect, secure, control and observe services and microservices. It helps managing the service mesh (network of microservices constituting applications).
 
 ### Value propositions
 
