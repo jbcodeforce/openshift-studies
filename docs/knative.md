@@ -2,9 +2,9 @@
 
 [Knative](https://knative.dev/) is Kubernetes based platform to develop serverless. Major value proposition is a simplified deployment syntax with automated scale-to-zero and scale-out based on HTTP load. Other interesting characteristics:
 
-* adjust the traffic distribution amongst the service revisions, to support blue/green deployment and canary release
-* able to scale to zero: After a defined time of idleness (the so called stable-window) a revision is considered inactive. Now, all routes pointing to the now inactive revision will be pointed to the so-called activator. By default the scale-to-zero-grace-period is 30s, and the stable-window is 60s.
-* auto-scaling: By default Knative Serving allows 100 concurrent requests into a pod. This is defined by the container-concurrency-target-default setting in the configmap config-autoscaler in the knative-serving namespace.
+* **adjust the traffic distribution** amongst the service revisions, to support blue/green deployment and canary release
+* able to **scale to zero**: After a defined time of idleness (the so called stable-window) a revision is considered inactive. Now, all routes pointing to the now inactive revision will be pointed to the so-called activator. By default the scale-to-zero-grace-period is 30s, and the stable-window is 60s.
+* **auto-scaling**: By default Knative Serving allows 100 concurrent requests into a pod. This is defined by the container-concurrency-target-default setting in the configmap config-autoscaler in the knative-serving namespace.
 
 Knative consists of the following components:
 
@@ -44,8 +44,29 @@ Use request identifiers to implement idempotent Lambda functions that do not bre
 
     * The minimum requirement to use OpenShift Serverless is a cluster with 10 CPUs and 40GB memory. Use operator hub to install Knative serving and eventing servers and brokers. 
     * OpenShift Serverless Operator eventually shows up and its Status ultimately resolves to InstallSucceeded in the openshift-operators namespace.
-    * Creating the knative-serving namespace: `oc create namespace knative-serving`, and then within the project create an instance. 
+    * Creating the knative-serving namespace: `oc create namespace knative-serving`, and then within the project it self, create an instance. 
     * Verify the conditions: `oc get knativeserving.operator.knative.dev/knative-serving -n knative-serving --template='{{range .status.conditions}}{{printf "%s=%s\n" .type .status}}{{end}}'`
+    You should get:
+
+    ```
+    DependenciesInstalled=True
+    DeploymentsAvailable=True
+    InstallSucceeded=True
+    Ready=True
+    ```
+    * With a yaml file: and `oc apply` it.
+    
+    ```yaml
+    apiVersion: operator.knative.dev/v1alpha1
+    kind: KnativeServing
+    metadata:
+      name: knative-serving
+      namespace: knative-serving
+      spec:
+        high-availability:
+          replicas: 2
+    ```
+    
     * Can do the same of knative-eventing: create a namespace and then an instance using the serverless operator. 
     * Verify with: `oc get knativeeventing.operator.knative.dev/knative-eventing -n knative-eventing --template='{{range .status.conditions}}{{printf "%s=%s\n" .type .status}}{{end}}'`
 
@@ -75,7 +96,36 @@ spec:
 
 Get the detail of the configuration: `oc get configurations.serving.knative.dev greeter`
 
-### Some CLI commands
+### Knative and Quarkus app
+
+Add the following property:
+
+```properties
+quarkus.kubernetes.deployment-target=knative
+```
+
+
+Other example of creating deployment:
+
+```
+mvn -Dcontainer.registry.url='https://index.docker.io/v1/' \
+> -Dcontainer.registry.user='jbcodefore' \
+> -Dcontainer.registry.password='XXXXXXXYYYYYYYZZZZZZZZ' \
+> -Dgit.source.revision='master' \
+> -Dgit.source.repo.url='https://github.com/quarkusio/quarkus-quickstarts.git' \
+> -Dapp.container.image='quay.io/jbcodefore/quarkus-greetings' package
+```
+
+The command creates the resource files in `target/kubernetes` directory
+
+Deploy the service `oc apply --recursive --filename target/kubernetes/`
+
+Some RedHat [article](https://developers.redhat.com/blog/2019/04/09/from-zero-to-quarkus-and-knative-the-easy-way/).
+
+## Knative Eventing
+
+
+## Some CLI commands
 
 ```shell
 # get revisions for a service
