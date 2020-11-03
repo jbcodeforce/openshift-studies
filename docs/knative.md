@@ -40,11 +40,11 @@ Use request identifiers to implement idempotent Lambda functions that do not bre
 
 * Install Knative CLI with [brew](https://github.com/knative/homebrew-client). It will be accessible via `kn`
 * Or use Knative CLI running in docker, [see doc here](https://knative.dev/docs/install/install-kn/#kn-container-images)
-* To prepare OpenShift [see these instructions](https://docs.openshift.com/container-platform/4.3/serverless/installing_serverless/installing-openshift-serverless.html). 
+* To prepare OpenShift [see the serverless install instructions](https://docs.openshift.com/container-platform/4.3/serverless/installing_serverless/installing-openshift-serverless.html). 
 
     * The minimum requirement to use OpenShift Serverless is a cluster with 10 CPUs and 40GB memory. Use operator hub to install Knative serving and eventing servers and brokers. 
     * OpenShift Serverless Operator eventually shows up and its Status ultimately resolves to InstallSucceeded in the openshift-operators namespace.
-    * Creating the knative-serving namespace: `oc create namespace knative-serving`, and then within the project it self, create an instance. 
+    * Creating the knative-serving namespace: `oc create namespace knative-serving`, and then within the project itself, create an instance. 
     * Verify the conditions: `oc get knativeserving.operator.knative.dev/knative-serving -n knative-serving --template='{{range .status.conditions}}{{printf "%s=%s\n" .type .status}}{{end}}'`
     You should get:
 
@@ -67,7 +67,7 @@ Use request identifiers to implement idempotent Lambda functions that do not bre
           replicas: 2
     ```
     
-    * Can do the same of knative-eventing: create a namespace and then an instance using the serverless operator. 
+    *We can do the same for knative-eventing: create a namespace and then an instance using the serverless operator. 
     * Verify with: `oc get knativeeventing.operator.knative.dev/knative-eventing -n knative-eventing --template='{{range .status.conditions}}{{printf "%s=%s\n" .type .status}}{{end}}'`
 
 ### Define a service for a given image
@@ -98,12 +98,14 @@ Get the detail of the configuration: `oc get configurations.serving.knative.dev 
 
 ### Knative and Quarkus app
 
+Be sure to have the kubernetes or openshit plugin: `./mvnw quarkus:add-extension -Dextensions="openshift"`
 Add the following property:
 
 ```properties
 quarkus.kubernetes.deployment-target=knative
 ```
 
+When doing `mvn package` a knative.yaml file is created under target/kubernetes
 
 Other example of creating deployment:
 
@@ -116,7 +118,7 @@ mvn -Dcontainer.registry.url='https://index.docker.io/v1/' \
 > -Dapp.container.image='quay.io/jbcodefore/quarkus-greetings' package
 ```
 
-The command creates the resource files in `target/kubernetes` directory
+This command creates the resource files in `target/kubernetes` directory
 
 Deploy the service `oc apply --recursive --filename target/kubernetes/`
 
