@@ -73,7 +73,20 @@ sudo podman restart my-httpd-container
 sudo podman kill my-httpd-container
 ```
 
+## Quay.io
+
 **Quay.io** introduces several features, such as server-side image building, fine-grained access controls, and automatic scanning of images for known vulnerabilities.
+
+Created an account with jbcodeforce user.
+
+```shell
+# login
+docker login quay.io
+# Commit an image to quay 
+docker commit b18bc52f5f3c quay.io/jbcodeforce/vaccineorderms:0.1.0
+# push
+docker push quay.io/jbcodeforce/vaccineorderms:0.1.0
+```
 
 To configure registries for the podman command, you need to update the `/etc/containers/registries.conf`. The podman search command finds images from all the registries listed in this file.
 

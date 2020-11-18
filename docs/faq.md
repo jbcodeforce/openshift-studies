@@ -166,3 +166,17 @@ spec:
 ```
 
 This declaration will add two files (remoteapptoaccess.key, remoteapptoaccess.crt) under the `/client/path/inside/container/ssl` folder.
+
+## What's new in OpeShift 4.6
+
+* installer: support disconnected env.
+Core:
+* remote worker nodes: need to be in the same subnetwork. Share the control plane / supervisor. Tolerant to disruption.  
+* Full stack automation (Installer Provisioned Infrastructure) installation on bare metal
+* serverless eventing
+* kubernetes 1.19
+* Open Virtual Network (OVN): CNI network plugin
+* security compliance operator.
+* monitoring your own services. 
+* new log forwarding API (ClusterLogForwarder CRD): to elastic search, kafka, fluentd, syslog...
+

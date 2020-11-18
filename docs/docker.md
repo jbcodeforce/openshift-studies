@@ -22,6 +22,11 @@ CMD ["httpd", "-D", "FOREGROUND"]
 
 [Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 
+### Tricks
+
+* Modify the PATH:  `ENV PATH="/opt/ibm/db2/V11.5/bin:${PATH}"`
+
+
 ## Run a ubuntu image
 
 This could be a good approach to demonstrate a linux based.
@@ -102,5 +107,24 @@ docker build --network host \
             --build-arg POSTGRESQL_CA_PEM="${POSTGRESQL_CA_PEM}"  -t ibmcase/$kname .
 
 ```
+
+## Docker compose
+
+Docker compose helps to orchestrate different docker container and isolate them with network. 
+
+* An interesting option to start the container is to build the image if it does not exist:
+
+ ```shell
+ docker-compose -f docker-compose-db2.yaml up --build
+# where the declaration includes
+db2server:
+    image: debezium/db2-cdc:${DEBEZIUM_VERSION}
+    build:
+      context: ./debezium-db2-init/db2server
+    ...
+    
+ ```
+
+ See [this note for the build declaration](https://docs.docker.com/compose/compose-file/#build).
 
 ## Define a docker compose to run python env

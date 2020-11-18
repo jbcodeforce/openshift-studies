@@ -1,14 +1,18 @@
 # ODO and Appsody Summary
 
-## Openshift DO
+## OpenShift DO
 
-[ODO CLI creating applications on OpenShift](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_developer_cli/understanding-odo.html).
+[ODO CLI creating applications on OpenShift](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_developer_cli/understanding-odo.html). Other important links since version 2.0:
+
+* [odo.dev](https://odo.dev/docs/understanding-odo/)
+* [devfile examples](https://github.com/odo-devfiles)
 
 The main value propositions are:
 
-* Abstracts away complex Kubernetes and OpenShift.
+* Abstracts away complex Kubernetes and OpenShift commands and configurations.
 * Detects changes to local code and deploys it to the cluster automatically, giving instant feedback to validate changes in real time
 * Leverage source 2 images to produce ready-to-run images by building source code without the need of a Dockerfile
+* version 2 define new `devfile`, which is a portable file that describes the development environment. It allows reproducing a portable developmental environment without the need of reconfiguration.
 
 The [basic commands](https://docs.openshift.com/container-platform/4.3/cli_reference/openshift_developer_cli/odo-cli-reference.html#basic-odo-cli-commands_odo-cli-reference):
 
@@ -21,7 +25,7 @@ odo project create jbsandbox
 odo project set jbsandbox 
 # Create a component (from an existing project for ex)... then following the question
 odo component create
-# list available component
+# list available component, with v2, the devfile list is also returned
 odo catalog list components
 # push to ocp
 odo push
@@ -207,7 +211,7 @@ appsody init quarkus
 ```
 
 !!! Note
-    The container image will not be pushed to a remote container registry, and hence the container image url has to be dev.local, to make Knative deploy it without trying to pull it from external container registry.
+    The container image will not be pushed to a remote container registry, and hence the container image url has to be `dev.local`, to make Knative deploy it without trying to pull it from external container registry.
     
 Then do the following steps:
 

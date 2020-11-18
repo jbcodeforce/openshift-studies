@@ -11,7 +11,9 @@ Knative consists of the following components:
 * Eventing - Management and delivery of events
 * Serving - Request-driven compute that can scale to zero
 
-[Redhat knative cookbook](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial/index.html).
+## Knative serving
+
+Knative Serving controller creates a Configuration, a Revision, and a Route. The Knative Configuration maintains the desired state of your deployment, providing a clean separation of code and configuration. Every change to the application configuration creates a new Knative Revision.
 
 ## Value propositions
 
@@ -217,3 +219,8 @@ oc get configurations.serving.knative.dev item-kafka-producer
 NAME                  LATESTCREATED               LATESTREADY   READY     REASON
 item-kafka-producer   item-kafka-producer-65kbv                 False     RevisionFailed
 ```
+
+## Sources
+
+* [Redhat knative tutorial](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial/index.html).
+* [Knative Cookbook](https://learning.oreilly.com/library/view/knative-cookbook)
