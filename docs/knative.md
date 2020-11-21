@@ -8,12 +8,9 @@
 
 Knative consists of the following components:
 
-* Eventing - Management and delivery of events
-* Serving - Request-driven compute that can scale to zero
+* [Serving](#knative-serving) - Request-driven compute that can scale to zero
+* [Eventing](#knative-eventing) - Management and delivery of events
 
-## Knative serving
-
-Knative Serving controller creates a Configuration, a Revision, and a Route. The Knative Configuration maintains the desired state of your deployment, providing a clean separation of code and configuration. Every change to the application configuration creates a new Knative Revision.
 
 ## Value propositions
 
@@ -50,12 +47,13 @@ Use request identifiers to implement idempotent Lambda functions that do not bre
     * Verify the conditions: `oc get knativeserving.operator.knative.dev/knative-serving -n knative-serving --template='{{range .status.conditions}}{{printf "%s=%s\n" .type .status}}{{end}}'`
     You should get:
 
-    ```
+    ```properties
     DependenciesInstalled=True
     DeploymentsAvailable=True
     InstallSucceeded=True
     Ready=True
     ```
+
     * With a yaml file: and `oc apply` it.
     
     ```yaml
@@ -72,9 +70,40 @@ Use request identifiers to implement idempotent Lambda functions that do not bre
     *We can do the same for knative-eventing: create a namespace and then an instance using the serverless operator. 
     * Verify with: `oc get knativeeventing.operator.knative.dev/knative-eventing -n knative-eventing --template='{{range .status.conditions}}{{printf "%s=%s\n" .type .status}}{{end}}'`
 
-### Define a service for a given image
+## Knative serving
 
-oc apply the following definition:
+Knative Serving controller creates a Configuration, a Revision, and a Route. The Knative Configuration maintains the desired state of your deployment, providing a clean separation of code and configuration. Every change to the application configuration creates a new Knative Revision.
+
+### Define a service for a docker image
+
+```shell
+# tutorial example
+kn service create greeter --image quay.io/rhdevelopers/knative-tutorial-greeter:quarkus
+
+kn service list
+# Update service with env variable
+kn service update greeter  --env "MESSAGE_PREFIX=Namaste"
+kn service describe greeter
+# Call service
+http $(kn service describe greeter -o url)
+# Get revision list 
+kn revision list 
+# Delete a revision
+kn revision delete <revision-id>
+# List route
+kn route list
+# Destroy
+kn service delete greeter
+
+```
+
+ A revision is the immutable application and configuration state that gives you the capability to roll back to any last known good state.
+
+
+### Define a service using yaml
+
+oc apply the following definition. The Knative Service is associated with its apiVersion and kind service.serving.knative.dev. Liveness and readiness ports are infered from deployment.
+
 
 ```yaml
 apiVersion: serving.knative.dev/v1
@@ -107,9 +136,11 @@ Add the following property:
 quarkus.kubernetes.deployment-target=knative
 ```
 
-When doing `mvn package` a knative.yaml file is created under target/kubernetes
+When doing `mvn package` a `knative.yaml` file is created under `target/kubernetes`
 
-Other example of creating deployment:
+`oc apply -f target/kubernetes/knative.yml `
+
+Other example of creating deployment using a public docker image
 
 ```
 mvn -Dcontainer.registry.url='https://index.docker.io/v1/' \
@@ -126,33 +157,8 @@ Deploy the service `oc apply --recursive --filename target/kubernetes/`
 
 Some RedHat [article](https://developers.redhat.com/blog/2019/04/09/from-zero-to-quarkus-and-knative-the-easy-way/).
 
-## Knative Eventing
 
-
-## Some CLI commands
-
-```shell
-# get revisions for a service
-oc get rev --selector=serving.knative.dev/service=greeter --sort-by="{.metadata.creationTimestamp}"
-oc delete services.serving.knative.dev greeter
-```
-
-```shell
-# create a service from image
-kn service create greeter --image quay.io/rhdevelopers/knative-tutorial-greeter:quarkus
-# create a revision
-kn service update greeter --env "MESSAGE_PREFIX=Namaste"
-kn service describe greeter
-kn service delete greeter
-# get revisions
-kn revision list
-kn revision describe greeter-xhwyt-1 
-
-# route
-kn route list
-```
-
-## Blue/green deployment
+### Blue/green deployment
 
 Knative offers a simple way of switching 100% of the traffic from one Knative service revision (blue) to another newly rolled out revision (green).
 By default new revision receives 100% of the new traffic. To rollback we need to create a yaml with the template.metadata.name to the expected revision and add the following spec.traffic
@@ -170,7 +176,7 @@ By default new revision receives 100% of the new traffic. To rollback we need to
       percent: 0
 ```
 
-## Canary release
+### Canary release
 
 Knative allows you to split the traffic between revisions
 
@@ -189,16 +195,83 @@ Knative allows you to split the traffic between revisions
 
 ## Knative eventing
 
+To use Knative eventing, we need to create a `knative-eventing` project and then in the Knative (Red Hat OpenShift serverless) operator create one instance.
+
+```yaml
+apiVersion: operator.knative.dev/v1alpha1
+kind: KnativeEventing
+metadata:
+  name: knative-eventing
+  namespace: knative-eventing
+spec: {}
+```
+
+Verify it runs successfully by looking at the predefeind services:
+
+```shell 
+kubectl api-resources --api-group='sources.knative.dev'
+```
+
 There are three primary usage patterns with Knative Eventing:
 
 1. **Source to Sink**: It provides single Sink — that is, event receiving service --, with no queuing, back-pressure, and filtering. The Source to Service does not support replies, which means the response from the Sink service is ignored
 1. **Channel and subscription**: the Knative Eventing system defines a Channel, which can connect to various backends such as In-Memory, Kafka and GCP PubSub for sourcing the events. Each Channel can have one or more subscribers in the form of Sink services  
   ![1](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial-eventing/_images/channels-subs.png)
+
+  When forwarding event to subscribers the channel transforms the event data as per CloudEvent specification
 1. **Broker and Trigger**:  supports filtering of events so subscribers specify interest on certain set of messages that flows into the Broker. For each Broker, Knative Eventing will implicitly create a Knative Eventing Channel. The Trigger gets itself subscribed to the Broker and applies the filter on the messages on its subscribed broker. The filters are applied on the on the Cloud Event attributes of the messages, before delivering it to the interested Sink Services(subscribers).
 
   ![2](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial-eventing/_images/brokers-triggers.png)
 
 To make a project using knative eventing label the namespace with: `kubectl label namespace jbsandbox knative-eventing-injection=enabled`. This will start the filter and ingress pods.
+
+### Source and sink
+
+From Red Hat tutorial, the commands to test knative eventing
+
+```shell
+# Under current namespace
+# 1- Create sink
+kn service create eventinghello \
+  --concurrency-target=1 \
+  --image=quay.io/rhdevelopers/eventinghello:0.0.2
+# A pod is created with name like  eventinghello-sdnfp-1-deployment-...
+
+# 2 Create source as a generator of json message
+kn source ping create eventinghello-ping-source \
+  --schedule "*/2 * * * *" \
+  --sink ksvc:eventinghello
+# Verify source start to send message
+kn source ping list
+# Verify sink got messages
+oc logs <pod>
+# clean first the source then the sink
+kn source ping delete eventinghello-ping-source
+kn service delete eventinghello
+```
+
+### Channel and Subscribers
+
+Here is a simple set of steps to demo channel and subscriber on the ping source
+
+```shell
+# Create the in memory channel channel
+kn channel create eventinghello-ch
+kn channel list
+# Create source 
+kn source ping create eventinghello-ping-source \
+  --schedule "*/2 * * * *" \
+  --sink channel:eventinghello-ch
+kn source ping list
+# create a subscriber
+kn service create eventinghelloa    --concurrency-target=1   --revision-name=eventinghelloa-v1 --image=quay.io/rhdevelopers/eventinghello:0.0.2
+# Add the subscription
+kn subscription create   eventinghelloa-sub --channel eventinghello-ch   --sink eventinghelloa
+kn subscription list
+# Clean up
+
+kn subscription delete eventinghelloa-sub
+```
 
 ### Broker and Trigger
 
@@ -207,6 +280,25 @@ See [this tutorial](https://redhat-developer-demos.github.io/knative-tutorial/kn
 When eventing is set the filter and ingress pods are started. To get the address of the broker url: `oc get broker default -o jsonpath='{.status.address.url}'`
 
 Then the approach is to create different sinks, define triggers for each sink on what kind of event attribute to subscribe too, so filtering can occur. The sink will respond depending of the cloud event 'type' attribute for example.
+
+
+## Some other CLI commands
+
+```shell
+# get revisions for a service
+oc get rev --selector=serving.knative.dev/service=greeter --sort-by="{.metadata.creationTimestamp}"
+oc delete services.serving.knative.dev greeter
+```
+
+```shell
+
+# get revisions
+kn revision list
+kn revision describe greeter-xhwyt-1 
+
+# route
+kn route list
+```
 
 ## Troubleshooting
 
@@ -222,5 +314,7 @@ item-kafka-producer   item-kafka-producer-65kbv                 False     Revisi
 
 ## Sources
 
-* [Redhat knative tutorial](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial/index.html).
-* [Knative Cookbook](https://learning.oreilly.com/library/view/knative-cookbook)
+* [Red Hat knative tutorial on github](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial/index.html).
+* [Knative Cookbook on O'Reilly portal](https://learning.oreilly.com/library/view/knative-cookbook)
+* [REd Hat Knative Tutorial](https://redhat-developer-demos.github.io/knative-tutorial/knative-tutorial/index.html)
+* [Quarkus Funqy Knative events binding guide](https://quarkus.io/guides/funqy-knative-events)

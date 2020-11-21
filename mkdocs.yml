@@ -1,4 +1,4 @@
-site_name: Redhat Openshift studies
+site_name: Red Hat Openshift studies
 repo_url: https://github.com/jbcodeforce/openshift-studies
 nav:
   - Introduction: index.md
@@ -26,6 +26,8 @@ nav:
 
 theme: 
   name: material
+  palette:
+    primary: red
 extra_css: ["extra.css"]
 markdown_extensions:
   - admonition
