@@ -269,8 +269,9 @@ kn service create eventinghelloa    --concurrency-target=1   --revision-name=eve
 kn subscription create   eventinghelloa-sub --channel eventinghello-ch   --sink eventinghelloa
 kn subscription list
 # Clean up
-
+kn service delete eventinghello
 kn subscription delete eventinghelloa-sub
+kn source ping delete eventinghello-ping-source
 ```
 
 ### Broker and Trigger
