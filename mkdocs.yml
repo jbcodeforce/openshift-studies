@@ -23,6 +23,7 @@ nav:
   - Ansible: ansible.md
   - ODO - Appsody Summary: odo-appsody.md
   - Compendium: compendium.md
+  - Back to home: https://jbcodeforce.github.io/
 
 theme: 
   name: material

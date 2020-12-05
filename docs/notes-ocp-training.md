@@ -121,6 +121,20 @@ sudo podman exec todoapi env
 
 Red Hat Software Collections Library  is the source of most container images
 
+## Building app
+
+In OpenShift, a build is the process of creating a runnable container image from application source code. A *BuildConfig* resource defines the entire build process.
+
+OpenShift can create container images from source code without the need for tools such as Docker or Podman. Images are stored in the internal *container registry*.
+
+In an *Source to Image* S2I build, application source code is combined with an S2I builder image, which is a container image containing the tools, libraries, and frameworks required to run the application.
+
+After an application is deployed on OpenShift, then OpenShift can rebuild and redeploy a new container image anytime the application source code is modified.
+
+OpenShift generates unique webhook URLs for applications that are built from source stored in Git repositories. Webhooks are configured on a Git repository. Based on the webhook configuration, GitHub will send a HTTP POST request to the webhook URL, with details that include the latest commit information. The OpenShift REST API listens for webhook notifications at this URL, and then triggers a new build automatically. You must configure your webhook to point to this unique URL.
+
+In the git repos use `Settings > Webhooks` and then from the OpenShift build resource  detail view scroll down to the webhooks URL
+
 ### Deploying Containerized Applications on OpenShift
 
 Lab:
@@ -140,6 +154,41 @@ oc get pods -w
 oc expose  svc/temps
 # Determine route URL
  oc get route/temps
+```
+
+Other example for a nodejs app, the source code from git of a specific branch (devenv-versioning) and other context.
+
+```shell
+oc new-app --name demonode https://github.com/jbcodeforce/DO180-apps#devenv-versioning --context-dir express-helloworld
+ oc expose svc demonode
+```
+
+### Scaling
+
+When scaling up an application, the OpenShift platform first deploys a new pod and then waits for the pod to be ready. Only after the new pod becomes available does the OpenShift platform configure the route to also send traffic to the new pod. 
+
+When scaling down, OpenShift reconfigures the route to stop sending traffic to the pod, and then deletes the pod.
+
+If the application is maintaining session state, then it is important to keep those session data into a central store like a DB, redis or memcached.
+
+Databases, such as MariaDB and PostgreSQL, do not usually support running in multiple pods. 
+
+Routes need to be configured to support sending message to different pods, via round-robin algorithm. Here is an example of yaml configuration to support this behavior:
+
+```yaml
+ annotations:
+    haproxy.router.openshift.io/balance: roundrobin
+    haproxy.router.openshift.io/disable_cookies: 'true'
+    openshift.io/host.generated: 'true'
+```
+
+In addition to manual scaling, OpenShift provides the Horizontal Pod Autoscaler (HPA) feature. HPA automatically increases or decreases the number of pods depending on average CPU utilization. Developers can also configure HPA to use custom application metrics for scaling.
+
+To set up autoscale, we need to use oc CLI
+
+```shell
+oc get dc
+oc autoscale dc/php-scale2 --max=3 --cpu-percent=20
 ```
 
 ### Deploy multi-container app
@@ -188,7 +237,7 @@ sudo podman push quay.io/${RHT_OCP4_QUAY_USER}/do180-mysql-57-rhel7
 
 ### S2I
 
-The S2I image creation process is composed of the build (The BuildConfig (BC) OpenShift resources drive it) and deploy (  The DeploymentConfig (OpenShift resources) steps.
+The S2I image creation process is composed of the build (The BuildConfig (BC) OpenShift resources drive it) and deploy (The DeploymentConfig resources) steps.
 
 * retrieve the logs from a build configuration: `oc logs bc/<application-name>`
 * request a new build `oc start-build <application-name>`
