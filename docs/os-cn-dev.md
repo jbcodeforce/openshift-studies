@@ -1,4 +1,14 @@
-# ODO and Appsody Summary
+# OpenShift Cloud Native Development Summary
+
+## Service Mesh
+
+Merge several project into one offering: Istio (v1.6), Kiali (monitoring), Jaeger (distributed tracing).
+Use **istiod** to reduce control panel resource usage, startup time and improves performance (CRD: `ServiceMeshControlPlane`).
+Use Secret Discovery Service to deliver certificates to Envoy: no more k8s secrets, easier to integrate with other certificate providers.
+Jaeger supports ElasticSearch clusters.
+
+
+
 
 ## OpenShift DO
 

@@ -11,6 +11,7 @@ Knative consists of the following components:
 * [Serving](#knative-serving) - Request-driven compute that can scale to zero
 * [Eventing](#knative-eventing) - Management and delivery of events
 
+With OpenShift is is called OpenShift Serverless, and offer operators for functions, serving and eventing. Integrate with Apache Camel connectors. 
 
 ## Value propositions
 
@@ -138,13 +139,9 @@ quarkus.kubernetes.deployment-target=knative
 
 When doing `mvn package` a `knative.yaml` file is created under `target/kubernetes`
 
-`oc apply -f target/kubernetes/knative.yml `
-
-Other example of creating deployment using a public docker image
-
 ```
 mvn -Dcontainer.registry.url='https://index.docker.io/v1/' \
-> -Dcontainer.registry.user='jbcodefore' \
+> -Dcontainer.registry.user='jbcodeforce' \
 > -Dcontainer.registry.password='XXXXXXXYYYYYYYZZZZZZZZ' \
 > -Dgit.source.revision='master' \
 > -Dgit.source.repo.url='https://github.com/quarkusio/quarkus-quickstarts.git' \
