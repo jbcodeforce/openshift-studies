@@ -22,10 +22,11 @@ CMD ["httpd", "-D", "FOREGROUND"]
 
 [Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 
+[Run java using openJDK image](https://hub.docker.com/_/openjdk)
+
 ### Tricks
 
 * Modify the PATH:  `ENV PATH="/opt/ibm/db2/V11.5/bin:${PATH}"`
-
 
 ## Run a ubuntu image
 
@@ -79,6 +80,8 @@ docker network disconnect bridge 71582654b2f4
 docker network connect docker_default containernameorid
 ```
 
+Inside the container the host name is in DNS: `host.docker.internal`. The other solution is to use --network="host" in docker run command, then 127.0.0.1 in the docker container will point to the docker host.
+
 ## Start a docker bypassing entry point or cmd
 
 ```shell
@@ -110,7 +113,11 @@ docker build --network host \
 
 ## Docker compose
 
-Docker compose helps to orchestrate different docker container and isolate them with network. 
+Docker compose helps to orchestrate different docker container and isolate them with network. Examples of interesting docker-compose file:
+
+* [Kafka Strimzi](https://github.com/jbcodeforce/kafka-studies/blob/master/docker-compose.yml)
+* [Kafka Confluent]()
+* [Flink]()
 
 * An interesting option to start the container is to build the image if it does not exist:
 
@@ -122,7 +129,6 @@ db2server:
     build:
       context: ./debezium-db2-init/db2server
     ...
-    
  ```
 
  See [this note for the build declaration](https://docs.docker.com/compose/compose-file/#build).
