@@ -7,33 +7,25 @@ Use **istiod** to reduce control panel resource usage, startup time and improves
 Use Secret Discovery Service to deliver certificates to Envoy: no more k8s secrets, easier to integrate with other certificate providers.
 Jaeger supports ElasticSearch clusters.
 
-
-
-
 ## OpenShift DO
 
-[ODO CLI creating applications on OpenShift](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_developer_cli/understanding-odo.html). Other important links since version 2.0:
+[ODO CLI for deploying applications on OpenShift](https://odo.dev/docs/understanding-odo/). V2.0 is merging with Appsody where stacks are [devfile in odo](https://odo.dev/docs/deploying-a-devfile-using-odo/). A **devfile** is a portable file that describes your development environment.
 
-* [odo.dev](https://odo.dev/docs/understanding-odo/)
 * [devfile examples](https://github.com/odo-devfiles)
 
 The main value propositions are:
 
 * Abstracts away complex Kubernetes and OpenShift commands and configurations.
 * Detects changes to local code and deploys it to the cluster automatically, giving instant feedback to validate changes in real time
-* Leverage source 2 images to produce ready-to-run images by building source code without the need of a Dockerfile
-* version 2 define new `devfile`, which is a portable file that describes the development environment. It allows reproducing a portable developmental environment without the need of reconfiguration.
-
-The [basic commands](https://docs.openshift.com/container-platform/4.3/cli_reference/openshift_developer_cli/odo-cli-reference.html#basic-odo-cli-commands_odo-cli-reference):
 
 ```shell
-# login to a ROKS
+# login to a OpenShift cluster like ROKS
 odo  login --token=s....vA c100-e.us-south.containers.cloud.ibm.com:30040
 # Create a new project in OCP
 odo project create jbsandbox
 # change project inside OCP
 odo project set jbsandbox 
-# Create a component (from an existing project for ex)... then following the question
+# Create a component (from an existing project for ex)... then follow the different questions
 odo component create
 # list available component, with v2, the devfile list is also returned
 odo catalog list components
@@ -44,11 +36,10 @@ odo app list
 odo app delete myapp
 ```
 
-Push a component creates 2 pods: one ...app-deploy and one ...-app
+Deploy a component to OpenShift creates 2 pods: one ...app-deploy and one ...-app
 
 ### Important concepts
 
-See details [in odo architecture section](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_developer_cli/odo-architecture.html).
 
 * **Init containers** are specialized containers that run before the application container starts and configure the necessary environment for the application containers to run. Init containers can have files that application images do not have, for example setup scripts
 * **Application** container is the main container inside of which the user-source code executes. It uses two volumes: emptyDir and PersistentVolume. The data on the PersistentVolume persists across Pod restarts.
@@ -58,6 +49,18 @@ See details [in odo architecture section](https://docs.openshift.com/container-p
     * index source code files 
     * push code into the application container
     * execute assemble and restart.
+
+### Python Flask
+
+Current base code is a Flask under [https://github.com/odo-devfiles/python-ex](https://github.com/odo-devfiles/python-ex)
+
+```shell
+mkdir project-name
+# create the devfile and download starter code
+odo create python --starter
+# Deploy to OCP
+odo push
+```
 
 ## Appsody
 
