@@ -14,3 +14,8 @@
 * [Configure user and authorization in openshift](https://docs.openshift.com/container-platform/3.6/install_config/configuring_authentication.html#install-config-configuring-authentication)
 
 * [Red hat Open TLC](https://labs.opentlc.com/service/explorer)
+
+## IBM Content related to OpenShift
+
+* [Red Hat OpenShift on IBM Cloud](https://developer.ibm.com/openlabs/OpenShift) Develop in a preconfigured OpenShift environment available for four hours at no charge. With some hands on labs and introduction videos.
+* [Cloud Native Toolkit](https://cloudnativetoolkit.dev/)

@@ -44,7 +44,7 @@ oc get projects --as system:admin
 
 ### Cluster
 
-See cluster:
+You can get a list of all OpenShift clusters you have ever logged into by running:
 
 ```
 oc config get-clusters
@@ -105,6 +105,13 @@ Get the list of supported app templates:
 ```
 oc new-app -L
 ```
+
+Create an app and build from a specific context directory.
+
+```
+oc new-app https://github.com/jbcodeforce/refarch-kc-order-ms --context-dir=order-command-ms/
+```
+
 
 To create a project, that is mapped to a kubernetes namespace:
 

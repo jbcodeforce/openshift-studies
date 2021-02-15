@@ -2,29 +2,30 @@ site_name: Red Hat Openshift studies
 repo_url: https://github.com/jbcodeforce/openshift-studies
 nav:
   - Introduction: index.md
-  - Kubernetes fundamentals:
+  - Docker: docker.md
+  - Kubernetes deeper dive:
     - Introduction: k8s/k8s-0.md
     - Networking: k8s/k8s-1.md
     - Security: k8s/k8s-2.md
+    - Demo it: k8s/k8s-3.md
     - FAQ: k8s/k8s-faq.md
+    - Notes from certification: notes-ocp-training.md
     - Compendium: k8s/k8s-comp.md
-  - Docker tricks: docker.md
-  - Openshift: 
-      - cp4i: cp4i.md
+  - Use Openshift: 
+      - Cloud Native Development: os-cn-dev.md
+     
+      - Cloud Pak Integration: cp4i.md
       - FAQ: faq.md
       - oc CLI: oc-cli.md
       - Deployment examples: deployment-ex.md
-      - notes certification: notes-ocp-training.md
-  - OpenShift Cloud Native Development: os-cn-dev.md
-  - Knative: knative.md
-  - SRE: sre.md
-  - Operators (with Spark): spark-on-os.md
-  - Open Data Hub: opendatahub.md
+      - Operators (with Spark): spark-on-os.md
+      - Knative: knative.md
+  - Operations:
+    - SRE: sre.md
+    - Operators (with Spark): spark-on-os.md
   - Istio: istio/readme.md
-  - Ansible: ansible.md
   - Compendium: compendium.md
   - Back to home: https://jbcodeforce.github.io/
-
 theme: 
   name: material
   palette:

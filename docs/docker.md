@@ -1,4 +1,24 @@
-# Some docker and docker compose tricks
+# Quick docker summary
+
+## Why
+
+Lower memory consumption than VM. Define configuration, dependencies, command as file (Dockerfile). It uses registry to store images. Image is like a VM image. Container is a running instance of an image. Docker engine helps to manage the life cycle and commands on a local machine.
+
+![](./images/docker.png)
+
+### Value propositions for container
+
+Just to recall the value of using container for the cloud native application are the following:
+
+* Docker ensures consistent environments from development to production. Docker containers are configured to maintain all configurations and dependencies internally.
+* Docker containers allows you to commit changes to your Docker image and version control them. It is very easy to rollback to a previous version of your Docker image. This whole process can be tested in a few minutes.
+* Docker is fast, allowing you to quickly make replications and achieve redundancy.
+* Isolation: Docker makes sure each container has its own resources that are isolated from other containers
+* Removing an app/ container is easy and won’t leave any temporary or configuration files on your host OS.
+* Docker ensures that applications that are running on containers are completely segregated and isolated from each other, granting you complete control over traffic flow and management
+The container filesystem is represented as a list of read-only layers stacked on top of each other using a storage driver. The layers are generated when commands are executed during the Docker image build process. The top layer has read-write permissions.
+Docker daemon configuration is managed by the Docker configuration file (/etc/docker/daemon.json) and Docker daemon startup options are usually controlled by the systemd unit: `docker`.
+With environment variables you can control one container, while using `linked containers` docker automatically copies all environment variables from one container to another.
 
 ## Dockerfile
 
@@ -24,11 +44,14 @@ CMD ["httpd", "-D", "FOREGROUND"]
 
 [Run java using openJDK image](https://hub.docker.com/_/openjdk)
 
+
+## Some docker and docker compose tricks
+
 ### Tricks
 
 * Modify the PATH:  `ENV PATH="/opt/ibm/db2/V11.5/bin:${PATH}"`
 
-## Run a ubuntu image
+### Run a ubuntu image
 
 This could be a good approach to demonstrate a linux based.
 
@@ -47,7 +70,7 @@ This project includes a Dockerfile-ubuntu to build a local image with the above 
 docker build -t jbcodeforce/myubuntu:20.04 -f Dockerfile-ubuntu .
 ```
 
-## Docker volume
+### Docker volume
 
 For mounting host directory, the host directory needs to be configured with ownership and permissions allowing access to the container.
 
@@ -55,7 +78,7 @@ For mounting host directory, the host directory needs to be configured with owne
 docker run -v /var/dbfiles:/var/lib/mysql rhmap47/mysql
 ```
 
-## Reclaim disk space
+### Reclaim disk space
 
 ```shell
 docker system df
@@ -63,7 +86,7 @@ docker system df
 
 (https://rmoff.net/post/what-to-do-when-docker-runs-out-of-space/)
 
-## Docker network
+### Docker network
 
 ```shell
 docker network list
@@ -82,7 +105,7 @@ docker network connect docker_default containernameorid
 
 Inside the container the host name is in DNS: `host.docker.internal`. The other solution is to use --network="host" in docker run command, then 127.0.0.1 in the docker container will point to the docker host.
 
-## Start a docker bypassing entry point or cmd
+### Start a docker bypassing entry point or cmd
 
 ```shell
 docker run -ti --entrypoint "/bin/bash" imagename
@@ -94,7 +117,7 @@ or use the command after the image name:
 docker run -ti imagename /bin/bash 
 ```
 
-## Docker build image with tests and env variables
+### Docker build image with tests and env variables
 
 Inject the environment variables with --build-arg
 
@@ -132,5 +155,3 @@ db2server:
  ```
 
  See [this note for the build declaration](https://docs.docker.com/compose/compose-file/#build).
-
-## Define a docker compose to run python env

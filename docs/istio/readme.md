@@ -1,12 +1,16 @@
 # Use ISTIO for service mesh
 
-Some [Istio](https://istio.io/) quick summary, and notes from personal study. Last tested on release 1.3.3 on openshift 3.11 under istio-system namespace.
+## Service Mesh
 
-## Summary
+Istio helps operators to connect, secure, control and observe services and microservices. It helps managing the service mesh (network of microservices constituting applications).
 
 The main concepts are presented in the istio [main page](https://istio.io/docs/concepts/what-is-istio/).
 
-Istio helps operators to connect, secure, control and observe services and microservices. It helps managing the service mesh (network of microservices constituting applications).
+Merge several projects into one offering: Istio (v1.6), Kiali (monitoring), Jaeger (distributed tracing).
+Use **istiod** to reduce control panel resource usage, startup time and improves performance (CRD: `ServiceMeshControlPlane`).
+Use Secret Discovery Service to deliver certificates to Envoy: no more k8s secrets, easier to integrate with other certificate providers.
+Jaeger supports ElasticSearch clusters.
+
 
 ### Value propositions
 
