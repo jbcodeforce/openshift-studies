@@ -13,7 +13,6 @@ nav:
     - Compendium: k8s/k8s-comp.md
   - Use Openshift: 
       - Cloud Native Development: os-cn-dev.md
-     
       - Cloud Pak Integration: cp4i.md
       - FAQ: faq.md
       - oc CLI: oc-cli.md
@@ -22,6 +21,7 @@ nav:
       - Knative: knative.md
   - Operations:
     - SRE: sre.md
+    - Ansible: ansible.md
     - Operators (with Spark): spark-on-os.md
   - Istio: istio/readme.md
   - Compendium: compendium.md
