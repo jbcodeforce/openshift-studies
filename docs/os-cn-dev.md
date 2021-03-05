@@ -186,7 +186,39 @@ There are two ways to implement the deployment strategy for GitOps:
 
 A CICD based on git action will build the image and edit Kustomize patch to bump the expected container tag using the new docker image tag, then commit this changes to the gitops repo.
 
-[Kustomize](https://kustomize.io/) to simplify the configuration of application or environment. Kustomize traverses a Kubernetes manifest to add, remove or update configuration options without forking. It is available both as a standalone binary and as a native feature of kubectl. A [lot of examples here.](https://github.com/kubernetes-sigs/kustomize/tree/master/examples)
+[Kustomize](https://kustomize.io/) is used to simplify the configuration of application and environment. Kustomize traverses a Kubernetes manifest to add, remove or update configuration options without forking. It is available both as a standalone binary and as a native feature of Kubectl. A [lot of examples here.](https://github.com/kubernetes-sigs/kustomize/tree/master/examples).
+
+The simple way to organize the configuration is to use one `kustomize` folder, then one folder per component, then one overlay folder in which environment folder include `kustomization.yaml` file with patches.
+
+```
+└── postgres
+    ├── base
+    │   ├── configmap.yaml
+    │   ├── kustomization.yaml
+    │   ├── pvc.yaml
+    │   ├── secret.yaml
+    │   ├── service-account.yaml
+    │   ├── statefulset.yaml
+    │   ├── svc-headless.yaml
+    │   └── svc.yaml
+    ├── kustomization.yaml
+    └── overlays
+        └── dev
+            ├── kustomization.yaml
+            └── secret.yaml
+```
+
+Here is an example of `kustomization.yaml`:
+
+```
+bases:
+  - ../../base
+patchesStrategicMerge:
+  - ./secret.yaml
+```
+
+The `patchesStrategicMerge` lists the resource configuration YAML files that you want to merge to the base kustomization. You must also add these files to the same repo as the kustomization file, such as `overlay/dev`. These resource configuration files can contain small changes that are merged to the base configuration files of the same name as a patch.
+
 
 In GitOps, the pipeline does not finish with something like `oc apply..`. but it’s an external tool (Argo CD or Flux) that detects the drift in the Git repository and will run these commands.
 
@@ -195,7 +227,9 @@ Here is a command to install ArgoCD on k8s, see [details here](https://argoproj.
 ```
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
+
 For OpenShift:
+
 * create an `argocd` project
 * use operator hub, and install the operator in this project. Nothing to change in the default configuration
 * deploy one instance of ArgoCD with the following customization:
