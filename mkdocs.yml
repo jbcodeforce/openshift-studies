@@ -22,8 +22,7 @@ nav:
   - Operations:
     - SRE: sre.md
     - Ansible: ansible.md
-    - Operators (with Spark): spark-on-os.md
-  - Istio: istio/readme.md
+    - Operators (with Spark): spark-on-os.m
   - Compendium: compendium.md
   - Back to home: https://jbcodeforce.github.io/
 theme: 
