@@ -25,12 +25,15 @@ oc login -u apikey -p I173tzup --server=https://c2-e.us-east.containers.cloud.ib
 
 ### Strange message from login
 
-Some oc login command may return a strange message: `error: invalid character '<' looking for beginning of value`. This is due to the fact that the response is a HTML page. This is a problem of server URL. The Server parameter has to correspond to your OpenShift API server endpoint.
+Some `oc login` command may return a strange message: `error: invalid character '<' looking for beginning of value`. 
+This is due to the fact that the response is a HTML page. This is a problem of server URL. The Server parameter has to correspond 
+to your OpenShift API server endpoint.
 When deploy on premise be sure to use the k8s master URL.
 
 ## Login and push image to private registry
 
-OpenShift could manage its own image private registry service. The default name and URL is docker-registry-default.apps.... See the product [documentation here](https://docs.openshift.com/container-platform/3.9/install_config/registry/deploy_registry_existing_clusters.html#registry-non-production-use) to install it.
+OpenShift could manage its own image private registry service. The default name and URL is `docker-registry-default.apps....`. 
+See the product [documentation here](https://docs.openshift.com/container-platform/3.9/install_config/registry/deploy_registry_existing_clusters.html#registry-non-production-use) to install it.
 
  Below is the step to push a docker images
 
@@ -40,7 +43,8 @@ OpenShift could manage its own image private registry service. The default name 
 oc login ...
 ```
 
-* If not done before add registry-viewer role to your user: `oc policy add-role-to-user registry-viewer $(oc whoami)` and `oc policy add-role-to-user registry-editor $(oc whoami)`
+* If not done before add registry-viewer role to your user: `oc policy add-role-to-user registry-viewer $(oc whoami)` 
+and `oc policy add-role-to-user registry-editor $(oc whoami)`
 * Look up the internal OpenShift Docker registry address by using the following command:
 
 ```
@@ -49,11 +53,12 @@ kubectl get routes docker-registry -n default
 
 * Login to docker registry:
 
-```
+```sh
 docker login -u john -p $(oc whoami -t) docker-registry-default.apps.green-with-envy.ocp.csplab.local
 ```
 
-If you get this message: `Error response from daemon: Get https://docker-registry-default.apps.green-with-envy.ocp.csplab.local/v2/: x509: certificate signed by unknown authority`, add the certificate to the docker client certificates:
+If you get this message: `Error response from daemon: Get https://docker-registry-default.apps.green-with-envy.ocp.csplab.local/v2/: x509: certificate signed by unknown authority`, 
+add the certificate to the docker client certificates:
 
         * Get the certificate: `oc extract -n default secrets/registry-certificates --keys=registry.crt`
         * Put the certificate in `~/.docker/certs.d/docker-registry-default.apps.green-with-envy.ocp.csplab.local` 
@@ -79,12 +84,7 @@ docker push docker-registry-default.apps.green-with-envy.ocp.csplab.local/reefer
 helm template --set image.repository=docker-registry.default.svc:5000/reefershipmentsolution/kc-ordercommandms --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime  --namespace reefershipmentsolution --output-dir templates chart/ordercommandms
 ```
 
-* Refresh an existing pod with the new image
-
-```
-oc delete -f templates/ordercommandms/templates/
-oc apply -f templates/ordercommandms/templates/
-```
+* Refresh an existing pod with the new image using `oc delete <deployment.yaml>` and `oc apply <deployment.yaml>`
 
 ## Deployment
 
@@ -92,28 +92,31 @@ oc apply -f templates/ordercommandms/templates/
 
 Just reference the docker image name from the dockerhub public repository
 
-```
+```sh
 oc new-app busybox
 ```
 
-For mongodb for example:
-```
+For mongodb using a local env file to specify the different environment variables to be used for deployment
+
+```sh
 oc new-app --env-file=mongo.env --docker-image=openshift/mongodb-24-centos7
 ```
 
 ## Copy a file to an existing running container
 
-```
+```sh
+# os rsync local folder to running pod
 oc rsync $(pwd) my-connect-connect-54485b7896-k5lsj:/tmp
 oc rsh my-connect-connect-54485b7896-k5lsj 
 ls /tmp
+# can copy file too
 ```
 
 ## How to setup TLS/SSL certificate
 
-The approach is to use secret and mounted volume to inject the SSL certifcate file so the nodejs or python app can use it to connect over TLS.
+The approach is to use secret and mounted volume to inject the SSL certifcate file so the app can use it to connect over TLS.
 
-If you have the key and cert certificates as remoteapptoaccess.key and remoteappaccess.crt, you may need to encode them with base64:
+If you have the key and certificates as remoteapptoaccess.key and remoteappaccess.crt, you may need to encode them with base64:
 
 ```shell
 $ base64 remoteapptoaccess.keys
@@ -122,7 +125,7 @@ $ base64 remoteapptoaccess.crt
 SUPERSECRETLONGSTRINGINBASE64FORMAT
 ```
 
-So then create a TLS secret descriptor for kubernetes:
+Then create a TLS secret descriptor for kubernetes:
 
 ```yaml
 apiVersion: v1
@@ -136,9 +139,10 @@ data:
   remoteapptoaccess.crt:
   SUPERSERCRETLONGSTRINGINBASE64FORMAT
 ```
+
 If you only have the crt file, you just define the data for it.
 
-In the client app deployment.yaml set a mount point: (the deployment is not complete, there are missing arguments linked to the app itself)
+In the client app deployment.yaml set a mount point: (the following deployment example, is not complete, there are missing arguments linked to the app itself)
 
 ```yaml
 apiVersion:  apps/v1
@@ -151,7 +155,7 @@ spec:
   replicas: 1
   spec:
       containers:
-      - image: yournamespace/imagename
+      - image: yourregistry/yournamespace/imagename
         name: clientapp
         volumeMounts:
           - mountPath: "/client/path/inside/container/ssl"
@@ -166,11 +170,14 @@ spec:
 ```
 
 This declaration will add two files (remoteapptoaccess.key, remoteapptoaccess.crt) under the `/client/path/inside/container/ssl` folder.
+If the SSL certs and keys are not in the default folder expected by the application, environment variables should specify the paths.
 
 ## What's new in OpeShift 4.6
 
 * installer: support disconnected env.
+
 Core:
+
 * remote worker nodes: need to be in the same subnetwork. Share the control plane / supervisor. Tolerant to disruption.  
 * Full stack automation (Installer Provisioned Infrastructure) installation on bare metal
 * serverless eventing

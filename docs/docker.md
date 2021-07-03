@@ -2,7 +2,9 @@
 
 ## Why
 
-Lower memory consumption than VM. Define configuration, dependencies, command as file (Dockerfile). It uses registry to store images. Image is like a VM image. Container is a running instance of an image. Docker engine helps to manage the life cycle and commands on a local machine.
+Lower memory consumption than VM. Define configuration, dependencies, command in a unique file (Dockerfile). It uses registry to store images. 
+Image is like a VM image. Container is a running instance of an image. Docker engine helps to manage the  container life cycle and 
+exposes API for the CLI.
 
 ![](./images/docker.png)
 
@@ -16,9 +18,10 @@ Just to recall the value of using container for the cloud native application are
 * Isolation: Docker makes sure each container has its own resources that are isolated from other containers
 * Removing an app/ container is easy and won’t leave any temporary or configuration files on your host OS.
 * Docker ensures that applications that are running on containers are completely segregated and isolated from each other, granting you complete control over traffic flow and management
+
 The container filesystem is represented as a list of read-only layers stacked on top of each other using a storage driver. The layers are generated when commands are executed during the Docker image build process. The top layer has read-write permissions.
 Docker daemon configuration is managed by the Docker configuration file (/etc/docker/daemon.json) and Docker daemon startup options are usually controlled by the systemd unit: `docker`.
-With environment variables you can control one container, while using `linked containers` docker automatically copies all environment variables from one container to another.
+With environment variables you can control one container, while using `linked containers`, docker automatically copies all environment variables from one container to another.
 
 ## Dockerfile
 
@@ -40,9 +43,9 @@ COPY ./src/ /var/www/html/
 CMD ["httpd", "-D", "FOREGROUND"]
 ```
 
-[Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
+[Best practices for writing Dockerfiles.](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 
-[Run java using openJDK image](https://hub.docker.com/_/openjdk)
+[Run java using openJDK image.](https://hub.docker.com/_/openjdk)
 
 
 ## Some docker and docker compose tricks
@@ -53,15 +56,16 @@ CMD ["httpd", "-D", "FOREGROUND"]
 
 ### Run a ubuntu image
 
-This could be a good approach to demonstrate a linux based.
+This could be a good approach to demonstrate a linux base app.
 
 ```shell
 docker run --name my-linux  --detach ubuntu:20.04 tail -f /dev/null
 # connect
-docker exec -ti my-linux bash
+docker exec -ti my-linux -v $(pwd):/home bash
 # Update apt inventory and install jdk, maven, git, curl, ... 
 apt update
 apt install -y openjdk-11-jre-headless maven git curl vim
+# You have a linux based development environment
 ```
 
 This project includes a Dockerfile-ubuntu to build a local image with the above tools.
@@ -103,7 +107,8 @@ docker network disconnect bridge 71582654b2f4
 docker network connect docker_default containernameorid
 ```
 
-Inside the container the host name is in DNS: `host.docker.internal`. The other solution is to use --network="host" in docker run command, then 127.0.0.1 in the docker container will point to the docker host.
+Inside the container the host name is in DNS: `host.docker.internal`. 
+The other solution is to use --network="host" in docker run command, then 127.0.0.1 in the docker container will point to the docker host.
 
 ### Start a docker bypassing entry point or cmd
 
@@ -134,19 +139,22 @@ docker build --network host \
 
 ```
 
+* [Python docker env](https://github.com/jbcodeforce/python-code/blob/master/DockerfileForEnv)
+
 ## Docker compose
 
-Docker compose helps to orchestrate different docker container and isolate them with network. Examples of interesting docker-compose file:
+Docker compose helps to orchestrate different docker containers and isolates them with network. 
+Examples of interesting docker-compose file:
 
 * [Kafka Strimzi](https://github.com/jbcodeforce/kafka-studies/blob/master/docker-compose.yml)
 * [Kafka Confluent]()
-* [Flink]()
+* [Flink](https://github.com/jbcodeforce/flink-studies/blob/master/docker-compose.yaml)
 
-* An interesting option to start the container is to build the image if it does not exist:
+* An interesting option to start the container is to build the image if it does not exist locally:
 
  ```shell
  docker-compose -f docker-compose-db2.yaml up --build
-# where the declaration includes
+# where the declaration includes build statements
 db2server:
     image: debezium/db2-cdc:${DEBEZIUM_VERSION}
     build:
