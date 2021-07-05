@@ -1,4 +1,4 @@
-# Some notes on Cloud Pak for integration
+# Some notes on Cloud Pak for Integration
 
 * [Marketing page](https://www.ibm.com/cloud/cloud-pak-for-integration)
 * [Installation instructions from product doc](https://www.ibm.com/support/knowledgecenter/en/SSGT7J)
@@ -82,10 +82,7 @@ My repos:
 
 * [Container inventory legacy app](https://github.com/ibm-cloud-architecture/refarch-container-inventory)
 * [MQ Messaging Solution](https://github.com/ibm-cloud-architecture/refarch-mq-messaging)
-
-Interesting reusable code
-
-
+* [Store simulator with MQ producer](https://github.com/ibm-cloud-architecture/refarch-eda-store-simulator)
 
 ## App Connect
 

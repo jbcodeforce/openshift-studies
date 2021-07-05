@@ -2,8 +2,10 @@
 
 OpenShift Container Platform is about developing, deploying, and running [containerized](/docker) applications. It is based on docker and Kubernetes and add the following features:
 
-* **Routes**: represents the way external clients are able to access applications running on OpenShift. The default OpenShift router (HAProxy) uses the HTTP header of the incoming request to determine where to proxy the connection.
-* **Deployment config**: Represents the set of containers included in a pod, and the deployment strategies to be used.
+* **Routes**: represents the way external clients are able to access applications running on OpenShift. 
+The default OpenShift router (HAProxy) uses the HTTP header of the incoming request to determine where to proxy the connection.
+* **[Deployment config](https://docs.openshift.com/container-platform/4.1/applications/deployments/what-deployments-are.html)**: Represents the set of containers included in a pod, and the deployment strategies to be used. 
+DeploymentConfigs involve one or more ReplicationControllers, which contain a point-in-time record of the state of a DeploymentConfig as a Pod template
 * CLI, [REST API](https://docs.OpenShift.org/latest/rest_api/index.html) for administration or Web Console
 * Multi tenants. You can also grant other users access to any of your projects. 
 * [Source-to-image (S2I)](https://docs.OpenShift.org/latest/creating_images/s2i.html) is a tool for building reproducible Docker images. S2I supports incremental builds which re-use previously downloaded dependencies, and previously built artifacts. OpenShift is S2I-enabled and can use S2I as one of its build mechanisms.
@@ -23,7 +25,8 @@ See also [my summary on k8s](k8s/k8s-0.md).
 OpenShift is based on Kubernetes. It adds the concept of **project**, mapped to a k8s namespace, to govern the application access
  control, resource quota and application's life cycle. Project is the top-level element for one to many applications.
 
-We can deploy any docker image, as soon as they are well built: such as defining the port any service is exposed on, not needing to run specifically as the root user or other dedicated user, and which embeds a default command for running the application.
+We can deploy any docker image, as soon as they are well built: such as defining the port any service is exposed on, 
+not needing to run specifically as the root user or other dedicated user, and which embeds a default command for running the application.
 
 Routes are used to expose app over HTTP. OpenShift can handle termination for secure HTTP connections, or a secure connection can be tunneled through the application, 
 with the application handling termination of the secure connection. Non HTTP applications can be exposed via a tunneled secure connection if the client supports

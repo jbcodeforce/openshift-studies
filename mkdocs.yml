@@ -18,7 +18,7 @@ nav:
       - oc CLI: oc-cli.md
       - Deployment examples: deployment-ex.md
       - Operators (with Spark): spark-on-os.md
-      - Knative: knative.md
+  - Knative: knative.md
   - Operations:
     - SRE: sre.md
     - Ansible: ansible.md

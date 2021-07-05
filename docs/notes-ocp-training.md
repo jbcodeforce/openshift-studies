@@ -14,40 +14,40 @@ quay.io jbcodeforce
 Difference between container applications and traditional deployments
 
 * The major drawback to traditionally deployed software application is that the application's dependencies are entangled with the runtime environment
-* a traditionally deployed application must be stopped before updating the associated dependencies
-        * complex systems to provide high availability 
+* A traditionally deployed application must be stopped before updating the associated dependencies
+        
+        * App server + deployed apps becomes a complex system to provide high availability 
+
 * A container is a set of one or more processes that are isolated from the rest of the system. 
 
         * security, storage, and network isolation
         * isolate dependent libraries and run time resources
         * less resources than VM, start quickly.
         * helps with the efficiency, elasticity, and reusability of the hosted applications, and portability
-        * [Open Container initiative](https://www.opencontainers.org/)
+        * [Open Container initiative](https://www.opencontainers.org/) to govern specifications for container runtime and image definition.
+        The Runtime Specification outlines how to run a “filesystem bundle” that is unpacked on disk 
 * Container image: bundle of files and metadata
 * Container engine: Rocket, Drawbridge, LXC, Docker, and Podman
 
-* Started in 2001 with VServer, then move to isolated process which leverages the linux features:
+* Started in 2001 with VServer, then move to isolated process which leverages the following linux features:
 
-        * **Namespaces**: The kernel can isolate specific system resources, usually visible to all processes, by placing the resources within a namespace. Namespaces can include resources like network interfaces, the process ID list, mount points, IPC resources, and the system's host name information.
+        * **Namespaces**: The kernel can isolate specific system resources, usually visible to all processes, by placing the resources within a namespace. 
+Namespaces can include resources like network interfaces, the process ID list, mount points, IPC resources, and the system's host name information.
         * **cgroups**: Control groups partition sets of processes and their children into groups to manage and limit the resources they consume.
         * **Seccomp** defines a security profile for processes, whitelisting the system calls, parameters and file descriptors they are allowed to use
-        * SELinux (Security-Enhanced Linux) is a mandatory access control system for processes. Protect processes from each other and to protect the host system from its running processes
-
-Example of Dockerfile
-
-```
-
-```
+        * **SELinux** (Security-Enhanced Linux) is a mandatory access control system for processes. Protect processes from each other and to protect the host system from its running processes
 
 ## OpenShift
 
 RHOCP adds the capabilities to provide a production PaaS platform such as remote management, multi tenancy, increased security, monitoring and auditing, application life-cycle management, and self-service interfaces for developers.
 
+```
 Username	RHT_OCP4_DEV_USER	boyerje-us
 Password	RHT_OCP4_DEV_PASSWORD	<>
 API Endpoint	RHT_OCP4_MASTER_API	https://api.ocp-na2.prod.nextcle.com:6443
 Console Web Application		https://console-openshift-console.apps.ocp-na2.prod.nextcle.com
 Cluster ID ...
+```
 
 Container images are named based on the following syntax: `registry_name/user_name/image_name:tag`
 
@@ -75,22 +75,24 @@ sudo podman kill my-httpd-container
 
 ## Quay.io
 
-**Quay.io** introduces several features, such as server-side image building, fine-grained access controls, and automatic scanning of images for known vulnerabilities.
+**Quay.io** introduces several features, such as server-side image building, fine-grained access controls, 
+and automatic scanning of images for known vulnerabilities.
 
 Created an account with jbcodeforce user.
 
 ```shell
 # login
 docker login quay.io
-# Commit an image to quay 
+# Commit an container as image to quay 
 docker commit b18bc52f5f3c quay.io/jbcodeforce/vaccineorderms:0.1.0
 # push
 docker push quay.io/jbcodeforce/vaccineorderms:0.1.0
 ```
 
-To configure registries for the podman command, you need to update the `/etc/containers/registries.conf`. The podman search command finds images from all the registries listed in this file.
+To configure registries for the `podman` command, you need to update the `/etc/containers/registries.conf`. 
+The podman search command finds images from all the registries listed in this file.
 
-```
+```sh
 [registries.search]
 registries = ["registry.access.redhat.com", "quay.io"]
 ```
@@ -102,7 +104,6 @@ By default, Podman stores container images in the /var/lib/containers/storage/ov
 Existing images from the Podman local storage can be saved to a .tar file using the `podman save` command.
 
 ```shell
-
 # Retrieve the list of external files and directories that Podman mounts to the running container
 sudo podman inspect -f "{{range .Mounts}}{{println .Destination}}{{end}}" official-httpd
 # list of modified files in the container file system
@@ -112,28 +113,34 @@ sudo podman commit -a 'Jerome' official-httpd do180-custom-httpd
 sudo podman save [-o FILE_NAME] IMAGE_NAME[:TAG]
 sudo podman tag quay.io/jbcodeforce/do180-custom-httpd:v1.0
 sudo podman push quay.io/jbcodeforce/do180-custom-httpd:v1.0
-
 sudo podman build -t NAME:TAG DIR
-
 # examine the content of the environment variable of a container
 sudo podman exec todoapi env
 ```
 
-Red Hat Software Collections Library  is the source of most container images
+Red Hat Software Collections Library is the source of most container images
 
 ## Building app
 
-In OpenShift, a build is the process of creating a runnable container image from application source code. A *BuildConfig* resource defines the entire build process.
+In OpenShift, a build is the process of creating a runnable container image from application source code. 
+A *BuildConfig* resource defines the entire build process.
+OpenShift can create container images from source code without the need for tools such as Docker or Podman. 
+Images are stored in the internal *container registry*.
 
-OpenShift can create container images from source code without the need for tools such as Docker or Podman. Images are stored in the internal *container registry*.
+In an *Source to Image* S2I build, application source code is combined with an S2I builder image, 
+which is a container image containing the tools, libraries, and frameworks required to run the application.
 
-In an *Source to Image* S2I build, application source code is combined with an S2I builder image, which is a container image containing the tools, libraries, and frameworks required to run the application.
+After an application is deployed on OpenShift, then OpenShift can rebuild and redeploy a new container image
+ anytime the application source code is modified.
 
-After an application is deployed on OpenShift, then OpenShift can rebuild and redeploy a new container image anytime the application source code is modified.
+OpenShift generates unique webhook URLs for applications that are built from source stored in Git repositories. 
+Webhooks are configured on a Git repository. Based on the webhook configuration, GitHub will send a HTTP POST 
+request to the webhook URL, with details that include the latest commit information. 
+The OpenShift REST API listens for webhook notifications at this URL, and then triggers a new build automatically.
+You must configure your webhook to point to this unique URL.
 
-OpenShift generates unique webhook URLs for applications that are built from source stored in Git repositories. Webhooks are configured on a Git repository. Based on the webhook configuration, GitHub will send a HTTP POST request to the webhook URL, with details that include the latest commit information. The OpenShift REST API listens for webhook notifications at this URL, and then triggers a new build automatically. You must configure your webhook to point to this unique URL.
-
-In the git repos use `Settings > Webhooks` and then from the OpenShift build resource  detail view scroll down to the webhooks URL
+In the git repos use `Settings > Webhooks` and then from the OpenShift build resource  detail view scroll down 
+to the webhooks URL
 
 ### Deploying Containerized Applications on OpenShift
 
@@ -144,8 +151,9 @@ Lab:
 oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
 # Create a new project named "youruser-ocp"
 oc new-project ${RHT_OCP4_DEV_USER}-ocp
-# Create a temperature converter application written in PHP using the php:7.1 image stream tag. The source code is in the Git repository at https://github.com/RedHatTraining/DO180-apps/
-c new-app php:7.1~https://github.com/RedHatTraining/DO180-apps --context-dir temps --name temps
+# Create a temperature converter application written in PHP using the php:7.1 image stream tag. 
+# The source code is in the Git repository at https://github.com/RedHatTraining/DO180-apps/
+oc new-app php:7.1~https://github.com/RedHatTraining/DO180-apps --context-dir temps --name temps
 # Monitor progress of the build
 oc logs -f bc/temps
 # Verify that the application is deployed.
@@ -160,16 +168,18 @@ Other example for a nodejs app, the source code from git of a specific branch (d
 
 ```shell
 oc new-app --name demonode https://github.com/jbcodeforce/DO180-apps#devenv-versioning --context-dir express-helloworld
- oc expose svc demonode
+oc expose svc demonode
 ```
 
 ### Scaling
 
-When scaling up an application, the OpenShift platform first deploys a new pod and then waits for the pod to be ready. Only after the new pod becomes available does the OpenShift platform configure the route to also send traffic to the new pod. 
+When scaling up an application, the OpenShift platform first deploys a new pod and then waits for the pod to be ready.
+Only after the new pod becomes available does the OpenShift platform configure the route to also send traffic to the new pod. 
 
 When scaling down, OpenShift reconfigures the route to stop sending traffic to the pod, and then deletes the pod.
 
-If the application is maintaining session state, then it is important to keep those session data into a central store like a DB, redis or memcached.
+If the application is maintaining session state, then it is important to keep those session data into a central store like a DB,
+redis or memcached.
 
 Databases, such as MariaDB and PostgreSQL, do not usually support running in multiple pods. 
 
@@ -182,7 +192,9 @@ Routes need to be configured to support sending message to different pods, via r
     openshift.io/host.generated: 'true'
 ```
 
-In addition to manual scaling, OpenShift provides the Horizontal Pod Autoscaler (HPA) feature. HPA automatically increases or decreases the number of pods depending on average CPU utilization. Developers can also configure HPA to use custom application metrics for scaling.
+In addition to manual scaling, OpenShift provides the Horizontal Pod Autoscaler (HPA) feature. 
+HPA automatically increases or decreases the number of pods depending on average CPU utilization. 
+Developers can also configure HPA to use custom application metrics for scaling.
 
 To set up autoscale, we need to use oc CLI
 
@@ -193,7 +205,8 @@ oc autoscale dc/php-scale2 --max=3 --cpu-percent=20
 
 ### Deploy multi-container app
 
-Podman uses Container Network Interface (CNI) to create a software-defined network (SDN) between all containers in the host. Unless stated otherwise, CNI assigns a new IP address to a container when it starts.
+Podman uses Container Network Interface (CNI) to create a software-defined network (SDN) between all containers in the host. 
+Unless stated otherwise, CNI assigns a new IP address to a container when it starts.
 
 Each container exposes all ports to other containers in the same SDN. As such, services are readily accessible within the same network. The containers expose ports to external networks only by explicit configuration.
 

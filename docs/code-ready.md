@@ -3,7 +3,6 @@
 Red Hat tools to help developer get the most of k8s and get started quickly. It includes workspace, container, studio, builder, toolchain and dependencies.
 
 
-
 ## Code Ready Container
 
 Red Hat CodeReady Containers brings a minimal OpenShift 4.0 or newer cluster to your local computer. See getting started [here](https://code-ready.github.io/crc/)
