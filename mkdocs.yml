@@ -4,7 +4,7 @@ nav:
   - Introduction: index.md
   - Docker: docker.md
   - Kubernetes deeper dive:
-    - Introduction: k8s/k8s-0.md
+    - Kubernetes introduction: k8s/k8s-0.md
     - Networking: k8s/k8s-1.md
     - Security: k8s/k8s-2.md
     - Demo it: k8s/k8s-3.md
