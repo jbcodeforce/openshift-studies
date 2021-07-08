@@ -1,0 +1,1021 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Docker - Red Hat Openshift studies</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ef5552">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="extra.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="red" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL(".",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#quick-docker-summary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Red Hat Openshift studies" class="md-header__button md-logo" aria-label="Red Hat Openshift studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Red Hat Openshift studies
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Docker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/jbcodeforce/openshift-studies/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Red Hat Openshift studies" class="md-nav__button md-logo" aria-label="Red Hat Openshift studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Red Hat Openshift studies
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/jbcodeforce/openshift-studies/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="docker.html" class="md-nav__link md-nav__link--active">
+        Docker
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    Why
+  </a>
+  
+    <nav class="md-nav" aria-label="Why">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#value-propositions-for-container" class="md-nav__link">
+    Value propositions for container
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    Dockerfile
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#some-docker-and-docker-compose-tricks" class="md-nav__link">
+    Some docker and docker compose tricks
+  </a>
+  
+    <nav class="md-nav" aria-label="Some docker and docker compose tricks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tricks" class="md-nav__link">
+    Tricks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-a-ubuntu-image" class="md-nav__link">
+    Run a ubuntu image
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-volume" class="md-nav__link">
+    Docker volume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reclaim-disk-space" class="md-nav__link">
+    Reclaim disk space
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-network" class="md-nav__link">
+    Docker network
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-a-docker-bypassing-entry-point-or-cmd" class="md-nav__link">
+    Start a docker bypassing entry point or cmd
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-build-image-with-tests-and-env-variables" class="md-nav__link">
+    Docker build image with tests and env variables
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    Docker compose
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        Kubernetes deeper dive
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kubernetes deeper dive" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Kubernetes deeper dive
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-0.html" class="md-nav__link">
+        Kubernetes introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-1.html" class="md-nav__link">
+        Networking
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-2.html" class="md-nav__link">
+        Security
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-3.html" class="md-nav__link">
+        Demo it
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-faq.html" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes-ocp-training.html" class="md-nav__link">
+        Notes from certification
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-comp.html" class="md-nav__link">
+        Compendium
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        Use Openshift
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Use Openshift" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Use Openshift
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="os-cn-dev.html" class="md-nav__link">
+        Cloud Native Development
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cp4i.html" class="md-nav__link">
+        Cloud Pak Integration
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="oc-cli.html" class="md-nav__link">
+        oc CLI
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="deployment-ex.html" class="md-nav__link">
+        Deployment examples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="spark-on-os.html" class="md-nav__link">
+        Operators (with Spark)
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="knative.html" class="md-nav__link">
+        Knative
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        Operations
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Operations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Operations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sre.html" class="md-nav__link">
+        SRE
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ansible.html" class="md-nav__link">
+        Ansible
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="spark-on-os.m" class="md-nav__link">
+        Operators (with Spark)
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="compendium.html" class="md-nav__link">
+        Compendium
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/" class="md-nav__link">
+        Back to home
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    Why
+  </a>
+  
+    <nav class="md-nav" aria-label="Why">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#value-propositions-for-container" class="md-nav__link">
+    Value propositions for container
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    Dockerfile
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#some-docker-and-docker-compose-tricks" class="md-nav__link">
+    Some docker and docker compose tricks
+  </a>
+  
+    <nav class="md-nav" aria-label="Some docker and docker compose tricks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tricks" class="md-nav__link">
+    Tricks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-a-ubuntu-image" class="md-nav__link">
+    Run a ubuntu image
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-volume" class="md-nav__link">
+    Docker volume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reclaim-disk-space" class="md-nav__link">
+    Reclaim disk space
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-network" class="md-nav__link">
+    Docker network
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-a-docker-bypassing-entry-point-or-cmd" class="md-nav__link">
+    Start a docker bypassing entry point or cmd
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-build-image-with-tests-and-env-variables" class="md-nav__link">
+    Docker build image with tests and env variables
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    Docker compose
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/jbcodeforce/openshift-studies/edit/master/docs/docker.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="quick-docker-summary">Quick docker summary</h1>
+<h2 id="why">Why</h2>
+<p>Lower memory consumption than VM. Define configuration, dependencies, command in a unique file (Dockerfile). It uses registry to store images. 
+Image is like a VM image. Container is a running instance of an image. Docker engine helps to manage the  container life cycle and 
+exposes API for the CLI.</p>
+<p><img alt="" src="images/docker.png" /></p>
+<h3 id="value-propositions-for-container">Value propositions for container</h3>
+<p>Just to recall the value of using container for the cloud native application are the following:</p>
+<ul>
+<li>Docker ensures consistent environments from development to production. Docker containers are configured to maintain all configurations and dependencies internally.</li>
+<li>Docker containers allows you to commit changes to your Docker image and version control them. It is very easy to rollback to a previous version of your Docker image. This whole process can be tested in a few minutes.</li>
+<li>Docker is fast, allowing you to quickly make replications and achieve redundancy.</li>
+<li>Isolation: Docker makes sure each container has its own resources that are isolated from other containers</li>
+<li>Removing an app/ container is easy and won’t leave any temporary or configuration files on your host OS.</li>
+<li>Docker ensures that applications that are running on containers are completely segregated and isolated from each other, granting you complete control over traffic flow and management</li>
+</ul>
+<p>The container filesystem is represented as a list of read-only layers stacked on top of each other using a storage driver. The layers are generated when commands are executed during the Docker image build process. The top layer has read-write permissions.
+Docker daemon configuration is managed by the Docker configuration file (/etc/docker/daemon.json) and Docker daemon startup options are usually controlled by the systemd unit: <code>docker</code>.
+With environment variables you can control one container, while using <code>linked containers</code>, docker automatically copies all environment variables from one container to another.</p>
+<h2 id="dockerfile">Dockerfile</h2>
+<p>ENTRYPOINT specifies the default command to execute when the image runs in a container
+CMD provides the default arguments for the ENTRYPOINT instruction</p>
+<p>Example to build a custom Apache Web Server container image.</p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span> <span class="s">ubi7/ubi:7.7</span>
+<span class="k">ENV</span> PORT <span class="m">8080</span>
+<span class="k">RUN</span> yum install -y httpd <span class="o">&amp;&amp;</span> yum clean all
+<span class="k">RUN</span> sed -ri -e <span class="s2">&quot;/^Listen 80/c\Listen </span><span class="si">${</span><span class="nv">PORT</span><span class="si">}</span><span class="s2">&quot;</span> /etc/httpd/conf/httpd.conf <span class="o">&amp;&amp;</span> <span class="se">\</span>
+    chown -R apache:apache /etc/httpd/logs/ <span class="o">&amp;&amp;</span> <span class="se">\</span>
+    chown -R apache:apache /run/httpd/
+<span class="k">USER</span><span class="s"> apache</span>
+<span class="k">EXPOSE</span><span class="s"> ${PORT}</span>
+<span class="k">COPY</span> ./src/ /var/www/html/
+<span class="k">CMD</span> <span class="p">[</span><span class="s2">&quot;httpd&quot;</span><span class="p">,</span> <span class="s2">&quot;-D&quot;</span><span class="p">,</span> <span class="s2">&quot;FOREGROUND&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Best practices for writing Dockerfiles.</a></p>
+<p><a href="https://hub.docker.com/_/openjdk">Run java using openJDK image.</a></p>
+<h2 id="some-docker-and-docker-compose-tricks">Some docker and docker compose tricks</h2>
+<h3 id="tricks">Tricks</h3>
+<ul>
+<li>Modify the PATH:  <code>ENV PATH="/opt/ibm/db2/V11.5/bin:${PATH}"</code></li>
+</ul>
+<h3 id="run-a-ubuntu-image">Run a ubuntu image</h3>
+<p>This could be a good approach to demonstrate a linux base app.</p>
+<div class="highlight"><pre><span></span><code>docker run --name my-linux  --detach ubuntu:20.04 tail -f /dev/null
+<span class="c1"># connect</span>
+docker <span class="nb">exec</span> -ti my-linux -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/home bash
+<span class="c1"># Update apt inventory and install jdk, maven, git, curl, ... </span>
+apt update
+apt install -y openjdk-11-jre-headless maven git curl vim
+<span class="c1"># You have a linux based development environment</span>
+</code></pre></div>
+<p>This project includes a Dockerfile-ubuntu to build a local image with the above tools.</p>
+<div class="highlight"><pre><span></span><code>docker build -t jbcodeforce/myubuntu:20.04 -f Dockerfile-ubuntu .
+</code></pre></div>
+<h3 id="docker-volume">Docker volume</h3>
+<p>For mounting host directory, the host directory needs to be configured with ownership and permissions allowing access to the container.</p>
+<div class="highlight"><pre><span></span><code>docker run -v /var/dbfiles:/var/lib/mysql rhmap47/mysql
+</code></pre></div>
+<h3 id="reclaim-disk-space">Reclaim disk space</h3>
+<div class="highlight"><pre><span></span><code>docker system df
+</code></pre></div>
+<p>(https://rmoff.net/post/what-to-do-when-docker-runs-out-of-space/)</p>
+<h3 id="docker-network">Docker network</h3>
+<div class="highlight"><pre><span></span><code>docker network list
+<span class="c1"># create a network</span>
+docker network create kafkanet
+<span class="c1"># Assess which network a container is connected to</span>
+docker inspect 71582654b2f4 -f <span class="s2">&quot;{{json .NetworkSettings.Networks }}&quot;</span>
+
+&gt; <span class="s2">&quot;bridge&quot;</span>:<span class="o">{</span><span class="s2">&quot;IPAMConfig&quot;</span>:null,<span class="s2">&quot;Links&quot;</span>:null,<span class="s2">&quot;Aliases&quot;</span>:null,<span class="s2">&quot;NetworkID&quot;</span>:<span class="s2">&quot;7db...&quot;</span>
+
+<span class="c1"># disconnect a container to its network</span>
+docker network disconnect bridge 71582654b2f4
+<span class="c1"># Connect an existing container to a network</span>
+docker network connect docker_default containernameorid
+</code></pre></div>
+<p>Inside the container the host name is in DNS: <code>host.docker.internal</code>. 
+The other solution is to use --network="host" in docker run command, then 127.0.0.1 in the docker container will point to the docker host.</p>
+<h3 id="start-a-docker-bypassing-entry-point-or-cmd">Start a docker bypassing entry point or cmd</h3>
+<div class="highlight"><pre><span></span><code>docker run -ti --entrypoint <span class="s2">&quot;/bin/bash&quot;</span> imagename
+</code></pre></div>
+<p>or use the command after the image name:</p>
+<div class="highlight"><pre><span></span><code>docker run -ti imagename /bin/bash 
+</code></pre></div>
+<h3 id="docker-build-image-with-tests-and-env-variables">Docker build image with tests and env variables</h3>
+<p>Inject the environment variables with --build-arg</p>
+<div class="highlight"><pre><span></span><code>docker build --network host <span class="se">\</span>
+            --build-arg <span class="nv">KAFKA_BROKERS</span><span class="o">=</span><span class="si">${</span><span class="nv">KAFKA_BROKERS</span><span class="si">}</span> <span class="se">\</span>
+            --build-arg <span class="nv">KAFKA_APIKEY</span><span class="o">=</span><span class="si">${</span><span class="nv">KAFKA_APIKEY</span><span class="si">}</span> <span class="se">\</span>
+            --build-arg <span class="nv">POSTGRESQL_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">POSTGRESQL_URL</span><span class="si">}</span>  <span class="se">\</span>
+            --build-arg <span class="nv">POSTGRESQL_USER</span><span class="o">=</span><span class="si">${</span><span class="nv">POSTGRESQL_USER</span><span class="si">}</span> <span class="se">\</span>
+            --build-arg <span class="nv">POSTGRESQL_PWD</span><span class="o">=</span><span class="si">${</span><span class="nv">POSTGRESQL_PWD</span><span class="si">}</span> <span class="se">\</span>
+            --build-arg <span class="nv">JKS_LOCATION</span><span class="o">=</span><span class="si">${</span><span class="nv">JKS_LOCATION</span><span class="si">}</span> <span class="se">\</span>
+            --build-arg <span class="nv">TRUSTSTORE_PWD</span><span class="o">=</span><span class="si">${</span><span class="nv">TRUSTSTORE_PWD</span><span class="si">}</span> <span class="se">\</span>
+            --build-arg <span class="nv">POSTGRESQL_CA_PEM</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">POSTGRESQL_CA_PEM</span><span class="si">}</span><span class="s2">&quot;</span>  -t ibmcase/<span class="nv">$kname</span> .
+</code></pre></div>
+<ul>
+<li><a href="https://github.com/jbcodeforce/python-code/blob/master/DockerfileForEnv">Python docker env</a></li>
+</ul>
+<h2 id="docker-compose">Docker compose</h2>
+<p>Docker compose helps to orchestrate different docker containers and isolates them with network. 
+Examples of interesting docker-compose file:</p>
+<ul>
+<li><a href="https://github.com/jbcodeforce/kafka-studies/blob/master/docker-compose.yml">Kafka Strimzi</a></li>
+<li><a href="">Kafka Confluent</a></li>
+<li>
+<p><a href="https://github.com/jbcodeforce/flink-studies/blob/master/docker-compose.yaml">Flink</a></p>
+</li>
+<li>
+<p>An interesting option to start the container is to build the image if it does not exist locally:</p>
+</li>
+</ul>
+<p>```shell
+ docker-compose -f docker-compose-db2.yaml up --build</p>
+<h1 id="where-the-declaration-includes-build-statements">where the declaration includes build statements</h1>
+<p>db2server:
+    image: debezium/db2-cdc:${DEBEZIUM_VERSION}
+    build:
+      context: ./debezium-db2-init/db2server
+    ...
+ ```</p>
+<p>See <a href="https://docs.docker.com/compose/compose-file/#build">this note for the build declaration</a>.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="index.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Introduction" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Introduction
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="k8s/k8s-0.html" class="md-footer__link md-footer__link--next" aria-label="Next: Kubernetes introduction" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Kubernetes introduction
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>

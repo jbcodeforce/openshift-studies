@@ -1,0 +1,1161 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>FAQ - Red Hat Openshift studies</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ef5552">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="red" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kubernetes-faq" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Red Hat Openshift studies" class="md-header__button md-logo" aria-label="Red Hat Openshift studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Red Hat Openshift studies
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FAQ
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/jbcodeforce/openshift-studies/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Red Hat Openshift studies" class="md-nav__button md-logo" aria-label="Red Hat Openshift studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Red Hat Openshift studies
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/jbcodeforce/openshift-studies/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker.html" class="md-nav__link">
+        Docker
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        Kubernetes deeper dive
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kubernetes deeper dive" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Kubernetes deeper dive
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s-0.html" class="md-nav__link">
+        Kubernetes introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s-1.html" class="md-nav__link">
+        Networking
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s-2.html" class="md-nav__link">
+        Security
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s-3.html" class="md-nav__link">
+        Demo it
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          FAQ
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="k8s-faq.html" class="md-nav__link md-nav__link--active">
+        FAQ
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-do-you-understand-by-kubernetes" class="md-nav__link">
+    what do you understand by kubernetes?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#difference-between-deploying-an-app-on-host-versus-containers" class="md-nav__link">
+    Difference between deploying an app on host versus containers?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-k8s-simplify-container-deployment" class="md-nav__link">
+    How k8s simplify container deployment?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-heapster" class="md-nav__link">
+    What is a Heapster?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#which-process-runs-on-kubernetes-master-node" class="md-nav__link">
+    Which process runs on Kubernetes master node?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-do-multiple-deployment-a-day" class="md-nav__link">
+    How to do multiple deployment a day?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-best-practices-for-pod-to-pod-communications" class="md-nav__link">
+    What is the best practices for pod to pod communications?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-isolate-pod-to-pod-communication" class="md-nav__link">
+    How to isolate pod to pod communication?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-secure-internal-traffic" class="md-nav__link">
+    How to secure internal traffic ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-practices-to-consider" class="md-nav__link">
+    Security practices to Consider
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-rbac-works" class="md-nav__link">
+    How RBAC works?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-do-ab-testing" class="md-nav__link">
+    How to do A/B testing ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-support-multiple-version-of-the-same-app" class="md-nav__link">
+    How to support multiple version of the same app?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-the-best-practices-around-logging" class="md-nav__link">
+    What are the best practices around Logging?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-is-persistent-volume-allocated" class="md-nav__link">
+    How is persistent volume allocated?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-debug-503" class="md-nav__link">
+    How to debug 503?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-see-ingress-controller-is-up-and-running-in-k8s" class="md-nav__link">
+    how to see ingress controller is up and running in k8s?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-calico" class="md-nav__link">
+    What is Calico?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-network-interface" class="md-nav__link">
+    Container Network Interface?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-number-of-master-needed-to-support-ha" class="md-nav__link">
+    What is the number of master needed to support HA?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-k8s-in-docker-edge" class="md-nav__link">
+    How to use k8s in docker edge?
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notes-ocp-training.html" class="md-nav__link">
+        Notes from certification
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s-comp.html" class="md-nav__link">
+        Compendium
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        Use Openshift
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Use Openshift" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Use Openshift
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../os-cn-dev.html" class="md-nav__link">
+        Cloud Native Development
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cp4i.html" class="md-nav__link">
+        Cloud Pak Integration
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oc-cli.html" class="md-nav__link">
+        oc CLI
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-ex.html" class="md-nav__link">
+        Deployment examples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark-on-os.html" class="md-nav__link">
+        Operators (with Spark)
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knative.html" class="md-nav__link">
+        Knative
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        Operations
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Operations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Operations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre.html" class="md-nav__link">
+        SRE
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ansible.html" class="md-nav__link">
+        Ansible
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark-on-os.m" class="md-nav__link">
+        Operators (with Spark)
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compendium.html" class="md-nav__link">
+        Compendium
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/" class="md-nav__link">
+        Back to home
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-do-you-understand-by-kubernetes" class="md-nav__link">
+    what do you understand by kubernetes?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#difference-between-deploying-an-app-on-host-versus-containers" class="md-nav__link">
+    Difference between deploying an app on host versus containers?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-k8s-simplify-container-deployment" class="md-nav__link">
+    How k8s simplify container deployment?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-heapster" class="md-nav__link">
+    What is a Heapster?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#which-process-runs-on-kubernetes-master-node" class="md-nav__link">
+    Which process runs on Kubernetes master node?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-do-multiple-deployment-a-day" class="md-nav__link">
+    How to do multiple deployment a day?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-best-practices-for-pod-to-pod-communications" class="md-nav__link">
+    What is the best practices for pod to pod communications?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-isolate-pod-to-pod-communication" class="md-nav__link">
+    How to isolate pod to pod communication?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-secure-internal-traffic" class="md-nav__link">
+    How to secure internal traffic ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-practices-to-consider" class="md-nav__link">
+    Security practices to Consider
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-rbac-works" class="md-nav__link">
+    How RBAC works?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-do-ab-testing" class="md-nav__link">
+    How to do A/B testing ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-support-multiple-version-of-the-same-app" class="md-nav__link">
+    How to support multiple version of the same app?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-the-best-practices-around-logging" class="md-nav__link">
+    What are the best practices around Logging?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-is-persistent-volume-allocated" class="md-nav__link">
+    How is persistent volume allocated?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-debug-503" class="md-nav__link">
+    How to debug 503?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-see-ingress-controller-is-up-and-running-in-k8s" class="md-nav__link">
+    how to see ingress controller is up and running in k8s?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-calico" class="md-nav__link">
+    What is Calico?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-network-interface" class="md-nav__link">
+    Container Network Interface?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-number-of-master-needed-to-support-ha" class="md-nav__link">
+    What is the number of master needed to support HA?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-k8s-in-docker-edge" class="md-nav__link">
+    How to use k8s in docker edge?
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/jbcodeforce/openshift-studies/edit/master/docs/k8s/k8s-faq.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="kubernetes-faq">Kubernetes FAQ</h1>
+<h3 id="what-do-you-understand-by-kubernetes">what do you understand by kubernetes?</h3>
+<p>k8s is open source container management / orchestration tool to deploy scaling and descaling of contrainers.
+Writing in GO and it is part of the cloud foundation.</p>
+<p>The key features:
+* automated scheduling to launch container on cluster nodes
+* self healing: identify container dying and reschedule them
+* automated rollouts and rollbacks
+* horizontal scaling and load balancing</p>
+<hr />
+<h3 id="difference-between-deploying-an-app-on-host-versus-containers">Difference between deploying an app on host versus containers?</h3>
+<p>With host you share OS, libraries, and apps co-exist.</p>
+<p>Packaging with container includes OS, config, the libraries and app binary. Containers are made of:
+* namespaces: process PID, network, UTS host and domain name isolation, Inter Process Communication isolation, user (container UID are isolated from OS ones), mount tables,
+* cgroups: Control group  is a Linux kernel feature that limits, accounts for, and isolates the resource usage (CPU, memory, disk I/O, network, etc.) of a collection of processes.
+* layered filesystem: some base layers (e.g linux base layers) can be shared by multiple containers. Layers are usually read-only, and containers make copy if they have to modify the layer
+* content: app, libraries...</p>
+<p>So containers are more portable.</p>
+<hr />
+<h3 id="how-k8s-simplify-container-deployment">How k8s simplify container deployment?</h3>
+<p>By externalizing configuration and requirements, and defining relation between container via configurations: deploymnet, service, secrets, config map...
+Developers focus on desired state of the application and defined configuration for k8s to manage.</p>
+<hr />
+<h3 id="what-is-a-heapster">What is a Heapster?</h3>
+<p><a href="">Heapster</a> is a cluster-wide aggregator of monitoring and event data. It supports Kubernetes natively and works on all Kubernetes setups. It is deprecated. Consider using metrics-server and a third party metrics pipeline to gather Prometheus-format metrics instead.</p>
+<hr />
+<h3 id="which-process-runs-on-kubernetes-master-node">Which process runs on Kubernetes master node?</h3>
+<p><code>kubectl get pods --all-namespaces --field-selector=spec.nodeName=172.16.40.132</code></p>
+<ul>
+<li>Kube-apiserver</li>
+<li>etcd when not clustered</li>
+<li>prometheus node exporter</li>
+<li>logging ELK</li>
+<li>Heapster</li>
+<li>Calico node</li>
+<li>Auth API keys</li>
+<li>Vulnerability advisor</li>
+</ul>
+<hr />
+<h3 id="how-to-do-multiple-deployment-a-day">How to do multiple deployment a day?</h3>
+<p>Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones. By default, the maximum number of Pods that can be unavailable during the update and the maximum number of new Pods that can be created, is one. Updates are versioned and any Deployment update can be reverted to previous.
+The approach is to deploy the image to a docker registry and then use:
+<code>kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2</code>
+then we can see the new pods scheduled: <code>kubectl get pods</code>.
+To rollback to a previous use <code>kubectl rollout undo deployment/deployment-name</code></p>
+<p>Using helm we can do <code>helm rollback &lt;release-name&gt;</code></p>
+<hr />
+<h3 id="what-is-the-best-practices-for-pod-to-pod-communications">What is the best practices for pod to pod communications?</h3>
+<p>Don’t specify a hostPort for a Pod unless it is absolutely necessary. When you bind a Pod to a hostPort, it limits the number of places the Pod can be scheduled, because each <hostIP, hostPort, protocol> combination must be unique.
+Services are assigned a DNS A record for a name of the form <strong>my-svc.my-namespace.svc.cluster.local</strong>. This resolves to the cluster IP of the Service. So prefer to use DNS name to support this communication.</p>
+<hr />
+<h3 id="how-to-isolate-pod-to-pod-communication">How to isolate pod to pod communication?</h3>
+<p>By default, pods are non-isolated; they accept traffic from any source.
+Use <em>network policy</em> resource to group pods allowed to communicate with each other and other network endpoints. You need a network solution that support network policies. Like Calico.</p>
+<p>A simple example of <a href="https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/">network policy with nginx</a>.</p>
+<hr />
+<h3 id="how-to-secure-internal-traffic">How to secure internal traffic ?</h3>
+<p>The first answer is to use to <strong>istio</strong> to simplify the management of certificates and pod to pod communication.
+A more manual is to add a reverse-proxy like nginx in each pod. The SSL proxy will terminate HTTPS connection, using the same nginx config. App in container listen to localhost.  </p>
+<hr />
+<h3 id="security-practices-to-consider">Security practices to Consider</h3>
+<ul>
+<li>apply security to environments like host OS of the different nodes</li>
+<li>restrict access to etcd</li>
+<li>implement network segmentation:</li>
+<li>define network policy</li>
+<li>use continuous security Vulnerability scanning</li>
+<li>limit access to nodes</li>
+<li>define resource quota to control overusage</li>
+<li>use private repository and verified images</li>
+</ul>
+<hr />
+<h3 id="how-rbac-works">How RBAC works?</h3>
+<p>Role-based access control (RBAC) is a method of regulating access to computer or network resources based on the roles of individual users.
+A role contains rules that represent a set of permissions. Two types: Role at the namespace level, or ClusterRole. There is no deny rules.</p>
+<p>A role binding grants the permissions defined in a role to a user or set of users. It holds a list of subjects (users, groups, or service accounts), and a reference to the role being granted</p>
+<p>To assess if RBAC is enabled: <code>kubectl get clusterroles | grep -i rbac</code>
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">RBAC documentation</a></p>
+<hr />
+<h3 id="how-to-do-ab-testing">How to do A/B testing ?</h3>
+<p>A/B testing deployments consists of routing a subset of users to a new functionality under specific conditions, like HTTP headers, cookie, weight... You need <a href="http://istio.io">Istio</a> to support A/B testing.</p>
+<hr />
+<h3 id="how-to-support-multiple-version-of-the-same-app">How to support multiple version of the same app?</h3>
+<p>See A/B testing for one approach and use one of the following deployment strategies:
+<strong>Blue/green</strong> release a new version alongside the old version then switch traffic at the load balancer level (example two different hostnames in the Ingress).</p>
+<p><strong>Canary</strong> is used when releasing a new version to a subset of users, then proceed to a full rollout. It can be done using two Deployments with common pod labels. But the use of service mesh like istio will define greater control over traffic.</p>
+<p>A <strong>ramped</strong> deployment updates pods in a rolling update fashion, a secondary ReplicaSet is created with the new version of the application, then the number of replicas of the old version is decreased and the new version is increased until the correct number of replicas is reached.</p>
+<p><a href="https://container-solutions.com/kubernetes-deployment-strategies/">kubernetes-deployment-strategies examples</a></p>
+<hr />
+<h3 id="what-are-the-best-practices-around-logging">What are the best practices around Logging?</h3>
+<p>Logs should have a separate storage and lifecycle independent of nodes, pods, or containers. This concept is called cluster-level-logging. To get container logs use one of:
+<div class="highlight"><pre><span></span><code>kubectl logs &lt;podname&gt;
+kubectl logs &lt;podname&gt; --previous
+</code></pre></div>
+By default, if a container restarts, the kubelet keeps one terminated container with its logs. Everything a containerized application writes to stdout and stderr is handled and redirected somewhere by a container engine to a logging driver.</p>
+<p>On machines with systemd, the kubelet and container runtime write to journald. f systemd is not present, they write to .log files in the /var/log directory.</p>
+<p>For cluster-level logging three choices:
+* Use a node-level logging agent that runs on every node: another container which access logs at node level and exposes logs or pushes logs to a backend. Better define a DaemonSet for that. This is the most common and encouraged approach for a Kubernetes cluster. For GKE <a href="https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/">Stackdriver Logging</a>, or <a href="https://kubernetes.io/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/">elasticsearch and kibana</a>
+* Include a dedicated sidecar container for logging in an application pod. The sidecar streams application logs to its own stdout. It runs a logging agent, which is configured to pick up logs from an application container. Each sidecar container could tail a particular log file from a shared volume and then redirect the logs to its own stdout stream
+* Push logs directly to a backend from within an application.</p>
+<p>If you have an application that writes to a single file, it’s generally better to set /dev/stdout as destination rather than implementing the streaming sidecar container approach.</p>
+<hr />
+<h3 id="how-is-persistent-volume-allocated">How is persistent volume allocated?</h3>
+<p>Before you can deploy most Kubernetes-based application, you must first create system-level storage from the underlying infrastructure.
+<strong>hostPath</strong> Persistence Volume uses local to the worker node filesystem. So create a host directory on all worker nodes in your cluster. <code>hostPath</code> PV could not failover to other worker node.
+<strong>NFS</strong> is shared between worker nodes. See this <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04">article to set up NFS on ubuntu</a>. When crating the PV, use the key value pairs:
+<div class="highlight"><pre><span></span><code>server - 172.29.2.8
+path - /data/local/share
+</code></pre></div>
+Then define PVC and configure your application to access the PVC defined.</p>
+<hr />
+<h3 id="how-to-debug-503">How to debug 503?</h3>
+<p>See the troubleshooting <a href="https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp/troubleshooting.md#accessing-an-app-expose-with-ingress-503-service-temporarily-unavailable">here</a></p>
+<hr />
+<h3 id="how-to-see-ingress-controller-is-up-and-running-in-k8s">how to see ingress controller is up and running in k8s?</h3>
+<ul>
+<li>Get the list of ingress: <code>kubectl get ing -n greencompute</code></li>
+<li>Get a specific ingress: <code>kubectl describe ing -n greencompute gc-customer-ms-greencompute-customerms</code>
+ <code>Name:             gc-customer-ms-greencompute-customerms
+Namespace:        greencompute
+Address:          172.16.40.131
+Default backend:  default-http-backend:80 (&lt;none&gt;)
+Rules:
+  Host                 Path  Backends
+  ----                 ----  --------
+  customer.green.case  
+                       /   gc-customer-ms-greencompute-customerms:9080 (&lt;none&gt;)
+Annotations:
+Events:
+  Type    Reason  Age   From                      Message
+  ----    ------  ----  ----                      -------
+  Normal  CREATE  42m   nginx-ingress-controller  Ingress greencompute/gc-customer-ms-greencompute-customerms</code></li>
+<li>Check the Ingress Controller Logs: <code>kubectl get pods -n kube-system</code> then <code>kubectl logs nginx-ingress-controller-gvcj5 -n kube-system</code>. Search for message with "Event ... Kind: Ingress..."</li>
+<li>Verify the nginx configuration with a command like: <code>kubectl exec -it -n kube-system nginx-ingress-controller-gvcj5  cat /etc/nginx/nginx.conf</code></li>
+</ul>
+<p>Another <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/troubleshooting.md">source</a> of information</p>
+<hr />
+<h3 id="what-is-calico">What is <a href="https://www.projectcalico.org/">Calico</a>?</h3>
+<p>It uses a IP-only routing connectivity to connect containers. It does not need tunneling and virtual multicast or broadcast. It is an implementation of the Container Network Interface protocol: a plug and play networking capability with the goal to support adding and removing container easily with dynamic IP address assignment.
+Each container has an IP address as Node has one too. When a pod is scheduled the orchestrator calls CNI plugin, Calico, which defines the IP address to use, and persists the states in <code>etcd</code>. There is a container, called <code>felix</code>, which runs in each host and modifies the linux kernel to reference the new IP address in IP routing table. There is also a BGP component that propagated the IP address to all the node of the cluster so they can send connection to this new IP address. This is to flatten the network.</p>
+<h3 id="container-network-interface"><a href="https://github.com/containernetworking/cni">Container Network Interface</a>?</h3>
+<p>Apply the network as software approach to container but focusing of connecting workload (or remove it) instead of doing lower level of network configuration.
+Network policy for security is not in CNI.</p>
+<p><img src="assets/docs/studies/k8s/cni-k8s.png"></img></p>
+<p>CNI supports two commands: ADD and DEL that orchestrator can use to specify a container is added or removed. On the ADD command, CNI create a network interface (visible via <code>ifconfig</code>) within the network namespace and add new route (<code>route -n</code>) in the host so traffic can be routed to the container and in the container define default route to be able to get out.</p>
+<p><img src="assets/docs/studies/k8s/cni-pod-net.png"></img></p>
+<hr />
+<h3 id="what-is-the-number-of-master-needed-to-support-ha">What is the number of master needed to support HA?</h3>
+<p>It is linked to the cluster size, and the expected fault tolerance which is computed as (#_of_master - 1) / 2. It should be at least 1. You must have an odd number of masters in your cluster. Majority is the number of master nodes needed for the cluster to be able to operate. For a cluster of 6 worker nodes, you need a majority of 4 and then a fault tolerance of 2.</p>
+<hr />
+<h3 id="how-to-use-k8s-in-docker-edge">How to use k8s in docker edge?</h3>
+<p><a href="https://rominirani.com/tutorial-getting-started-with-kubernetes-with-docker-on-mac-7f58467203fd">This tutorial</a> to get Edge and k8s started. The following commands can help once docker + k8s are running too:
+<div class="highlight"><pre><span></span><code># Set the cluster - Use tls-verify=true to avoid: Unable to connect to the server: x509: certificate signed by unknown authority
+
+$ kubectl config set-cluster docker-for-desktop --server=https://kubernetes:6443 --insecure-skip-tls-verify=true
+
+# Error from server (Forbidden): services is forbidden: User &quot;system:anonymous&quot; cannot list services in the namespace &quot;kube-system&quot;
+</code></pre></div></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="k8s-3.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Demo it" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Demo it
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../notes-ocp-training.html" class="md-footer__link md-footer__link--next" aria-label="Next: Notes from certification" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Notes from certification
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,948 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Cloud Native Development - Red Hat Openshift studies</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ef5552">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="extra.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="red" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL(".",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cloud-native-development-summary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Red Hat Openshift studies" class="md-header__button md-logo" aria-label="Red Hat Openshift studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Red Hat Openshift studies
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Cloud Native Development
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/jbcodeforce/openshift-studies/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Red Hat Openshift studies" class="md-nav__button md-logo" aria-label="Red Hat Openshift studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Red Hat Openshift studies
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/jbcodeforce/openshift-studies/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docker.html" class="md-nav__link">
+        Docker
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        Kubernetes deeper dive
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kubernetes deeper dive" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Kubernetes deeper dive
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-0.html" class="md-nav__link">
+        Kubernetes introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-1.html" class="md-nav__link">
+        Networking
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-2.html" class="md-nav__link">
+        Security
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-3.html" class="md-nav__link">
+        Demo it
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-faq.html" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes-ocp-training.html" class="md-nav__link">
+        Notes from certification
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="k8s/k8s-comp.html" class="md-nav__link">
+        Compendium
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        Use Openshift
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Use Openshift" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Use Openshift
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Cloud Native Development
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="os-cn-dev.html" class="md-nav__link md-nav__link--active">
+        Cloud Native Development
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#source-to-image-s2i" class="md-nav__link">
+    Source to image (s2i)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#odo-openshift-do" class="md-nav__link">
+    ODO: Openshift Do
+  </a>
+  
+    <nav class="md-nav" aria-label="ODO: Openshift Do">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#important-concepts" class="md-nav__link">
+    Important concepts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-odo" class="md-nav__link">
+    Installing odo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#developing-with-odo" class="md-nav__link">
+    Developing with ODO
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-odo-github" class="md-nav__link">
+    See odo github
+  </a>
+  
+    <nav class="md-nav" aria-label="See odo github">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-flask" class="md-nav__link">
+    Python Flask
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cp4i.html" class="md-nav__link">
+        Cloud Pak Integration
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="oc-cli.html" class="md-nav__link">
+        oc CLI
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="deployment-ex.html" class="md-nav__link">
+        Deployment examples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="spark-on-os.html" class="md-nav__link">
+        Operators (with Spark)
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="knative.html" class="md-nav__link">
+        Knative
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        Operations
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Operations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Operations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sre.html" class="md-nav__link">
+        SRE
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ansible.html" class="md-nav__link">
+        Ansible
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="spark-on-os.m" class="md-nav__link">
+        Operators (with Spark)
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="compendium.html" class="md-nav__link">
+        Compendium
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/" class="md-nav__link">
+        Back to home
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#source-to-image-s2i" class="md-nav__link">
+    Source to image (s2i)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#odo-openshift-do" class="md-nav__link">
+    ODO: Openshift Do
+  </a>
+  
+    <nav class="md-nav" aria-label="ODO: Openshift Do">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#important-concepts" class="md-nav__link">
+    Important concepts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-odo" class="md-nav__link">
+    Installing odo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#developing-with-odo" class="md-nav__link">
+    Developing with ODO
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-odo-github" class="md-nav__link">
+    See odo github
+  </a>
+  
+    <nav class="md-nav" aria-label="See odo github">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-flask" class="md-nav__link">
+    Python Flask
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/jbcodeforce/openshift-studies/edit/master/docs/os-cn-dev.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="cloud-native-development-summary">Cloud Native Development Summary</h1>
+<h2 id="source-to-image-s2i">Source to image (s2i)</h2>
+<p>Source to image toolkit aims to simplify the deployment to OpenShift. It uses a build image to execute an assembly script that builds code and docker image without Dockerfile.  </p>
+<p>The following figure, shows the resources created by the <code>oc new-app</code> command when the argument is an application source code repository.</p>
+<p><img alt="s2i" src="https://rol.redhat.com/rol/static/static_file_cache/do180-4.2/OpenShift-dc-and-bc-3.png" /></p>
+<p>From an existing repository, <code>s2i create</code> add a set of elements to define the workflow into the repo. For example the command below will add Dockerfile and scripts to create a build image named <code>ibmcase/buildorderproducer</code> from the local folder where the code is.</p>
+<div class="highlight"><pre><span></span><code>s2i create ibmcase/buildorderproducer .
+</code></pre></div>
+<p>When the assemble script is done, the container image is committed to internal image repository. The CMD part of the dockerfile execute a run script.</p>
+<p>Here is another command to build the output image using existing build image on local code:</p>
+<div class="highlight"><pre><span></span><code>s2i build --copy .  centos/python-36-centos7 ibmcase/orderproducer
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>s2i takes the code from git, so to use the local code before committing it to github, add the <code>--copy</code> argument.</p>
+</div>
+<ul>
+<li>OpenShift builds applications against an image stream. The OpenShift installer populates several image streams by default during installation.  </li>
+</ul>
+<div class="highlight"><pre><span></span><code> oc get is -n OpenShift
+</code></pre></div>
+<p>If only a source repository is specified, oc new-app tries to identify the correct image stream to use for building the application</p>
+<h2 id="odo-openshift-do">ODO: Openshift Do</h2>
+<p><a href="https://odo.dev/docs/understanding-odo/">ODO</a> is a CLI for developer to abstract kubernetes. It can build and deploy your code to your cluster immediately after you save your changes. <code>odo</code> helps manage the components in a grouping to support the application features. A selection of runtimes, frameworks, and other components are available on an OpenShift cluster for building your applications. This list is referred to as the Developer Catalog.</p>
+<p>The main value propositions are:</p>
+<ul>
+<li>Abstracts away complex Kubernetes and OpenShift commands and configurations.</li>
+<li>Detects changes to local code and deploys it to the cluster automatically, giving instant feedback to validate changes in real time</li>
+</ul>
+<p>V2.0 is merging with Appsody where stacks are <a href="https://odo.dev/docs/deploying-a-devfile-using-odo/">devfile in odo</a>. A <strong>devfile</strong> is a portable file that describes your development environment. See some <a href="https://github.com/odo-devfiles">devfile examples</a></p>
+<h3 id="important-concepts">Important concepts</h3>
+<ul>
+<li><strong>Init containers</strong> are specialized containers that run before the application container starts and configure the necessary environment for the application containers to run. Init containers can have files that application images do not have, for example setup scripts</li>
+<li><strong>Application</strong> container is the main container inside of which the user-source code executes. It uses two volumes: emptyDir and PersistentVolume. The data on the PersistentVolume persists across Pod restarts.</li>
+<li>odo creates a <strong>Service</strong> for every application Pod to make it accessible for communication</li>
+<li>odo push workflow: <ul>
+<li>create resources like deployment config, service, secrets, PVC</li>
+<li>index source code files </li>
+<li>push code into the application container</li>
+<li>execute assemble and restart.</li>
+</ul>
+</li>
+</ul>
+<h3 id="installing-odo">Installing odo</h3>
+<p><a href="https://odo.dev/docs/installing-odo/">Last instructions to install</a>. </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># For MAC</span>
+curl -L https://mirror.openshift.com/pub/openshift-v4/clients/odo/latest/odo-darwin-amd64 -o /usr/local/bin/odo
+chmod +x /usr/local/bin/odo
+<span class="c1"># For VSCode: Command P and</span>
+ext install redhat.vscode-openshift-connector
+</code></pre></div>
+<p>List existing software runtime catalog deployed on a cluster (For example Java and nodejs are supported runtimes):</p>
+<div class="highlight"><pre><span></span><code>odo catalog list components
+</code></pre></div>
+<h3 id="developing-with-odo">Developing with ODO</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># login to a OpenShift cluster like ROKS</span>
+odo  login --token<span class="o">=</span>s....vA c100-e.us-south.containers.cloud.ibm.com:30040
+<span class="c1"># Create a new project in OCP</span>
+odo project create jbsandbox
+<span class="c1"># change project inside OCP</span>
+odo project <span class="nb">set</span> jbsandbox 
+<span class="c1"># Create a component (from an existing project for ex)... then follow the different questions</span>
+odo component create
+<span class="c1"># list available component, with v2, the devfile list is also returned</span>
+odo catalog list components
+<span class="c1"># push to ocp</span>
+odo push
+<span class="c1"># delete an app</span>
+odo app list
+odo app delete myapp
+</code></pre></div>
+<p>Deploy a component to OpenShift creates 2 pods: one ...app-deploy and one ...-app</p>
+<hr />
+<p>To create a component (create a config.yml) from a java springboot app, once the jar is built, the following command defines (a <code>backend</code> named component) to run it on top of the java runtime:</p>
+<p><div class="highlight"><pre><span></span><code>odo create java backend --binary target/wildwest-1.0.jar
+</code></pre></div>
+The component is not yet deployed on OpenShift. With an odo create command, a configuration file called config.yaml has been created in the local directory. To see the config use:</p>
+<div class="highlight"><pre><span></span><code>odo config view
+
+COMPONENT SETTINGS
+------------------------------------------------
+PARAMETER         CURRENT_VALUE
+Type              java:8
+Application       app
+Project           myproject
+SourceType        binary
+Ref
+SourceLocation    target/wildwest-1.0.jar
+Ports             <span class="m">8080</span>/TCP,8443/TCP,8778/TCP
+Name              backend
+</code></pre></div>
+<p>Then to deploy the binary jar file to Openshift:</p>
+<p><div class="highlight"><pre><span></span><code>odo push
+</code></pre></div>
+OpenShift has created a container to host the backend component, deployed the container into a pod running on the OpenShift cluster, and started up the backend component.
+You can view the backend component being started up, in the <code>Developer</code> perspective, under the <code>Topology</code> view. When a dark blue circle appears around the backend component, the pod is ready and the backend component container will start running on it. (A light blue ring means the pod is in a pending state and hasn't started yet)</p>
+<p>OpenShift provides mechanisms to publish communication bindings from a program to its clients. This is referred to as linking. To link the current frontend component to the backend: </p>
+<div class="highlight"><pre><span></span><code>odo link backend --component frontend --port <span class="m">8080</span>
+</code></pre></div>
+<p>This will inject configuration information into the frontend about the backend and then restart the frontend component.</p>
+<p>To expose an application to external client, we need to add a URL:</p>
+<div class="highlight"><pre><span></span><code>odo url create frontend --port <span class="m">8080</span>
+odo push
+</code></pre></div>
+<p>To adapt to the developer changes, we can tell odo to watch for changes on the file system in the background using:</p>
+<div class="highlight"><pre><span></span><code>odo watch
+</code></pre></div>
+<p>Once the change is recognized, odo will push the changes to the frontend component and print its status to the terminal. </p>
+<h2 id="see-odo-github">See <a href="https://github.com/openshift/odo">odo github</a></h2>
+<h3 id="python-flask">Python Flask</h3>
+<p>Current base code is a Flask under <a href="https://github.com/odo-devfiles/python-ex">https://github.com/odo-devfiles/python-ex</a></p>
+<div class="highlight"><pre><span></span><code>mkdir project-name
+<span class="c1"># create the devfile and download starter code</span>
+odo create python --starter
+<span class="c1"># Deploy to OCP</span>
+odo push
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="k8s/k8s-comp.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Compendium" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Compendium
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="cp4i.html" class="md-footer__link md-footer__link--next" aria-label="Next: Cloud Pak Integration" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Cloud Pak Integration
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>
