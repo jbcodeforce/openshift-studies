@@ -187,3 +187,21 @@ Core:
 * monitoring your own services. 
 * new log forwarding API (ClusterLogForwarder CRD): to elastic search, kafka, fluentd, syslog...
 
+## Project removal stay in Terminating state
+
+See [this note]().
+
+* List resources not deleted: example on the project edademo-dev
+
+```sh
+ oc api-resources --verbs=list --namespaced -o name | xargs -n 1 oc get --show-kind --ignore-not-found -n edademo-dev
+```
+
+* Remove for each object still present, the finalizers declaration:
+
+```sh
+# Example for an argocd app which has created the project
+oc patch -n edademo-dev rolebinding/edademo-dev-rolebinding --type=merge -p '{"metadata": {"finalizers":null}}'
+oc patch -n edademo-dev rolebinding/argocd-admin   --type=merge -p '{"metadata": {"finalizers":null}}'
+oc patch -n edademo-dev rolebinding/edit  --type=merge -p '{"metadata": {"finalizers":null}}'
+```
