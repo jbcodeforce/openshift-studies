@@ -20,6 +20,21 @@ DeploymentConfigs involve one or more ReplicationControllers, which contain a po
 
 See also [my summary on k8s](k8s/k8s-0.md).
 
+
+## CNCF
+
+Cloud Native Computing Foundation project helps to accelerate the adoption of container, micro services, orchestrator and cloud native app.
+
+* containerd for Container Runtime
+* rkt for Container Runtime
+* Kubernetes for Container Orchestration
+* Linkerd or ISTIO for Service Mesh
+* gRPC for Remote Procedure Call
+* Container Network Interface (CNI) for Container Networking
+* CoreDNS for Service Discovery
+* Prometheus for Monitoring
+* OpenTracing for Tracing
+* Fluentd for Logging.
 ## Concepts
 
 OpenShift is based on Kubernetes. It adds the concept of **project**, mapped to a k8s namespace, to govern the application access

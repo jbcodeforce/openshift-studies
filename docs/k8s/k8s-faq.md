@@ -111,12 +111,13 @@ A/B testing deployments consists of routing a subset of users to a new functiona
 
 ### How to support multiple version of the same app?
 See A/B testing for one approach and use one of the following deployment strategies:
-**Blue/green** release a new version alongside the old version then switch traffic at the load balancer level (example two different hostnames in the Ingress).
+
+* **Blue/green** release a new version alongside the old version then switch traffic at the load balancer level (example two different hostnames in the Ingress).
 
 
-**Canary** is used when releasing a new version to a subset of users, then proceed to a full rollout. It can be done using two Deployments with common pod labels. But the use of service mesh like istio will define greater control over traffic.
+* **Canary** is used when releasing a new version to a subset of users, then proceed to a full rollout. It can be done using two Deployments with common pod labels. But the use of service mesh like istio will define greater control over traffic.
 
-A **ramped** deployment updates pods in a rolling update fashion, a secondary ReplicaSet is created with the new version of the application, then the number of replicas of the old version is decreased and the new version is increased until the correct number of replicas is reached.
+* A **ramped** deployment updates pods in a rolling update fashion, a secondary ReplicaSet is created with the new version of the application, then the number of replicas of the old version is decreased and the new version is increased until the correct number of replicas is reached.
 
 [kubernetes-deployment-strategies examples](https://container-solutions.com/kubernetes-deployment-strategies/)
 

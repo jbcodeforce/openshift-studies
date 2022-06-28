@@ -41,12 +41,18 @@ code>* {
 }
 
 
-:root {
-  --md-default-bg-color: #f4f4f4;
-}
 :root > * {
-    --md-accent-fg-color: #030303;
+    --md-primary-fg-color:        #CA0F0F;
+    --md-slate-fg-color--light: #e96a6a;
+    --md-slate-fg-color--dark:  #90030C;
+  }
+
+:root {
+    --md-default-bg-color: #f4f4f4;
+    --md-primary-bg-color--light: #e96a6a;
+    --md-default-bg-color--dark: #e96a6a;
 }
+
 .md-nav {
     font-size: .75rem;
     line-height: 1.3;
