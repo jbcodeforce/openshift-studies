@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-webserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-webserver
+  template:
+    metadata:
+      labels:
+        app: python-webserver
+    spec:
+      containers:
+        - name: python-webserver
+          image: python:3
+          command:
+            - python
+            - -m
+            - http.server
+          ports:
+            - containerPort: 8000
+---
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-webserver-service
+spec:
+  selector:
+    app: python-webserver
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8000
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: webserver-ingress
+spec:
+  ingressClassName: nginx # use only with k8s version >= 1.18.0
+  rules:
+  - host: webserver.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: python-webserver-service
+          servicePort: 8080
