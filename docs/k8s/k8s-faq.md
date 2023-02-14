@@ -52,6 +52,7 @@ Developers focus on desired state of the application and defined configuration f
 ---
 
 ### How to do multiple deployment a day?
+
 Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones. By default, the maximum number of Pods that can be unavailable during the update and the maximum number of new Pods that can be created, is one. Updates are versioned and any Deployment update can be reverted to previous.
 The approach is to deploy the image to a docker registry and then use:
 `kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2`
@@ -63,6 +64,7 @@ Using helm we can do `helm rollback <release-name>`
 ---
 
 ### What is the best practices for pod to pod communications?
+
 Don’t specify a hostPort for a Pod unless it is absolutely necessary. When you bind a Pod to a hostPort, it limits the number of places the Pod can be scheduled, because each <hostIP, hostPort, protocol> combination must be unique.
 Services are assigned a DNS A record for a name of the form **my-svc.my-namespace.svc.cluster.local**. This resolves to the cluster IP of the Service. So prefer to use DNS name to support this communication.
 
@@ -77,11 +79,13 @@ A simple example of [network policy with nginx](https://kubernetes.io/docs/tasks
 ---
 
 ### How to secure internal traffic ?
+
 The first answer is to use to **istio** to simplify the management of certificates and pod to pod communication.
 A more manual is to add a reverse-proxy like nginx in each pod. The SSL proxy will terminate HTTPS connection, using the same nginx config. App in container listen to localhost.  
 
 ---
 ### Security practices to Consider
+
 * apply security to environments like host OS of the different nodes
 * restrict access to etcd
 * implement network segmentation:
@@ -94,6 +98,7 @@ A more manual is to add a reverse-proxy like nginx in each pod. The SSL proxy wi
 ---
 
 ### How RBAC works?
+
 Role-based access control (RBAC) is a method of regulating access to computer or network resources based on the roles of individual users.
 A role contains rules that represent a set of permissions. Two types: Role at the namespace level, or ClusterRole. There is no deny rules.
 
@@ -105,11 +110,13 @@ To assess if RBAC is enabled: `kubectl get clusterroles | grep -i rbac`
 ---
 
 ### How to do A/B testing ?
+
 A/B testing deployments consists of routing a subset of users to a new functionality under specific conditions, like HTTP headers, cookie, weight... You need [Istio](http://istio.io) to support A/B testing.
 
 ---
 
 ### How to support multiple version of the same app?
+
 See A/B testing for one approach and use one of the following deployment strategies:
 
 * **Blue/green** release a new version alongside the old version then switch traffic at the load balancer level (example two different hostnames in the Ingress).
@@ -124,6 +131,7 @@ See A/B testing for one approach and use one of the following deployment strateg
 ---
 
 ### What are the best practices around Logging?
+
 Logs should have a separate storage and lifecycle independent of nodes, pods, or containers. This concept is called cluster-level-logging. To get container logs use one of:
 ```
 kubectl logs <podname>
@@ -143,6 +151,7 @@ If you have an application that writes to a single file, it’s generally better
 ---
 
 ### How is persistent volume allocated?
+
 Before you can deploy most Kubernetes-based application, you must first create system-level storage from the underlying infrastructure.
 **hostPath** Persistence Volume uses local to the worker node filesystem. So create a host directory on all worker nodes in your cluster. `hostPath` PV could not failover to other worker node.
 **NFS** is shared between worker nodes. See this [article to set up NFS on ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04). When crating the PV, use the key value pairs:
@@ -155,11 +164,13 @@ Then define PVC and configure your application to access the PVC defined.
 ---
 
 ### How to debug 503?
+
 See the troubleshooting [here](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp/troubleshooting.md#accessing-an-app-expose-with-ingress-503-service-temporarily-unavailable)
 
 ---
 
 ### how to see ingress controller is up and running in k8s?
+
 * Get the list of ingress: `kubectl get ing -n greencompute`
 * Get a specific ingress: `kubectl describe ing -n greencompute gc-customer-ms-greencompute-customerms`
  ```
@@ -187,6 +198,7 @@ Another [source](https://github.com/kubernetes/ingress-nginx/blob/master/docs/tr
 ---
 
 ### What is [Calico](https://www.projectcalico.org/)?
+
 It uses a IP-only routing connectivity to connect containers. It does not need tunneling and virtual multicast or broadcast. It is an implementation of the Container Network Interface protocol: a plug and play networking capability with the goal to support adding and removing container easily with dynamic IP address assignment.
 Each container has an IP address as Node has one too. When a pod is scheduled the orchestrator calls CNI plugin, Calico, which defines the IP address to use, and persists the states in `etcd`. There is a container, called `felix`, which runs in each host and modifies the linux kernel to reference the new IP address in IP routing table. There is also a BGP component that propagated the IP address to all the node of the cluster so they can send connection to this new IP address. This is to flatten the network.
 
@@ -194,15 +206,16 @@ Each container has an IP address as Node has one too. When a pod is scheduled th
 Apply the network as software approach to container but focusing of connecting workload (or remove it) instead of doing lower level of network configuration.
 Network policy for security is not in CNI.
 
-<img src="assets/docs/studies/k8s/cni-k8s.png"></img>
+![](./images/cni-k8s.png)
 
 CNI supports two commands: ADD and DEL that orchestrator can use to specify a container is added or removed. On the ADD command, CNI create a network interface (visible via `ifconfig`) within the network namespace and add new route (`route -n`) in the host so traffic can be routed to the container and in the container define default route to be able to get out.
 
-<img src="assets/docs/studies/k8s/cni-pod-net.png"></img>
+![](./images/cni-pod-net.png)
 
 ---
 
 ### What is the number of master needed to support HA?
+
 It is linked to the cluster size, and the expected fault tolerance which is computed as (#_of_master - 1) / 2. It should be at least 1. You must have an odd number of masters in your cluster. Majority is the number of master nodes needed for the cluster to be able to operate. For a cluster of 6 worker nodes, you need a majority of 4 and then a fault tolerance of 2.
 
 ---

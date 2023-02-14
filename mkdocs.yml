@@ -1,16 +1,16 @@
-site_name: Red Hat Openshift studies
+site_name: Kubernetes Studies
 repo_url: https://github.com/jbcodeforce/openshift-studies
 nav:
-  - Introduction: index.md
-  - Kubernetes deeper dive:
-    - Kubernetes introduction: k8s/k8s-0.md
+  - Kubernetes:
+    - Introduction: k8s/k8s-0.md
     - Networking: k8s/k8s-1.md
     - Security: k8s/k8s-2.md
     - Demo it: k8s/k8s-3.md
     - FAQ: k8s/k8s-faq.md
     - Notes from certification: notes-ocp-training.md
     - Compendium: k8s/k8s-comp.md
-  - Use Openshift: 
+  - Openshift: 
+      - Introduction: ocp/index.md
       - Cloud Native Development: os-cn-dev.md
       - Cloud Pak Integration: cp4i.md
       - FAQ: faq.md
@@ -20,7 +20,7 @@ nav:
   - Operations:
     - SRE: sre.md
     - Ansible: ansible.md
-    - Operators (with Spark): spark-on-os.m
+    - Operators (with Spark): spark-on-os.md
   - Compendium: compendium.md
   - Back to home: https://jbcodeforce.github.io/
 theme: 
@@ -42,16 +42,23 @@ theme:
   features:
       - content.code.annotate
       - content.tooltips
-      - navigation.tabs
+      # - navigation.tabs
       - navigation.instant
       #- navigation.tracking
-      - navigation.sections
+      # - navigation.sections
       - navigation.expand
       - navigation.tabs.sticky
       - navigation.top
- 
+  social:
+    - type: 'github'
+      link: 'https://github.com/jbcodeforce'
+    - type: 'linkedin'
+      link: 'https://linkedin.com/in/jeromeboyer'
 extra_css: ["extra.css"]
 markdown_extensions:
+  - abbr
+  - attr_list
+  - md_in_html
   - admonition
   - codehilite
   - footnotes
@@ -62,4 +69,8 @@ markdown_extensions:
       toc_depth: 3
   - pymdownx.tabbed
   - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
   - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true

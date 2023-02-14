@@ -38,11 +38,6 @@ See the product [documentation here](https://docs.openshift.com/container-platfo
  Below is the step to push a docker images
 
 * Login to OpenShift cluster (get secure token from OpenShift console)
-
-```
-oc login ...
-```
-
 * If not done before add registry-viewer role to your user: `oc policy add-role-to-user registry-viewer $(oc whoami)` 
 and `oc policy add-role-to-user registry-editor $(oc whoami)`
 * Look up the internal OpenShift Docker registry address by using the following command:

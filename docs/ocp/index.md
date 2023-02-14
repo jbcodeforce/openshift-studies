@@ -18,7 +18,7 @@ DeploymentConfigs involve one or more ReplicationControllers, which contain a po
     * OpenShift Online: multi-tenant public cloud managed by Red Hat
     * OpenShift Dedicated: single-tenant container application platform hosted on Amazon Web Services (AWS) or Google Cloud Platform and managed by Red Hat.
 
-See also [my summary on k8s](k8s/k8s-0.md).
+See also [my summary on k8s](../k8s/k8s-0.md).
 
 
 ## CNCF
@@ -35,6 +35,7 @@ Cloud Native Computing Foundation project helps to accelerate the adoption of co
 * Prometheus for Monitoring
 * OpenTracing for Tracing
 * Fluentd for Logging.
+
 ## Concepts
 
 OpenShift is based on Kubernetes. It adds the concept of **project**, mapped to a k8s namespace, to govern the application access
@@ -51,8 +52,7 @@ A router (ingress controller) forwards HTTP and TLS requests to the service addr
 OpenShift routes are implemented by a cluster-wide router service, which runs as a containerized application in the OpenShift cluster. 
 The router service uses HAProxy as the default implementation.
 
-[Red Hat OpenShift on IBM Cloud](https://developer.ibm.com/openlabs/OpenShift) is a preconfigured OpenShift environment available
- for four hours at no charge. 
+[Red Hat OpenShift on IBM Cloud](https://developer.ibm.com/openlabs/OpenShift) is a preconfigured OpenShift environment available for four hours at no charge. 
 
 [Note from the Red Hat OpenShift training](/notes-ocp-training)
 
@@ -60,7 +60,7 @@ The router service uses HAProxy as the default implementation.
 
 Use IBM Cloud cluster feature to get an OpenShift cluster.
 
-Be familiar with [OC cli commands](oc-cli.md).
+Be familiar with [OC cli commands](../oc-cli.md).
 
 ## Collaborate
 
@@ -169,8 +169,9 @@ oc serviceaccounts get-token grafana-serviceaccount -n my-grafana
 * From the Grafana Data Source resource, press Create Instance, and navigate to the YAML view.  In the below YAML, substitute ${BEARER_TOKEN} with the output of the command above.
 * Use custom Grafana dashboards or create your own.
 
-???- "Read more"
-    * [Product documentation - Enabling monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.8/monitoring/enabling-monitoring-for-user-defined-projects.html)
-    * [Product documentation - configuring monitoring stack](https://docs.openshift.com/container-platform/4.8/monitoring/configuring-the-monitoring-stack.html)
-    * [OCP Day 2 Operations](https://github.ibm.com/CASE/OCP-Day2-operations/tree/master/Monitoring)
-    * [2020 - Custom Grafana dashboards for Red Hat OpenShift Container Platform 4](https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4)
+### Read more
+
+* [Product documentation - Enabling monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.8/monitoring/enabling-monitoring-for-user-defined-projects.html)
+* [Product documentation - configuring monitoring stack](https://docs.openshift.com/container-platform/4.8/monitoring/configuring-the-monitoring-stack.html)
+* [OCP Day 2 Operations](https://github.ibm.com/CASE/OCP-Day2-operations/tree/master/Monitoring)
+* [2020 - Custom Grafana dashboards for Red Hat OpenShift Container Platform 4](https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4)
