@@ -184,8 +184,6 @@ Core:
 
 ## Project removal stay in Terminating state
 
-See [this note]().
-
 * List resources not deleted: example on the project edademo-dev
 
 ```sh

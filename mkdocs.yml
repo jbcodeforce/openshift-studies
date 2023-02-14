@@ -1,43 +1,34 @@
 site_name: Kubernetes Studies
 repo_url: https://github.com/jbcodeforce/openshift-studies
 nav:
+  - Introduction: index.md
   - Kubernetes:
     - Introduction: k8s/k8s-0.md
     - Networking: k8s/k8s-1.md
     - Security: k8s/k8s-2.md
     - Demo it: k8s/k8s-3.md
     - FAQ: k8s/k8s-faq.md
-    - Notes from certification: notes-ocp-training.md
+    
     - Compendium: k8s/k8s-comp.md
   - Openshift: 
       - Introduction: ocp/index.md
       - Cloud Native Development: os-cn-dev.md
-      - Cloud Pak Integration: cp4i.md
-      - FAQ: faq.md
-      - oc CLI: oc-cli.md
+      - Cloud Pak Integration: ocp/cp4i.md
+      - FAQ: ocp/faq.md
+      - oc CLI: ocp/oc-cli.md
       - Deployment examples: deployment-ex.md
+      - Notes from certification: ocp/notes-ocp-training.md
       - Operators (with Spark): spark-on-os.md
   - Operations:
     - SRE: sre.md
     - Ansible: ansible.md
     - Operators (with Spark): spark-on-os.md
   - Compendium: compendium.md
-  - Back to home: https://jbcodeforce.github.io/
+  - Return to main: https://jbcodeforce.github.io
 theme: 
   name: material
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-
-    # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
+    scheme: default
   language: en
   features:
       - content.code.annotate
@@ -55,6 +46,11 @@ theme:
     - type: 'linkedin'
       link: 'https://linkedin.com/in/jeromeboyer'
 extra_css: ["extra.css"]
+plugins:
+  - search:
+      lang: en
+  - minify:
+      minify_html: true
 markdown_extensions:
   - abbr
   - attr_list

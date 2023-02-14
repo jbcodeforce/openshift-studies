@@ -84,10 +84,4 @@ My repos:
 * [MQ Messaging Solution](https://github.com/ibm-cloud-architecture/refarch-mq-messaging)
 * [Store simulator with MQ producer](https://github.com/ibm-cloud-architecture/refarch-eda-store-simulator)
 
-## App Connect
-
-
-## API management
-
-## Aspera
 
